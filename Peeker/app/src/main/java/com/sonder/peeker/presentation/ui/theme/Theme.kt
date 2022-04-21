@@ -1,4 +1,4 @@
-package com.sonder.peeker.ui.theme
+package com.sonder.peeker.presentation.ui.theme
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
