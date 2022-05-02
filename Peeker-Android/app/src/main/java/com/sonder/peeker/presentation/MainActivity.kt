@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import com.sonder.peeker.presentation.document_create.DocumentCreateScreen
 import com.sonder.peeker.presentation.ui.theme.HomeScreen
 import com.sonder.peeker.presentation.ui.theme.PeekerTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,7 +17,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             PeekerTheme() {
                 Surface(color = MaterialTheme.colors.background) {
-                    HomeScreen()
+//                    HomeScreen()
+                    DocumentCreateScreen()
                 }
             }
         }

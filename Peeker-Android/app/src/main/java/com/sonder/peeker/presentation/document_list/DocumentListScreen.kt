@@ -24,7 +24,6 @@ fun DocumentListScreen(
 //    navController: NavController,
     viewModel: DocumentListViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.value
     DocumentSelector()
     DocumentPreview()
 }
@@ -38,6 +37,7 @@ fun DocumentPreview(viewModel: DocumentListViewModel = hiltViewModel()) {
             style = MaterialTheme.typography.h1,
             modifier = Modifier.padding(15.dp)
         )
+        // TODO: Check if viewModel is loading documents.
         LazyVerticalGrid(
             cells = GridCells.Fixed(2),
             contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp, bottom = 100.dp),

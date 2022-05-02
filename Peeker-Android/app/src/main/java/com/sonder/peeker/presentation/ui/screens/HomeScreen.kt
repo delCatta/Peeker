@@ -26,7 +26,10 @@ import com.sonder.peeker.presentation.document_list.DocumentListScreen
 fun HomeScreen() {
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { /* Tus acciones */ }) {
+            FloatingActionButton(
+                onClick = {
+                // TODO: Navegate to Add Document.
+                }) {
                 Icon(
                     imageVector = Icons.Rounded.Add,
                     contentDescription = "Crear Documento"
@@ -66,12 +69,14 @@ fun GreetingSection(name: String = "Diego Cattarinich Clavel") {
             verticalAlignment = Alignment.Bottom,
             modifier = Modifier
                 .padding(10.dp)
-        ){
-            Icon(Icons.Outlined.NotificationsNone,
+        ) {
+            Icon(
+                Icons.Outlined.NotificationsNone,
                 contentDescription = "Notificaciones",
                 tint = Pink
             )
-            Icon(Icons.Outlined.Person,
+            Icon(
+                Icons.Outlined.Person,
                 contentDescription = "Profile",
                 tint = Pink
             )

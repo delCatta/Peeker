@@ -1,0 +1,103 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.sonder.peeker"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+8-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="31" />
+9-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:4:5-67
+11-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:4:22-64
+12
+13    <application
+13-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:5:5-24:19
+14        android:name="com.sonder.peeker.PeekerApp"
+14-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:6:9-34
+15        android:allowBackup="true"
+15-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:7:9-35
+16        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+16-->[androidx.core:core:1.6.0] /Users/catta/.gradle/caches/transforms-3/8e729f9a24c2cc481cf84f91b0bb59ad/transformed/core-1.6.0/AndroidManifest.xml:24:18-86
+17        android:debuggable="true"
+18        android:extractNativeLibs="false"
+19        android:icon="@mipmap/ic_launcher"
+19-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:8:9-43
+20        android:label="@string/app_name"
+20-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:9:9-41
+21        android:roundIcon="@mipmap/ic_launcher_round"
+21-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:10:9-54
+22        android:supportsRtl="true"
+22-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:11:9-35
+23        android:testOnly="true"
+24        android:theme="@style/Theme.Peeker" >
+24-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:12:9-44
+25        <activity
+25-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:13:9-23:20
+26            android:name="com.sonder.peeker.presentation.MainActivity"
+26-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:14:13-71
+27            android:exported="true"
+27-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:15:13-36
+28            android:label="@string/app_name"
+28-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:16:13-45
+29            android:theme="@style/Theme.Peeker.NoActionBar" >
+29-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:17:13-60
+30            <intent-filter>
+30-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:18:13-22:29
+31                <action android:name="android.intent.action.MAIN" />
+31-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:19:17-69
+31-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:19:25-66
+32
+33                <category android:name="android.intent.category.LAUNCHER" />
+33-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:21:17-77
+33-->/Users/catta/dev/Peeker/Peeker/app/src/main/AndroidManifest.xml:21:27-74
+34            </intent-filter>
+35        </activity>
+36        <activity
+36-->[androidx.compose.ui:ui-tooling:1.0.1] /Users/catta/.gradle/caches/transforms-3/14ae346496a003125c7c955c4388482d/transformed/jetified-ui-tooling-1.0.1/AndroidManifest.xml:25:9-27:39
+37            android:name="androidx.compose.ui.tooling.PreviewActivity"
+37-->[androidx.compose.ui:ui-tooling:1.0.1] /Users/catta/.gradle/caches/transforms-3/14ae346496a003125c7c955c4388482d/transformed/jetified-ui-tooling-1.0.1/AndroidManifest.xml:26:13-71
+38            android:exported="true" />
+38-->[androidx.compose.ui:ui-tooling:1.0.1] /Users/catta/.gradle/caches/transforms-3/14ae346496a003125c7c955c4388482d/transformed/jetified-ui-tooling-1.0.1/AndroidManifest.xml:27:13-36
+39
+40        <provider
+40-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:26:9-34:20
+41            android:name="androidx.startup.InitializationProvider"
+41-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:27:13-67
+42            android:authorities="com.sonder.peeker.androidx-startup"
+42-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:28:13-68
+43            android:exported="false" >
+43-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:29:13-37
+44            <meta-data
+44-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:31:13-33:52
+45                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+45-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:32:17-85
+46                android:value="androidx.startup" />
+46-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:33:17-49
+47        </provider>
+48
+49        <receiver
+49-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:36:9-45:20
+50            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+50-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:37:13-76
+51            android:directBootAware="false"
+51-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:38:13-44
+52            android:enabled="true"
+52-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:39:13-35
+53            android:exported="true"
+53-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:40:13-36
+54            android:permission="android.permission.DUMP" >
+54-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:41:13-57
+55            <intent-filter>
+55-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:42:13-44:29
+56                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+56-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:43:17-91
+56-->[androidx.profileinstaller:profileinstaller:1.0.1] /Users/catta/.gradle/caches/transforms-3/b306306a5de84e76ff7d3384a6884529/transformed/jetified-profileinstaller-1.0.1/AndroidManifest.xml:43:25-88
+57            </intent-filter>
+58        </receiver>
+59    </application>
+60
+61</manifest>
