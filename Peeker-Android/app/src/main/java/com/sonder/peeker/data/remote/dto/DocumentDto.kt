@@ -8,20 +8,22 @@ data class DocumentDto(
     val document_type: String,
     val emission_date: String,
     val expiration_date: String,
-    val id: Int,
+    val id: String,
     val name: String,
     val updated_at: String,
     val url: String,
-    val user_id: Int
+    val user_id: String
 )
-fun DocumentDto.toDocument(): Document{
-    return Document(created_at= created_at,
-    description=description,
-    document_type= document_type,
-     emission_date= emission_date,
-     expiration_date= expiration_date,
-     name=name,
-     updated_at=updated_at,
-     url=url,
-     )
+
+fun DocumentDto.toDocument(): Document {
+    return Document(
+        created_at = created_at,
+        description = description,
+        document_type = document_type,
+        emission_date = emission_date,
+        expiration_date = expiration_date,
+        name = name,
+        updated_at = updated_at,
+        url = url,
+    )
 }

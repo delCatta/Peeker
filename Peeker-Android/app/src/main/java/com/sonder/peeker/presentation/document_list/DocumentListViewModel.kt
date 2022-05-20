@@ -2,77 +2,105 @@ package com.sonder.peeker.presentation.document_list
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sonder.peeker.core.Resource
+import com.sonder.peeker.domain.model.Document
+import com.sonder.peeker.domain.use_case.get_document.GetDocumentUseCase
+import com.sonder.peeker.domain.use_case.get_documents.GetDocumentsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class DocumentListViewModel @Inject constructor(
-//    private val getDocumentListUseCase: GetDocumentUseCase
-): ViewModel(){
+    private val getDocumentsUseCase: GetDocumentsUseCase
+
+) : ViewModel() {
 
     private val _state = mutableStateOf<DocumentListState>(DocumentListState())
     val state: State<DocumentListState> = _state
 
+    private val _tagState = mutableStateOf<DocumentTagState>(DocumentTagState())
+    val tagState: State<DocumentTagState> = _tagState
+
+    var favoriteDocuments: List<Document> = emptyList()
+    var expiredDocuments: List<Document> = emptyList()
+    var allDocuments: List<Document> = emptyList()
+    var tagDocuments: List<Document> = emptyList()
+    var tags: List<String> = emptyList()
+
     init {
         // TODO: Get User Tags from DB
+        getFavoriteDocuments()
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                val tagsList = listOf("Tag 1", "Tag 2", "Tag 3", "Tag 4", "Tag 5")
-                _state.value = DocumentListState(isLoadingTags = false, tags = tagsList)
+                tags = listOf("Tag 1", "Tag 2", "Tag 3", "Tag 4", "Tag 5")
+                _tagState.value = DocumentTagState(isLoadingTags = false)
             },
             5000 // value in milliseconds
         )
     }
 
-    // TODO: Implement Methods.
-    private fun getFavoriteDocuments(){}
-    private fun getExpiredDocuments(){}
-    private fun getAllDocuments(){}
-    private fun getDocumentsByTag(tagIndex:Int){}
+     fun getFavoriteDocuments() {
+        _state.value = DocumentListState(
+            favoritesSelected = true,
+            error="No implementado aún.")
+    }
+    fun getExpiredDocuments() {
+        _state.value = DocumentListState(
+            expiredSelected = true,
+            error="No implementado aún.")
+    }
+    fun getAllDocuments() {
+        getDocumentsUseCase().onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    allDocuments = result.data ?: emptyList()
+                    _state.value = DocumentListState(isLoading = false, allSelected = true)
+                }
+                is Resource.Error -> {
+                    _state.value = DocumentListState(
+                        allSelected = true,
+                        error = result.message ?: "Ha ocurrido un error inesperado."
+                    )
+                }
+                is Resource.Loading -> {
+                    _state.value = DocumentListState(isLoading = true, allSelected = true)
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 
-    // TODO: Change to List<Document>
-    fun documents(): List<String> {
-        return listOf("Document 1","Document 2","Document 3","Document 4")
+    fun getDocumentsByTag(tagIndex: Int) {
+        _state.value = DocumentListState(
+            selectedTagIndex = tagIndex,
+            error="No implementado aún.")
+    }
+
+    fun documents(): List<Document> {
         return when {
-            _state.value.favoritesSelected -> _state.value.favoriteDocuments
-            _state.value.expiredSelected -> _state.value.expiredDocuments
-            _state.value.allSelected -> _state.value.allDocuments
-            _state.value.selectedTagIndex != null -> _state.value.tagDocuments
+            _state.value.favoritesSelected -> favoriteDocuments
+            _state.value.expiredSelected -> expiredDocuments
+            _state.value.allSelected -> allDocuments
+            _state.value.selectedTagIndex != null -> tagDocuments
             else -> emptyList()
         }
     }
 
 
-    fun selectedTitle():String{
-        return when{
-            _state.value.favoritesSelected-> "Favorites"
-            _state.value.expiredSelected-> "Expired"
-            _state.value.allSelected-> "All Documents"
-            _state.value.selectedTagIndex != null && state.value.selectedTagIndex!=null-> state.value.tags[state.value.selectedTagIndex!!]
+    fun selectedTitle(): String {
+        return when {
+            _state.value.favoritesSelected -> "Favorites"
+            _state.value.expiredSelected -> "Expired"
+            _state.value.allSelected -> "All Documents (${documents().size})"
+            _state.value.selectedTagIndex != null && state.value.selectedTagIndex != null -> tags[state.value.selectedTagIndex!!]
             else -> "Documents"
         }
-    }
-
-     fun selectFavorites(){
-        // TODO: Get favorite Documents
-        _state.value = DocumentListState(isLoadingTags = false, tags = state.value.tags, favoritesSelected = true)
-    }
-     fun selectExpired(){
-        // TODO: Get expired Documents
-        _state.value = DocumentListState(isLoadingTags = false, tags = state.value.tags, favoritesSelected = false, expiredSelected = true)
-
-    }
-     fun selectAll(){
-        // TODO: Get All Documents
-        _state.value = DocumentListState(isLoadingTags = false, tags = state.value.tags, favoritesSelected = false, allSelected = true)
-    }
-     fun selectTag(index:Int){
-        // TODO: Get tag Documents
-        _state.value = DocumentListState(isLoadingTags = false, tags = state.value.tags, favoritesSelected = false, selectedTagIndex = index)
-
     }
 
 }

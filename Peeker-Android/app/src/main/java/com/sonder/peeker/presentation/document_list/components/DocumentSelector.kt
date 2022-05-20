@@ -33,14 +33,14 @@ fun DocumentSelector(
     viewModel: DocumentListViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-
+    val tagState = viewModel.tagState.value
     // TODO: Have first items to scroll with Tags.
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         SelectorChip(
             isSelected = state.favoritesSelected,
-            onPressed = { viewModel.selectFavorites() }) {
+            onPressed = { viewModel.getFavoriteDocuments() }) {
             Icon(
                 if (state.favoritesSelected) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
                 contentDescription = "Favorites",
@@ -49,7 +49,7 @@ fun DocumentSelector(
         }
         SelectorChip(
             isSelected = state.expiredSelected,
-            onPressed = { viewModel.selectExpired() }) {
+            onPressed = { viewModel.getExpiredDocuments() }) {
             Icon(
                 if (state.expiredSelected) Icons.Rounded.Error else Icons.Outlined.ErrorOutline,
                 contentDescription = "Expired",
@@ -59,17 +59,17 @@ fun DocumentSelector(
         SelectorChip(
             isSelected = state.allSelected,
             text = "Documents",
-            onPressed = { viewModel.selectAll() }) {}
+            onPressed = { viewModel.getAllDocuments() }) {}
 
-        if (!state.isLoadingTags)
+        if (!tagState.isLoadingTags)
             LazyRow(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                items(state.tags.size) {
+                items(viewModel.tags.size) {
                     SelectorChip(
                         isSelected = state.selectedTagIndex == it,
-                        text = state.tags[it],
-                        onPressed = { viewModel.selectTag(it) }) {}
+                        text = viewModel.tags[it],
+                        onPressed = { viewModel.getDocumentsByTag(it) }) {}
                 }
             } else Box(modifier = Modifier.padding(15.dp).width(30.dp).height(30.dp)){CircularProgressIndicator()}
     }
