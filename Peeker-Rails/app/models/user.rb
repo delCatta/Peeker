@@ -6,8 +6,8 @@ class User < ApplicationRecord
   kredis_string :verification_code, expires_in: 2.days
 
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :password, allow_nil: true, length: { minimum: 12 }, format: { with: /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/ }
-  validates :password, not_pwned: { message: "might easily be guessed" }
+  # validates :password, allow_nil: true, length: { minimum: 8 }, format: { with: /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/ }
+  # validates :password, not_pwned: { message: "might easily be guessed" }
 
   before_validation do
     self.email = email.try(:downcase).try(:strip)

@@ -5,7 +5,7 @@ one:
   description: MyString
   document_type: 1
   expiration_date: 2022-05-01 21:22:16
-  emision_date: 2022-05-01 21:22:16
+  emission_date: 2022-05-01 21:22:16
   user: one
 
 two:
@@ -13,5 +13,5 @@ two:
   description: MyString
   document_type: 1
   expiration_date: 2022-05-01 21:22:16
-  emision_date: 2022-05-01 21:22:16
+  emission_date: 2022-05-01 21:22:16
   user: two

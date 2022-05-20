@@ -42,7 +42,7 @@ See the [Document model](#document-model) for more info on the response payload.
 * `description` - description of the document.
 * `document_type` - document type of the document.
 * `expiration_date` - expiration date of the document.
-* `emision_date` - emision date of the document.
+* `emission_date` - emision date of the document.
 * `user_id` - user of the document.
 -->
 
@@ -52,7 +52,7 @@ _Optional parameters_:
 * `description` - description of the document.
 * `document_type` - document type of the document.
 * `expiration_date` - expiration date of the document.
-* `emision_date` - emision date of the document.
+* `emission_date` - emision date of the document.
 * `user_id` - user of the document.
 
 This endpoint will return `201 Created` with the current JSON representation of the document if the creation was a success. See the [Document model](#document-model) for more info on the payload.
@@ -82,7 +82,7 @@ This endpoint will return `204 No Content` if successful. No parameters are requ
   "description": "string",
   "document_type": "integer",
   "expiration_date": "datetime",
-  "emision_date": "datetime",
+  "emission_date": "datetime",
   "user_id": "integer",
   "created_at": "datetime",
   "updated_at": "datetime"

@@ -12,7 +12,7 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create document" do
     assert_difference("Document.count") do
-      post documents_url, params: { document: { description: @document.description, document_type: @document.document_type, emision_date: @document.emision_date, expiration_date: @document.expiration_date, name: @document.name, user_id: @document.user_id } }, as: :json
+      post documents_url, params: { document: { description: @document.description, document_type: @document.document_type, emission_date: @document.emission_date, expiration_date: @document.expiration_date, name: @document.name, user_id: @document.user_id } }, as: :json
     end
 
     assert_response :created
@@ -24,7 +24,7 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update document" do
-    patch document_url(@document), params: { document: { description: @document.description, document_type: @document.document_type, emision_date: @document.emision_date, expiration_date: @document.expiration_date, name: @document.name, user_id: @document.user_id } }, as: :json
+    patch document_url(@document), params: { document: { description: @document.description, document_type: @document.document_type, emission_date: @document.emission_date, expiration_date: @document.expiration_date, name: @document.name, user_id: @document.user_id } }, as: :json
     assert_response :success
   end
 

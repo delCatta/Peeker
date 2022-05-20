@@ -25,14 +25,4 @@ class DocumentCreateViewModel @Inject constructor(
     fun setDocumentName(value:String){
         _state.value = state.value.copy(documentName = value)
     }
-//    t.string "name"
-//    t.string "description"
-//    t.integer "document_type"
-//    t.datetime "expiration_date"
-//    t.datetime "emision_date"
-//    t.bigint "user_id", null: false
-//    t.datetime "created_at", null: false
-//    t.datetime "updated_at", null: false
-//    t.index ["user_id"], name: "index_documents_on_user_id"
-
 }
