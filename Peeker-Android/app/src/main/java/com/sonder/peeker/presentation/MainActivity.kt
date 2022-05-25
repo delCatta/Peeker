@@ -8,6 +8,8 @@ import androidx.compose.material.Surface
 import com.sonder.peeker.data.remote.PeekerApi
 import com.sonder.peeker.domain.repository.DocumentRepositoryImpl
 import com.sonder.peeker.presentation.document_create.DocumentCreateScreen
+import com.sonder.peeker.presentation.ui.screens.LoginScreen
+import com.sonder.peeker.presentation.ui.screens.RegistrationScreen
 import com.sonder.peeker.presentation.ui.theme.HomeScreen
 import com.sonder.peeker.presentation.ui.theme.PeekerTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +22,8 @@ class MainActivity : ComponentActivity() {
             PeekerTheme() {
                 Surface(color = MaterialTheme.colors.background) {
                     HomeScreen()
+//                    LoginScreen()
+//                    RegistrationScreen()
                 }
             }
         }
