@@ -29,9 +29,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants.DOCUMENT_TYPES
-import com.sonder.peeker.presentation.document_list.DocumentCreateViewModel
-import com.sonder.peeker.presentation.document_list.DocumentListScreen
+import com.sonder.peeker.presentation.document_create.DocumentCreateViewModel
 import com.sonder.peeker.presentation.ui.theme.Gray
 import com.sonder.peeker.presentation.ui.theme.GreetingSection
 import com.sonder.peeker.presentation.ui.theme.Pink
@@ -39,15 +39,94 @@ import com.sonder.peeker.presentation.ui.theme.White
 import java.util.*
 
 @Composable
+fun DocumentCreateScreen(
+    navController: NavController,
+    viewModel: DocumentCreateViewModel = hiltViewModel()
+) {
+    Scaffold(
+        // TODO: Floating on top of form.
+        floatingActionButton = {
+            if(!viewModel.state.value.isLoading)
+                FloatingActionButton(
+                    onClick = {
+                        viewModel.createDocument()
+                    }) {
+                    Icon(
+                        imageVector = Icons.Rounded.ChevronRight,
+                        contentDescription = "Crear Documento"
+                    )
+                }
+            else
+                CircularProgressIndicator()
+        },
+        floatingActionButtonPosition = FabPosition.End
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // TODO: Navigate Back.
+                Icon(
+                    Icons.Rounded.ChevronLeft,
+                    contentDescription = "Volver"
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 30.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(text = "Nuevo documento", style = MaterialTheme.typography.h2)
+                    Text(
+                        text = "Rellena los campos para poder crear un documento.",
+                        style = MaterialTheme.typography.body1,
+                        color = White
+                    )
+                }
+                TextField(
+                    value = viewModel.state.value.documentName ?: "",
+                    onValueChange = { newValue -> viewModel.setDocumentName(newValue) },
+                    label = { Text(text = "Nombre del documento") },
+                    //label = { Text(text = viewModel.state.value.documentType?: "") },
+                    placeholder = { Text(text = "Mi pasaporte") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                )
+                TextField(
+                    value = viewModel.state.value.documentDescription ?: "",
+                    onValueChange = { newValue -> viewModel.setDocumentDescription(newValue) },
+                    label = { Text(text = "Descripción del documento") },
+                    placeholder = { Text(text = "Mi pasaporte") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                )
+                dropDownMenu(viewModel)
+
+                showDateOfIssuePicker(context = LocalContext.current, viewModel = viewModel, text = "Fecha de emisión")
+
+                showExpirationDatePicker(context = LocalContext.current, viewModel = viewModel, text = "Fecha de expiración")
+
+
+                if(!viewModel.state.value.error.isNullOrBlank())
+                    Text(text = viewModel.state.value.error?:"", color = Pink)
+
+
+
+            }
+        }
+    }
+}
+
+@Composable
 fun dropDownMenu(viewModel: DocumentCreateViewModel) {
 
     var expanded by remember { mutableStateOf(false) }
-    //val suggestions = listOf(
-    //    "Carnet de Identidad",
-    //    "Pasaporte",
-    //    "Licencia de conducir",
-    //    "Certificado de alumno regular"
-    //)
     val suggestions = DOCUMENT_TYPES
     var textfieldSize by remember { mutableStateOf(androidx.compose.ui.geometry.Size.Zero) }
 
@@ -152,90 +231,6 @@ fun showExpirationDatePicker(context: Context, viewModel: DocumentCreateViewMode
         datePickerDialog.show()
     }) {
         Text(text = "Open Date Picker")
-    }
-}
-
-@Composable
-fun DocumentCreateScreen(
-    viewModel: DocumentCreateViewModel = hiltViewModel()
-) {
-    Scaffold(
-        // TODO: Floating on top of form.
-        floatingActionButton = {
-            if(!viewModel.state.value.isLoading)
-                FloatingActionButton(
-                    onClick = {
-                        viewModel.createDocument()
-                    }) {
-                    Icon(
-                        imageVector = Icons.Rounded.ChevronRight,
-                        contentDescription = "Crear Documento"
-                    )
-                }
-            else
-                CircularProgressIndicator()
-        },
-        floatingActionButtonPosition = FabPosition.End
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                // TODO: Navigate Back.
-                Icon(
-                    Icons.Rounded.ChevronLeft,
-                    contentDescription = "Volver"
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 30.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(text = "Nuevo documento", style = MaterialTheme.typography.h2)
-                    Text(
-                        text = "Rellena los campos para poder crear un documento.",
-                        style = MaterialTheme.typography.body1,
-                        color = White
-                    )
-                }
-                TextField(
-                    value = viewModel.state.value.documentName ?: "",
-                    onValueChange = { newValue -> viewModel.setDocumentName(newValue) },
-                    label = { Text(text = "Nombre del documento") },
-                    //label = { Text(text = viewModel.state.value.documentType?: "") },
-                    placeholder = { Text(text = "Mi pasaporte") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                )
-                TextField(
-                    value = viewModel.state.value.documentDescription ?: "",
-                    onValueChange = { newValue -> viewModel.setDocumentDescription(newValue) },
-                    label = { Text(text = "Descripción del documento") },
-                    placeholder = { Text(text = "Mi pasaporte") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                )
-                dropDownMenu(viewModel)
-
-                showDateOfIssuePicker(context = LocalContext.current, viewModel = viewModel, text = "Fecha de emisión")
-
-                showExpirationDatePicker(context = LocalContext.current, viewModel = viewModel, text = "Fecha de expiración")
-
-
-                if(!viewModel.state.value.error.isNullOrBlank())
-                    Text(text = viewModel.state.value.error?:"", color = Pink)
-
-
-
-            }
-        }
     }
 }
 

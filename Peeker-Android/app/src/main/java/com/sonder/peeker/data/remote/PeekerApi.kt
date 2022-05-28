@@ -1,9 +1,7 @@
 package com.sonder.peeker.data.remote
 
-import com.sonder.peeker.data.remote.dto.DocumentDto
-import com.sonder.peeker.data.remote.dto.LoginDto
-import com.sonder.peeker.data.remote.dto.RegistrationDto
-import com.sonder.peeker.data.remote.dto.UserDto
+import com.sonder.peeker.data.remote.dto.*
+import com.sonder.peeker.domain.model.Document
 import retrofit2.http.*
 
 interface PeekerApi {
@@ -12,6 +10,9 @@ interface PeekerApi {
 
     @GET("/documents.json")
     suspend fun getDocuments(): List<DocumentDto>
+
+    @POST("/documents.json")
+    suspend fun createDocument(@Body document: DocumentCreateDto): DocumentDto
 
     @GET("/documents/{documentId}.json")
     suspend fun getDocumentById(@Path("documentId") documentId: String): DocumentDto

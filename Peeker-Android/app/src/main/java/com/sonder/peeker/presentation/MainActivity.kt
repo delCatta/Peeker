@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.LoginScreen.route
+                        startDestination = Screen.HomeScreen.route
                     ) {
                         composable(
                             route = Screen.LoginScreen.route
@@ -37,6 +37,16 @@ class MainActivity : ComponentActivity() {
                             route = Screen.RegistrationScreen.route //+ "/{coinId}"
                         ) {
                             RegistrationScreen(navController)
+                        }
+                        composable(
+                            route = Screen.HomeScreen.route
+                        ) {
+                            HomeScreen(navController)
+                        }
+                        composable(
+                            route = Screen.NewDocumentScreen.route
+                        ) {
+                            DocumentCreateScreen(navController)
                         }
                     }
                 }
