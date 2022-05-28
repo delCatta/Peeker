@@ -1,5 +1,6 @@
 class DocumentsController < ApplicationController
   before_action :set_document, only: %i[ show update destroy ]
+  skip_before_action :authenticate
 
   # GET /documents
   # GET /documents.json

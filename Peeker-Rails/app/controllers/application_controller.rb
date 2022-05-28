@@ -2,7 +2,7 @@ class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
   before_action :set_current_request_details
-  # before_action :authenticate
+  before_action :authenticate
 
   def require_sudo
     unless Current.session.sudo?
