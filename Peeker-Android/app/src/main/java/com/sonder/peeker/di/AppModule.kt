@@ -2,8 +2,8 @@ package com.sonder.peeker.di
 
 import com.sonder.peeker.core.Constants
 import com.sonder.peeker.data.remote.PeekerApi
-import com.sonder.peeker.domain.repository.DocumentRepository
-import com.sonder.peeker.domain.repository.DocumentRepositoryImpl
+import com.sonder.peeker.domain.repository.PeekerRepository
+import com.sonder.peeker.domain.repository.PeekerRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +25,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDocumentRepository(api: PeekerApi): DocumentRepository {
-        return DocumentRepositoryImpl(api)
+    fun provideDocumentRepository(api: PeekerApi): PeekerRepository {
+        return PeekerRepositoryImpl(api)
     }
 }
