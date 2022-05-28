@@ -26,19 +26,23 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
+import com.sonder.peeker.presentation.Screen
+import com.sonder.peeker.presentation.authentication.register.RegisterViewModel
+import com.sonder.peeker.presentation.document_list.DocumentCreateViewModel
 import com.sonder.peeker.presentation.ui.components.RoundedButton
 import com.sonder.peeker.presentation.ui.components.SocialMediaButton
 import com.sonder.peeker.presentation.ui.components.TransparentTextField
+import com.sonder.peeker.presentation.ui.theme.Pink
 import com.sonder.peeker.presentation.ui.theme.White
 
 @Composable
-fun RegistrationScreen() {
-
-    val nameValue = remember { mutableStateOf("") }
-    val emailValue = remember { mutableStateOf("") }
-    val phoneValue = remember { mutableStateOf("") }
-    val passwordValue = remember { mutableStateOf("") }
-    val confirmPasswordValue = remember { mutableStateOf("") }
+fun RegistrationScreen(
+    navController: NavController,
+    viewModel: RegisterViewModel = hiltViewModel()
+) {
 
     var passwordVisibility by remember { mutableStateOf(false) }
     var confirmPasswordVisibility by remember { mutableStateOf(false) }
@@ -47,18 +51,19 @@ fun RegistrationScreen() {
 
     Box(
         modifier = Modifier.fillMaxWidth()
-    ){
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 IconButton(
                     onClick = {
-                        // TODO("BACK BUTOON")
+                        navController.navigate(Screen.LoginScreen.route)
                     }
                 ) {
                     Icon(
@@ -76,15 +81,27 @@ fun RegistrationScreen() {
                 )
             }
 
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 TransparentTextField(
-                    textFieldValue = nameValue,
+                    textFieldValue = viewModel.nameValue,
                     textLabel = "Nombre",
+                    keyboardType = KeyboardType.Text,
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
+                    ),
+                    imeAction = ImeAction.Next
+                )
+                TransparentTextField(
+                    textFieldValue = viewModel.lastNameValue,
+                    textLabel = "Apellidos",
                     keyboardType = KeyboardType.Text,
                     keyboardActions = KeyboardActions(
                         onNext = {
@@ -95,7 +112,7 @@ fun RegistrationScreen() {
                 )
 
                 TransparentTextField(
-                    textFieldValue = emailValue,
+                    textFieldValue = viewModel.emailValue,
                     textLabel = "Email",
                     keyboardType = KeyboardType.Email,
                     keyboardActions = KeyboardActions(
@@ -104,19 +121,8 @@ fun RegistrationScreen() {
                     imeAction = ImeAction.Next
                 )
 
-//                TransparentTextField(
-//                    textFieldValue = phoneValue,
-//                    textLabel = "Phone Number",
-//                    maxChar = 10,
-//                    keyboardType = KeyboardType.Phone,
-//                    keyboardActions = KeyboardActions(
-//                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-//                    ),
-//                    imeAction = ImeAction.Next
-//                )
-
                 TransparentTextField(
-                    textFieldValue = passwordValue,
+                    textFieldValue = viewModel.passwordValue,
                     textLabel = "Contraseña",
                     keyboardType = KeyboardType.Password,
                     keyboardActions = KeyboardActions(
@@ -141,13 +147,13 @@ fun RegistrationScreen() {
                 )
 
                 TransparentTextField(
-                    textFieldValue = confirmPasswordValue,
+                    textFieldValue = viewModel.confirmPasswordValue,
                     textLabel = "Confirmar Contraseña",
                     keyboardType = KeyboardType.Password,
                     keyboardActions = KeyboardActions(
                         onDone = {
                             focusManager.clearFocus()
-                            // TODO("REGISTRATION")
+                            viewModel.register()
                         }
                     ),
                     imeAction = ImeAction.Done,
@@ -166,15 +172,25 @@ fun RegistrationScreen() {
                     visualTransformation = if (confirmPasswordVisibility) VisualTransformation.None else PasswordVisualTransformation()
                 )
 
+                if (!viewModel.state.value.error.isNullOrEmpty())
+                    Spacer(modifier = Modifier.height(16.dp))
+                if (!viewModel.state.value.error.isNullOrEmpty())
+                    Text(
+                        viewModel.state.value.error ?: UNEXPECTER_ERROR,
+                        color = Pink
+                    )
+
                 Spacer(modifier = Modifier.height(16.dp))
 
-                RoundedButton(
+
+                if (viewModel.state.value.isLoading ?: false)
+                    CircularProgressIndicator()
+                else RoundedButton(
                     text = "Unirse a Peeker",
                     displayProgressBar = false,
                     onClick = {
-                        // TODO("REGISTER")
-                    }
-                )
+                        viewModel.register()
+                    })
 
                 ClickableText(
                     text = buildAnnotatedString {
@@ -190,12 +206,12 @@ fun RegistrationScreen() {
                                 color = MaterialTheme.colors.primary,
                                 fontWeight = FontWeight.Bold
                             )
-                        ){
+                        ) {
                             append("Iniciar Sesión")
                         }
                     },
                     onClick = {
-                        // TODO("BACK")
+                        navController.navigate(Screen.LoginScreen.route)
                     }
                 )
             }

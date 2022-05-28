@@ -31,8 +31,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
 
 import com.sonder.peeker.R
+import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.ui.components.RoundedButton
 import com.sonder.peeker.presentation.ui.components.TransparentTextField
 import com.sonder.peeker.presentation.ui.theme.Graphite
@@ -40,7 +42,10 @@ import com.sonder.peeker.presentation.ui.theme.Pink
 import com.sonder.peeker.presentation.ui.theme.White
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    navController: NavController
+    ) {
+
     val emailValue = rememberSaveable { mutableStateOf("") }
     val passwordValue = rememberSaveable { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
@@ -176,7 +181,7 @@ fun LoginScreen() {
                                     append("Regístrate")
                                 }
                             }, onClick = {
-                                // TODO: Navigate to Register.
+                                navController.navigate(Screen.RegistrationScreen.route)
                             })
                         }
                     }

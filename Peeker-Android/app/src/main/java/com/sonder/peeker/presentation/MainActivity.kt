@@ -5,8 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.sonder.peeker.data.remote.PeekerApi
-import com.sonder.peeker.domain.repository.DocumentRepositoryImpl
 import com.sonder.peeker.presentation.document_create.DocumentCreateScreen
 import com.sonder.peeker.presentation.ui.screens.LoginScreen
 import com.sonder.peeker.presentation.ui.screens.RegistrationScreen
@@ -21,9 +23,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             PeekerTheme() {
                 Surface(color = MaterialTheme.colors.background) {
-                    HomeScreen()
-//                    LoginScreen()
-//                    RegistrationScreen()
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.LoginScreen.route
+                    ) {
+                        composable(
+                            route = Screen.LoginScreen.route
+                        ) {
+                            LoginScreen(navController)
+                        }
+                        composable(
+                            route = Screen.RegistrationScreen.route //+ "/{coinId}"
+                        ) {
+                            RegistrationScreen(navController)
+                        }
+                    }
                 }
             }
         }

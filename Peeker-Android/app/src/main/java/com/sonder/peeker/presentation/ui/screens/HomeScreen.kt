@@ -20,10 +20,13 @@ import androidx.compose.ui.R
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.sonder.peeker.presentation.document_list.DocumentListScreen
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController
+    ) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(

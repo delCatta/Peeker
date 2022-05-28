@@ -7,6 +7,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
 import com.sonder.peeker.core.Resource
 import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.domain.use_case.get_document.GetDocumentUseCase
@@ -66,7 +67,7 @@ class DocumentListViewModel @Inject constructor(
                 is Resource.Error -> {
                     _state.value = DocumentListState(
                         allSelected = true,
-                        error = result.message ?: "Ha ocurrido un error inesperado."
+                        error = result.message ?: UNEXPECTER_ERROR
                     )
                 }
                 is Resource.Loading -> {
