@@ -1,4 +1,5 @@
 package com.sonder.peeker.presentation.document_create
+
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -26,10 +27,20 @@ class DocumentCreateViewModel @Inject constructor(
     fun createDocument() {
         clearError()
         //if (!verifyFields())
-            //return
+        //return
         Log.d("A", state.value.documentDateOfIssue.toString())
         Log.d("A", state.value.documentExpirationDate.toString())
-        createDocumentUseCase(DocumentCreateDto(state.value.documentName ?: "")).onEach { result ->
+        createDocumentUseCase(
+            DocumentCreateDto(
+                description = state.value.documentDescription ?: "",
+                document_type = state.value.documentType?: 0,
+                emission_date = state.value.documentDateOfIssue ?: "",
+                expiration_date = state.value.documentExpirationDate ?: "",
+                name = state.value.documentName ?: "",
+                //url = state.value.documentUrl?: "",
+                user_id = "d2c1f858-960d-41df-958a-93aacd95eebf"
+            )
+        ).onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     Log.d("Success", result.data.toString())
@@ -38,6 +49,7 @@ class DocumentCreateViewModel @Inject constructor(
                     _state.value = state.value.copy(isLoading = true)
                 }
                 is Resource.Error -> {
+                    Log.d("Error", result.message.toString())
                     _state.value = state.value.copy(
                         isLoading = false,
                         error = result.message ?: Constants.UNEXPECTER_ERROR
