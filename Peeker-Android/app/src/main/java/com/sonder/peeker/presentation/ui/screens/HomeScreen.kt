@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.document_list.DocumentListScreen
 
 @Composable
@@ -31,7 +32,7 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                // TODO: Navegate to Add Document.
+                    navController.navigate(Screen.NewDocumentScreen.route)
                 }) {
                 Icon(
                     imageVector = Icons.Rounded.Add,

@@ -31,7 +31,7 @@ import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
 import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.authentication.register.RegisterViewModel
-import com.sonder.peeker.presentation.document_list.DocumentCreateViewModel
+import com.sonder.peeker.presentation.document_create.DocumentCreateViewModel
 import com.sonder.peeker.presentation.ui.components.RoundedButton
 import com.sonder.peeker.presentation.ui.components.SocialMediaButton
 import com.sonder.peeker.presentation.ui.components.TransparentTextField
