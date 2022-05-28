@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 import kotlinx.coroutines.flow.launchIn
 import androidx.lifecycle.viewModelScope
+import com.sonder.peeker.domain.use_case.create_document.CreateDocumentUseCase
 
 @HiltViewModel
 class DocumentCreateViewModel @Inject constructor(
