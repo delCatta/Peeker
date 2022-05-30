@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_secure_password
 
   has_many :sessions, dependent: :destroy
+  has_many :documents, dependent: :destroy
 
   kredis_string :verification_code, expires_in: 2.days
 

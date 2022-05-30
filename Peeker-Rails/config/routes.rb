@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'users/me'
   resources :documents
   post 'sign_in', to: 'sessions#create'
   post 'sign_up', to: 'registrations#create'

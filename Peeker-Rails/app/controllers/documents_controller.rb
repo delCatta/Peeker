@@ -1,11 +1,10 @@
 class DocumentsController < ApplicationController
   before_action :set_document, only: %i[ show update destroy ]
-  skip_before_action :authenticate
 
   # GET /documents
   # GET /documents.json
   def index
-    @documents = Document.all
+    @documents = Current.user.documents
   end
 
   # GET /documents/1
@@ -16,7 +15,7 @@ class DocumentsController < ApplicationController
   # POST /documents
   # POST /documents.json
   def create
-    @document = Document.new(document_params)
+    @document = Current.user.documents.new(document_params)
 
     if @document.save
       render :show, status: :created, location: @document
@@ -44,7 +43,7 @@ class DocumentsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_document
-      @document = Document.find(params[:id])
+      @document = Current.user.documents.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
