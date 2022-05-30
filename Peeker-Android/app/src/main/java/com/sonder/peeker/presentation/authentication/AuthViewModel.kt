@@ -30,24 +30,20 @@ class AuthViewModel @Inject constructor(
 
     init {
         var token = getToken()
-        if (token.isNullOrEmpty()) {
-            Log.d("Auth","Null Session Token")
-        }else{
-            Log.d("Auth","Logged In: $token")
+        if (!token.isNullOrEmpty()) {
             getCurrentUserUseCase().onEach { result ->
                 when (result) {
                     is Resource.Success -> {
                         val user = result.data!!
                         sessionManager.setUser(user)
-                        Log.d("Auth",user.name)
-//                        _state.value = state.value.copy(isLoading = false, isAuth = true)
+                        _state.value = state.value.copy(isLoading = false, isAuth = true)
                     }
                     is Resource.Error -> {
                         Log.d("Auth","Error ${result.message?:""}")
-//                        _state.value = state.value.copy(isLoading = false, error = result.message ?: Constants.UNEXPECTER_ERROR)
+                        _state.value = state.value.copy(isLoading = false, error = result.message ?: Constants.UNEXPECTER_ERROR)
                     }
                     is Resource.Loading -> {
-                        Log.d("Auth","Loading")
+                        clearError()
                         _state.value = state.value.copy(isLoading = true, isAuth= false)
                     }
                 }
@@ -61,6 +57,12 @@ class AuthViewModel @Inject constructor(
         sessionManager.logOut()
     }
 
+    fun getUserName(): String{
+        return sessionManager.state.value?.name + " " + sessionManager.state.value?.last_name
+    }
+    fun clearError() {
+        _state.value = state.value.copy(error = null)
+    }
 
 }
 

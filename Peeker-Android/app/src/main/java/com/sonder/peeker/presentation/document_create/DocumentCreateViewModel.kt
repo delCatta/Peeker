@@ -12,10 +12,12 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 import kotlinx.coroutines.flow.launchIn
 import androidx.lifecycle.viewModelScope
+import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.domain.use_case.create_document.CreateDocumentUseCase
 
 @HiltViewModel
 class DocumentCreateViewModel @Inject constructor(
+    private val sessionManager: SessionManager,
     private val createDocumentUseCase: CreateDocumentUseCase
 ) : ViewModel() {
 
@@ -24,12 +26,10 @@ class DocumentCreateViewModel @Inject constructor(
 
     init {}
 
-    fun createDocument() {
+    fun createDocument(on_success: () -> (Unit)) {
         clearError()
-        //if (!verifyFields())
-        //return
-        Log.d("A", state.value.documentDateOfIssue.toString())
-        Log.d("A", state.value.documentExpirationDate.toString())
+        if (!verifyFields())
+        return
         createDocumentUseCase(
             DocumentCreateDto(
                 description = state.value.documentDescription ?: "",
@@ -38,12 +38,14 @@ class DocumentCreateViewModel @Inject constructor(
                 expiration_date = state.value.documentExpirationDate ?: "",
                 name = state.value.documentName ?: "",
                 //url = state.value.documentUrl?: "",
-                user_id = "d2c1f858-960d-41df-958a-93aacd95eebf"
+                user_id = sessionManager.getUser()?.id ?: ""
             )
         ).onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     Log.d("Success", result.data.toString())
+                    _state.value = state.value.copy(isLoading = false)
+                    on_success();
                 }
                 is Resource.Loading -> {
                     _state.value = state.value.copy(isLoading = true)

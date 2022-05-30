@@ -25,6 +25,6 @@ interface PeekerApi {
     @POST("/sign_in")
     suspend fun signIn(@Body loginDto: LoginDto): Response<SessionDto>
 
-    @GET("/users/me")
+    @GET("/users/me.json")
     suspend fun getUser(): UserDto
 }

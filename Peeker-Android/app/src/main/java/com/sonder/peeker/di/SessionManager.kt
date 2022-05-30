@@ -52,4 +52,7 @@ class SessionManager (context: Context) {
     fun isAuth(): Boolean{
         return !fetchAuthToken().isNullOrEmpty()
     }
+    fun getUser(): User?{
+        return state.value
+    }
 }

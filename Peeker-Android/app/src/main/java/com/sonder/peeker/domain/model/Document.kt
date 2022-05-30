@@ -9,4 +9,5 @@ data class Document(
     val name: String,
     val updated_at: String,
     val url: String,
+    val id: String,
 )

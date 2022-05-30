@@ -54,7 +54,9 @@ fun DocumentCreateScreen(
             if (!viewModel.state.value.isLoading)
                 FloatingActionButton(
                     onClick = {
-                        viewModel.createDocument()
+                        viewModel.createDocument {
+                            navController.navigate(Screen.HomeScreen.route)
+                        }
                     }) {
                     Icon(
                         imageVector = Icons.Rounded.ChevronRight,

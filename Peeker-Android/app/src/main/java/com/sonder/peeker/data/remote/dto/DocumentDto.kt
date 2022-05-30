@@ -25,5 +25,6 @@ fun DocumentDto.toDocument(): Document {
         name = name,
         updated_at = updated_at,
         url = url,
+        id = id,
     )
 }

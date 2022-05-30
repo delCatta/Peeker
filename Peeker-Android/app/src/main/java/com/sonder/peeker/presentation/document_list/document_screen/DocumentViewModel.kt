@@ -1,0 +1,65 @@
+package com.sonder.peeker.presentation.document_list.document_screen
+
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sonder.peeker.core.Constants
+import com.sonder.peeker.core.Constants.PARAM_DOCUMENT_ID
+import com.sonder.peeker.core.Resource
+import com.sonder.peeker.domain.model.Document
+import com.sonder.peeker.domain.use_case.get_document.GetDocumentUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
+
+@HiltViewModel
+class DocumentViewModel @Inject constructor(
+    private val getDocumentUseCase: GetDocumentUseCase,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
+
+    private val _state = mutableStateOf<DocumentState>(DocumentState())
+    val state: State<DocumentState> = _state
+
+
+    init {
+        savedStateHandle.get<String>(PARAM_DOCUMENT_ID)?.let { documentId -> getDocument(documentId) }
+    }
+    fun getDocument(id: String){
+        Log.d("Get Document",id)
+        getDocumentUseCase(id).onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    val document = result.data
+                    _state.value = state.value.copy(document= document, isLoading = false)
+                }
+                is Resource.Error -> {
+                    Log.d("Get Document","Error ${result.message?:""}")
+                    _state.value = state.value.copy(isLoading = false, error = result.message ?: Constants.UNEXPECTER_ERROR)
+                }
+                is Resource.Loading -> {
+                    clearError()
+                    _state.value = state.value.copy(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
+
+    }
+
+    fun clearError() {
+        _state.value = state.value.copy(error = null)
+    }
+}
+
+
+data class DocumentState(
+    val document: Document? = null,
+    val isLoading: Boolean = false,
+    val error: String? = null,
+)

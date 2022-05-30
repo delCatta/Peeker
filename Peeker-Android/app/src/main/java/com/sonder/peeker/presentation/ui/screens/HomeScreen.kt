@@ -67,7 +67,7 @@ fun HomeScreen(
                 .fillMaxWidth()
         ) {
             Column {
-                GreetingSection(logout = {
+                GreetingSection(name = viewModel.getUserName(),logout = {
                     viewModel.logOut()
                     navController.navigate(Screen.LoginScreen.route)
                 })

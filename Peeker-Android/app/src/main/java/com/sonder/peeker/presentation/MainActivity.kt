@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.sonder.peeker.data.remote.PeekerApi
 import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.presentation.document_create.DocumentCreateScreen
+import com.sonder.peeker.presentation.document_list.document_screen.DocumentScreen
 import com.sonder.peeker.presentation.ui.screens.LoginScreen
 import com.sonder.peeker.presentation.ui.screens.RegistrationScreen
 import com.sonder.peeker.presentation.ui.theme.HomeScreen
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
                             LoginScreen(navController)
                         }
                         composable(
-                            route = Screen.RegistrationScreen.route //+ "/{coinId}"
+                            route = Screen.RegistrationScreen.route
                         ) {
                             RegistrationScreen(navController)
                         }
@@ -49,6 +50,12 @@ class MainActivity : ComponentActivity() {
                         composable(
                             route = Screen.NewDocumentScreen.route
                         ) { DocumentCreateScreen(navController)
+
+                        }
+                        composable(
+                            route = Screen.DocumentScreen.route + "/{documentId}"
+                        ) {
+                            DocumentScreen(navController)
 
                         }
                     }
