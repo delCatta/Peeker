@@ -65,6 +65,7 @@ class DocumentListViewModel @Inject constructor(
                 is Resource.Success -> {
                     allDocuments = result.data ?: emptyList()
                     _state.value = DocumentListState(isLoading = false, allSelected = true)
+
                 }
                 is Resource.Error -> {
                     _state.value = DocumentListState(

@@ -48,8 +48,8 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(
                             route = Screen.NewDocumentScreen.route
-                        ) {
-                            DocumentCreateScreen(navController)
+                        ) { DocumentCreateScreen(navController)
+
                         }
                     }
                 }

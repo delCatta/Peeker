@@ -6,11 +6,14 @@ import android.util.AttributeSet
 import android.util.Log
 import android.util.Size
 import android.widget.DatePicker
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.ButtonDefaults.elevation
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.Add
@@ -26,11 +29,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants.DOCUMENT_TYPES
+import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.document_create.DocumentCreateViewModel
 import com.sonder.peeker.presentation.ui.theme.Gray
 import com.sonder.peeker.presentation.ui.theme.GreetingSection
@@ -46,7 +51,7 @@ fun DocumentCreateScreen(
     Scaffold(
         // TODO: Floating on top of form.
         floatingActionButton = {
-            if(!viewModel.state.value.isLoading)
+            if (!viewModel.state.value.isLoading)
                 FloatingActionButton(
                     onClick = {
                         viewModel.createDocument()
@@ -69,11 +74,17 @@ fun DocumentCreateScreen(
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                // TODO: Navigate Back.
-                Icon(
-                    Icons.Rounded.ChevronLeft,
-                    contentDescription = "Volver"
-                )
+                IconButton(
+                    onClick = {
+                        navController.navigate(Screen.HomeScreen.route)
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back Icon",
+                        tint = MaterialTheme.colors.primary
+                    )
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -108,14 +119,21 @@ fun DocumentCreateScreen(
                 )
                 dropDownMenu(viewModel)
 
-                showDateOfIssuePicker(context = LocalContext.current, viewModel = viewModel, text = "Fecha de emisión")
+                showDateOfIssuePicker(
+                    context = LocalContext.current,
+                    viewModel = viewModel,
+                    text = "Fecha de emisión"
+                )
 
-                showExpirationDatePicker(context = LocalContext.current, viewModel = viewModel, text = "Fecha de expiración")
+                showExpirationDatePicker(
+                    context = LocalContext.current,
+                    viewModel = viewModel,
+                    text = "Fecha de expiración"
+                )
 
 
-                if(!viewModel.state.value.error.isNullOrBlank())
-                    Text(text = viewModel.state.value.error?:"", color = Pink)
-
+                if (!viewModel.state.value.error.isNullOrBlank())
+                    Text(text = viewModel.state.value.error ?: "", color = Pink)
 
 
             }
@@ -135,8 +153,13 @@ fun dropDownMenu(viewModel: DocumentCreateViewModel) {
     else
         Icons.Filled.KeyboardArrowDown
 
-    OutlinedTextField(value = suggestions[viewModel.state.value.documentType?: 0],
-        onValueChange = { newValue -> viewModel.setDocumentType(suggestions.indexOf(newValue),newValue) },
+    OutlinedTextField(value = suggestions[viewModel.state.value.documentType ?: 0],
+        onValueChange = { newValue ->
+            viewModel.setDocumentType(
+                suggestions.indexOf(newValue),
+                newValue
+            )
+        },
         enabled = false,
         modifier = Modifier
             .fillMaxWidth()
@@ -155,9 +178,9 @@ fun dropDownMenu(viewModel: DocumentCreateViewModel) {
         modifier = Modifier
             .width(with(LocalDensity.current) { textfieldSize.width.toDp() })
     ) {
-        suggestions.forEachIndexed { index,label ->
+        suggestions.forEachIndexed { index, label ->
             DropdownMenuItem(onClick = {
-                viewModel.setDocumentType(index,label)
+                viewModel.setDocumentType(index, label)
                 expanded = false
             }) {
                 Text(
@@ -171,7 +194,7 @@ fun dropDownMenu(viewModel: DocumentCreateViewModel) {
 }
 
 @Composable
-fun showDateOfIssuePicker(context: Context, viewModel: DocumentCreateViewModel, text: String){
+fun showDateOfIssuePicker(context: Context, viewModel: DocumentCreateViewModel, text: String) {
 
     val year: Int
     val month: Int
@@ -194,7 +217,7 @@ fun showDateOfIssuePicker(context: Context, viewModel: DocumentCreateViewModel, 
         day
     )
 
-    Text(text = "$text: ${viewModel.state.value.documentDateOfIssue?: ""}")
+    Text(text = "$text: ${viewModel.state.value.documentDateOfIssue ?: ""}")
     Button(onClick = {
         datePickerDialog.show()
     }) {
@@ -203,7 +226,7 @@ fun showDateOfIssuePicker(context: Context, viewModel: DocumentCreateViewModel, 
 }
 
 @Composable
-fun showExpirationDatePicker(context: Context, viewModel: DocumentCreateViewModel, text: String){
+fun showExpirationDatePicker(context: Context, viewModel: DocumentCreateViewModel, text: String) {
 
     val year: Int
     val month: Int
@@ -226,7 +249,7 @@ fun showExpirationDatePicker(context: Context, viewModel: DocumentCreateViewMode
         day
     )
 
-    Text(text = "$text: ${viewModel.state.value.documentExpirationDate?: ""}")
+    Text(text = "$text: ${viewModel.state.value.documentExpirationDate ?: ""}")
     Button(onClick = {
         datePickerDialog.show()
     }) {
