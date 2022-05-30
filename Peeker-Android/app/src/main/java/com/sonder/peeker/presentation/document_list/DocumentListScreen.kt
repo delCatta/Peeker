@@ -7,16 +7,11 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sonder.peeker.domain.model.Document
@@ -109,7 +104,16 @@ fun DocumentItem(
                         style = MaterialTheme.typography.body2,
                     )
                     Text(
-                        "Expira el ${document.expiration_date.split("T")[0]}", // TODO Diego: Pasar de Timestamp String a 'dd del mm, yyyy'
+                        run {
+                            val day = document.expiration_date.split("T")[0].split("-")[2]
+                            "Expira el ${if (day.length == 2 && day[0] != '0') day else day[1]}"
+                        } +
+                                run {
+                                    val month = document.expiration_date.split("T")[0].split("-")[1]
+                                    " del ${if (month.length == 2 && month[0] != '0') month else month[1]}"
+                                }
+                                +
+                                ", ${document.expiration_date.split("T")[0].split("-")[0]}",
                         style = MaterialTheme.typography.body2,
                     )
                 }
@@ -120,7 +124,6 @@ fun DocumentItem(
                         .fillMaxWidth()
                         .weight(1f, false)
                 ) {
-                    // TODO Diego: Este botón no se muestra bien cuando los textos de arriba son muy largos. Ver como arreglarlo (Dejalo para el final, no es tan crítico)
                     Button(
                         onClick = {
                             navController.navigate(Screen.DocumentScreen.route + "/${document.id}")
