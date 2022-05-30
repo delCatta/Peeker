@@ -102,19 +102,19 @@ fun DocumentItem(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = document.name,
+                        text = document.name?:"Sin título",
                         style = MaterialTheme.typography.h6,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = document.description,
+                        text = document.description?:"",
                         style = MaterialTheme.typography.body2,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        "Expira el ${document.expiration_date.split("T")[0]}", // TODO Diego: Pasar de Timestamp String a 'dd del mm, yyyy'
+                        "Expira el ${(document.expiration_date?:" T ").split("T")[0]}", // TODO Diego: Pasar de Timestamp String a 'dd del mm, yyyy'
                         style = MaterialTheme.typography.body2,
                     )
                 }

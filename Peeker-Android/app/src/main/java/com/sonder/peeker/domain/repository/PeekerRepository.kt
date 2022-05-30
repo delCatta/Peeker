@@ -15,6 +15,7 @@ interface PeekerRepository {
     suspend fun getDocument(documentId: String): DocumentDto
     suspend fun updateDocument(documentId:String, data: Map<String,String>): DocumentDto
     suspend fun createDocument(document: DocumentCreateDto): DocumentDto
+    suspend fun createEmptyDocument(): DocumentDto
     suspend fun createUser(name:String,last_name:String,email: String,password: String,confirm_password: String): UserDto
     suspend fun createSession(email: String,password: String): Response<SessionDto>
 

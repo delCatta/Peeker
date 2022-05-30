@@ -16,6 +16,9 @@ interface PeekerApi {
     @POST("/documents.json")
     suspend fun createDocument(@Body document: DocumentCreateDto): DocumentDto
 
+    @POST("/documents.json")
+    suspend fun createEmptyDocument(@Body data: Map<String,String>): DocumentDto
+
     @GET("/documents/{documentId}.json")
     suspend fun getDocumentById(@Path("documentId") documentId: String): DocumentDto
     @PUT("/documents/{documentId}.json")

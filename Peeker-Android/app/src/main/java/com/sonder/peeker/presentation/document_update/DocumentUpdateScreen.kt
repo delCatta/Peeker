@@ -119,10 +119,8 @@ fun DocumentUpdateScreen(
                     text = "Fecha de expiración"
                 )
 
-
                 if (!viewModel.state.value.error.isNullOrBlank())
                     Text(text = viewModel.state.value.error ?: "", color = Pink)
-            if(!viewModel.state.value.error.isNullOrEmpty())Text(viewModel.state.value.error!!, color = Pink)
 
             }else Box(
                 contentAlignment = Alignment.Center,
@@ -189,6 +187,7 @@ fun dropDownMenu(viewModel: DocumentUpdateViewModel) {
 @Composable
 fun showDateOfIssuePicker(context: Context, viewModel: DocumentUpdateViewModel, text: String) {
 
+    // TODO Diego: Arreglar los colores de esto.
     val year: Int
     val month: Int
     val day: Int
@@ -220,7 +219,7 @@ fun showDateOfIssuePicker(context: Context, viewModel: DocumentUpdateViewModel, 
 
 @Composable
 fun showExpirationDatePicker(context: Context, viewModel: DocumentUpdateViewModel, text: String) {
-
+    // TODO Diego: Arreglar los colores de esto.
     val year: Int
     val month: Int
     val day: Int
