@@ -31,11 +31,11 @@ class RegisterViewModel @Inject constructor(
     init {}
 
     fun register(){
-        Log.d("Value",nameValue.value)
-        Log.d("Value",lastNameValue.value)
-        Log.d("Value",emailValue.value)
-        Log.d("Value",passwordValue.value)
-        Log.d("Value", confirmPasswordValue.value)
+        Log.d("Value name",nameValue.value)
+        Log.d("Value lastName",lastNameValue.value)
+        Log.d("Value email",emailValue.value)
+        Log.d("Value password",passwordValue.value)
+        Log.d("Value confirmPassword", confirmPasswordValue.value)
         clearErrors()
         createUserUseCase(nameValue.value,lastNameValue.value,emailValue.value,passwordValue.value, confirmPasswordValue.value).onEach { result ->
             when (result) {

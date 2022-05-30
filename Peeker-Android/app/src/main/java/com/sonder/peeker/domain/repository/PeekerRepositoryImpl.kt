@@ -1,16 +1,18 @@
 package com.sonder.peeker.domain.repository
 
+import android.database.Observable
 import com.sonder.peeker.data.remote.PeekerApi
-import com.sonder.peeker.data.remote.dto.DocumentCreateDto
-import com.sonder.peeker.data.remote.dto.DocumentDto
-import com.sonder.peeker.data.remote.dto.RegistrationDto
-import com.sonder.peeker.data.remote.dto.UserDto
-import com.sonder.peeker.domain.model.Document
+import com.sonder.peeker.data.remote.dto.*
+import retrofit2.Response
 import javax.inject.Inject
 
 class PeekerRepositoryImpl @Inject constructor(
     private val api: PeekerApi
 ) : PeekerRepository {
+    override suspend fun getCurrentUser(): UserDto {
+        return api.getUser()
+    }
+
     override suspend fun getDocuments(): List<DocumentDto> {
         return api.getDocuments()
     }
@@ -31,6 +33,11 @@ class PeekerRepositoryImpl @Inject constructor(
         confirm_password: String
     ): UserDto {
         return api.signUp(RegistrationDto(name,last_name,email,password,confirm_password))
+    }
+
+    override suspend fun createSession(email: String, password: String): Response<SessionDto> {
+        return api.signIn(LoginDto(email,password))
+
     }
 
 }

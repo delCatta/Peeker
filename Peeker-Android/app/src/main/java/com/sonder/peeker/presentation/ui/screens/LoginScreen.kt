@@ -31,10 +31,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 import com.sonder.peeker.R
 import com.sonder.peeker.presentation.Screen
+import com.sonder.peeker.presentation.authentication.login.LoginViewModel
+import com.sonder.peeker.presentation.authentication.register.RegisterViewModel
 import com.sonder.peeker.presentation.ui.components.RoundedButton
 import com.sonder.peeker.presentation.ui.components.TransparentTextField
 import com.sonder.peeker.presentation.ui.theme.Graphite
@@ -43,11 +46,10 @@ import com.sonder.peeker.presentation.ui.theme.White
 
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel()
     ) {
 
-    val emailValue = rememberSaveable { mutableStateOf("") }
-    val passwordValue = rememberSaveable { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     Box(
@@ -104,7 +106,7 @@ fun LoginScreen(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             TransparentTextField(
-                                textFieldValue = emailValue,
+                                textFieldValue = viewModel.emailValue,
                                 textLabel = "Email",
                                 keyboardType = KeyboardType.Email,
                                 keyboardActions = KeyboardActions(
@@ -115,14 +117,14 @@ fun LoginScreen(
                                 imeAction = ImeAction.Next
                             )
                             TransparentTextField(
-                                textFieldValue = passwordValue,
+                                textFieldValue = viewModel.passwordValue,
                                 textLabel = "Contraseña",
                                 keyboardType = KeyboardType.Password,
                                 keyboardActions = KeyboardActions(
                                     onDone = {
                                         focusManager.clearFocus()
+                                        viewModel.login(navController)
                                     }
-                                    // TODO: Login Operation.
                                 ),
                                 imeAction = ImeAction.Done,
                                 trailingIcon = {
@@ -145,7 +147,9 @@ fun LoginScreen(
                                     PasswordVisualTransformation()
                                 }
                             )
-                            Text(
+                            if(false)
+                                // TODO: Forgot password
+                                Text(
                                 modifier = Modifier.fillMaxWidth(),
                                 text = "¿Olvidaste tu contraseña?",
                                 style = MaterialTheme.typography.body2,
@@ -161,7 +165,7 @@ fun LoginScreen(
                                 text = "Entrar",
                                 displayProgressBar = false,
                                 onClick = {
-                                    // TODO: Login
+                                    viewModel.login(navController)
                                 })
                             ClickableText(text = buildAnnotatedString {
                                 withStyle(
@@ -194,7 +198,7 @@ fun LoginScreen(
                             end.linkTo(surface.end, margin = 36.dp)
                         },
                     backgroundColor = Pink,
-                    onClick = { /*TODO*/ }) {
+                    onClick = { viewModel.login(navController) }) {
                     Icon(
                         modifier = Modifier.size(42.dp),
                         imageVector = Icons.Rounded.ArrowForward,
@@ -207,6 +211,8 @@ fun LoginScreen(
             }
 
         }
+
     }
+
 
 }

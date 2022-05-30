@@ -24,7 +24,7 @@ import com.sonder.peeker.presentation.ui.theme.Pink
 
 @Composable
 fun DocumentListScreen(
-//    navController: NavController,
+    navController: NavController,
     viewModel: DocumentListViewModel = hiltViewModel()
 ) {
     DocumentSelector()

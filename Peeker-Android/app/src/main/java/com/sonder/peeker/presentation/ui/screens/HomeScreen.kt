@@ -20,15 +20,35 @@ import androidx.compose.ui.R
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.presentation.Screen
+import com.sonder.peeker.presentation.authentication.AuthViewModel
+import com.sonder.peeker.presentation.authentication.login.LoginViewModel
 import com.sonder.peeker.presentation.document_list.DocumentListScreen
 
 @Composable
 fun HomeScreen(
-    navController: NavController
-    ) {
-    Scaffold(
+    navController: NavController,
+    viewModel: AuthViewModel = hiltViewModel()
+) {
+    var isAuth = viewModel.state.value.isAuth
+    var isLoading = viewModel.state.value.isLoading
+    if (!isAuth) {
+        Scaffold {
+            if (isLoading) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                navController.navigate(Screen.LoginScreen.route)
+            }
+        }
+    } else Scaffold(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
@@ -47,16 +67,19 @@ fun HomeScreen(
                 .fillMaxWidth()
         ) {
             Column {
-                GreetingSection()
-                DocumentListScreen()
+                GreetingSection(logout = {
+                    viewModel.logOut()
+                    navController.navigate(Screen.LoginScreen.route)
+                })
+                DocumentListScreen(navController)
             }
         }
-    }
 
+    }
 }
 
 @Composable
-fun GreetingSection(name: String = "Diego Cattarinich Clavel") {
+fun GreetingSection(name: String = "Diego Cattarinich Clavel", logout: () -> (Unit)) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -65,7 +88,7 @@ fun GreetingSection(name: String = "Diego Cattarinich Clavel") {
             .padding(15.dp)
     ) {
         Column(verticalArrangement = Arrangement.Center) {
-            Text(text = "Welcome", style = MaterialTheme.typography.body1, color = Pink)
+            Text(text = "Bienvenido/a", style = MaterialTheme.typography.body1, color = Pink)
             Text(text = name, style = MaterialTheme.typography.h2)
         }
         Row(
@@ -74,20 +97,32 @@ fun GreetingSection(name: String = "Diego Cattarinich Clavel") {
             modifier = Modifier
                 .padding(10.dp)
         ) {
-            Icon(
-                Icons.Outlined.NotificationsNone,
-                contentDescription = "Notificaciones",
-                tint = Pink
-            )
-            Icon(
-                Icons.Outlined.Person,
-                contentDescription = "Profile",
-                tint = Pink
-            )
+            IconButton(
+                onClick = {
+                    // TODO: Navigate to Notifications
+                },
+            ) {
+                Icon(
+                    Icons.Outlined.NotificationsNone,
+                    contentDescription = "Notificaciones",
+                    tint = Pink
+                )
+            }
+            IconButton(
+                onClick = {
+                    logout()
+                },
+            ) {
+                Icon(
+                    Icons.Outlined.Logout,
+                    contentDescription = "Log Out",
+                    tint = Pink
+                )
+            }
         }
 
 
     }
-
 }
+
 

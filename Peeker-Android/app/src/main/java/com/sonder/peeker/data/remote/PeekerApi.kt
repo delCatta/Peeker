@@ -1,7 +1,9 @@
 package com.sonder.peeker.data.remote
 
+import android.database.Observable
 import com.sonder.peeker.data.remote.dto.*
 import com.sonder.peeker.domain.model.Document
+import retrofit2.Response
 import retrofit2.http.*
 
 interface PeekerApi {
@@ -21,5 +23,8 @@ interface PeekerApi {
     suspend fun signUp(@Body registrationDto: RegistrationDto): UserDto
 
     @POST("/sign_in")
-    suspend fun signIn(@Body loginDto: LoginDto): UserDto
+    suspend fun signIn(@Body loginDto: LoginDto): Response<SessionDto>
+
+    @GET("/users/me")
+    suspend fun getUser(): UserDto
 }
