@@ -4,6 +4,7 @@ class CreateDocuments < ActiveRecord::Migration[7.0]
       t.string :name
       t.string :description
       t.integer :document_type
+      t.boolean :favorite, default: false
       t.datetime :expiration_date
       t.datetime :emission_date
       t.references :user, null: false, foreign_key: true,type: :uuid

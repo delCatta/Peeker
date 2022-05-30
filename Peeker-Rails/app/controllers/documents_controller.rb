@@ -7,6 +7,10 @@ class DocumentsController < ApplicationController
     @documents = Current.user.documents
   end
 
+  def favorites
+    @documents = Current.user.documents.favorites
+  end
+
   # GET /documents/1
   # GET /documents/1.json
   def show
@@ -48,6 +52,6 @@ class DocumentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def document_params
-      params.require(:document).permit(:name, :description, :document_type, :expiration_date, :emission_date, :document, :tag_list, :user_id)
+      params.require(:document).permit(:name, :description, :document_type, :favorite, :expiration_date, :emission_date, :document, :tag_list, :user_id)
     end
 end
