@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -103,10 +104,14 @@ fun DocumentItem(
                     Text(
                         text = document.name,
                         style = MaterialTheme.typography.h6,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = document.description,
                         style = MaterialTheme.typography.body2,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         "Expira el ${document.expiration_date.split("T")[0]}", // TODO Diego: Pasar de Timestamp String a 'dd del mm, yyyy'
@@ -120,7 +125,6 @@ fun DocumentItem(
                         .fillMaxWidth()
                         .weight(1f, false)
                 ) {
-                    // TODO Diego: Este botón no se muestra bien cuando los textos de arriba son muy largos. Ver como arreglarlo (Dejalo para el final, no es tan crítico)
                     Button(
                         onClick = {
                             navController.navigate(Screen.DocumentScreen.route + "/${document.id}")

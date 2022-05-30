@@ -30,7 +30,7 @@ fun DocumentScreen(
             if (!state.isLoading) {
                 FloatingActionButton(
                     onClick = {
-                        navController.navigate(Screen.NewDocumentScreen.route)
+                         navController.navigate(Screen.UpdateDocumentScreen.route + "/${state.document?.id?:""}")
                     }) {
                     Icon(
                         imageVector = Icons.Rounded.Edit,
@@ -126,7 +126,7 @@ fun DocumentInformation(
                 .padding(horizontal = 16.dp)
         ) {
             Column() {
-                Text(document.document_type)
+                Text(document.getDocumentType())
             }
         }
     }

@@ -1,9 +1,9 @@
-package com.sonder.peeker.presentation.document_create
+package com.sonder.peeker.presentation.document_update
 
-import java.time.LocalDate
-import java.util.*
+import com.sonder.peeker.domain.model.Document
 
-data class DocumentCreateState(
+data class DocumentUpdateState(
+    val document: Document? = null,
     val documentName: String? = null,
     val documentDescription: String? = null,
     val documentType: Int? = null,

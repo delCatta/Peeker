@@ -1,9 +1,11 @@
 package com.sonder.peeker.domain.model
 
+import com.sonder.peeker.core.Constants.DOCUMENT_TYPES
+
 data class Document(
     val created_at: String,
     val description: String,
-    val document_type: String,
+    val document_type: Int,
     val emission_date: String,
     val expiration_date: String,
     val name: String,
@@ -11,4 +13,13 @@ data class Document(
     val url: String,
     val id: String,
     val favorite: Boolean,
-)
+){
+    fun getDocumentType():String{
+        try {
+
+        return DOCUMENT_TYPES[document_type]
+        }catch (ex: Exception){
+            return "No se encontro un tipo."
+        }
+    }
+}

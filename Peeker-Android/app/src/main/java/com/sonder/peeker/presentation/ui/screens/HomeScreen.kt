@@ -52,7 +52,7 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate(Screen.NewDocumentScreen.route)
+                    // TODO: open Create Document Snackbar
                 }) {
                 Icon(
                     imageVector = Icons.Rounded.Add,
