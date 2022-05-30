@@ -18,6 +18,8 @@ interface PeekerApi {
 
     @GET("/documents/{documentId}.json")
     suspend fun getDocumentById(@Path("documentId") documentId: String): DocumentDto
+    @PUT("/documents/{documentId}.json")
+    suspend fun updateDocumentById(@Path("documentId") documentId: String, @Body data: Map<String,String>): DocumentDto
 
     @POST("/sign_up")
     suspend fun signUp(@Body registrationDto: RegistrationDto): UserDto

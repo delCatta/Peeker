@@ -20,6 +20,9 @@ class PeekerRepositoryImpl @Inject constructor(
     override suspend fun getDocument(documentId: String): DocumentDto {
         return api.getDocumentById(documentId)
     }
+    override suspend fun updateDocument(documentId:String,data:Map<String,String>): DocumentDto {
+        return api.updateDocumentById(documentId,data)
+    }
 
     override suspend fun createDocument(document: DocumentCreateDto): DocumentDto {
         return api.createDocument(document)

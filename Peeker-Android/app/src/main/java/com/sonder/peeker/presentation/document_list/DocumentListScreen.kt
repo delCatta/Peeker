@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -76,7 +77,7 @@ fun DocumentPreview(
 @Composable
 fun DocumentItem(
     navController: NavController,
-    document: Document
+    document: Document,
 ) {
     BoxWithConstraints(
         modifier = Modifier
@@ -119,18 +120,7 @@ fun DocumentItem(
                         .fillMaxWidth()
                         .weight(1f, false)
                 ) {
-
-
-                    IconButton(onClick = {
-                        // TODO: toggle Favorite
-                    }) {
-                        Icon(
-                            // TODO: If favorite
-                            Icons.Outlined.Favorite,
-                            contentDescription = "Notificaciones",
-                            tint = Pink
-                        )
-                    }
+                    // TODO Diego: Este botón no se muestra bien cuando los textos de arriba son muy largos. Ver como arreglarlo (Dejalo para el final, no es tan crítico)
                     Button(
                         onClick = {
                             navController.navigate(Screen.DocumentScreen.route + "/${document.id}")

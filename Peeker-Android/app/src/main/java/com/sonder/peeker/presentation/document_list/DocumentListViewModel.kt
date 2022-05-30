@@ -50,11 +50,13 @@ class DocumentListViewModel @Inject constructor(
     }
 
      fun getFavoriteDocuments() {
+         // TODO Diego: Implementar la el useCase con la request. (Habla con bruno para saber la URL)
         _state.value = DocumentListState(
             favoritesSelected = true,
             error="No implementado aún.")
     }
     fun getExpiredDocuments() {
+        // TODO Diego: Implementar la el useCase con la request. (Habla con bruno para saber la URL)
         _state.value = DocumentListState(
             expiredSelected = true,
             error="No implementado aún.")
@@ -81,6 +83,7 @@ class DocumentListViewModel @Inject constructor(
     }
 
     fun getDocumentsByTag(tagIndex: Int) {
+        // TODO Diego: Implementar la el useCase con la request. (Habla con bruno para saber la URL)
         _state.value = DocumentListState(
             selectedTagIndex = tagIndex,
             error="No implementado aún.")

@@ -10,4 +10,5 @@ data class Document(
     val updated_at: String,
     val url: String,
     val id: String,
+    val favorite: Boolean,
 )

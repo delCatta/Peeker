@@ -14,6 +14,7 @@ import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
 import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.presentation.Screen
+import com.sonder.peeker.presentation.document_list.document_screen.components.FavoriteDocumentToggler
 import com.sonder.peeker.presentation.ui.theme.White
 
 @Composable
@@ -40,21 +41,32 @@ fun DocumentScreen(
         },
         floatingActionButtonPosition = FabPosition.End
     ) {
+        // TODO Diego: Mejorar los paddings para que se vea bien y consistente
         Box(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
             Column {
-                IconButton(
-                    onClick = {
-                        navController.navigate(Screen.HomeScreen.route)
-                    }
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back Icon",
-                        tint = MaterialTheme.colors.primary
-                    )
+
+                    IconButton(
+                        onClick = {
+                            navController.navigate(Screen.HomeScreen.route)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back Icon",
+                            tint = MaterialTheme.colors.primary
+                        )
+                    }
+                    FavoriteDocumentToggler(viewModel)
+
                 }
                 if (state.isLoading || !state.error.isNullOrEmpty()) {
                     Column(
@@ -92,7 +104,7 @@ fun DocumentInformation(
     viewModel: DocumentViewModel
 
 ) {
-    // TODO Diego: Mejorar esta lista (apreta en ver en un documento)
+    // TODO Diego: Mejorar esta lista para mostrar más campos (apreta en ver en un documento)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,9 +120,11 @@ fun DocumentInformation(
             style = MaterialTheme.typography.body1,
             color = White
         )
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
             Column() {
                 Text(document.document_type)
             }
