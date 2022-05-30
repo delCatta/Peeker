@@ -47,6 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_24_024029) do
     t.string "name"
     t.string "description"
     t.integer "document_type"
+    t.boolean "favorite", default: false
     t.datetime "expiration_date"
     t.datetime "emission_date"
     t.uuid "user_id", null: false

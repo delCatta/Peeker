@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   get 'users/me'
-  resources :documents
+  resources :documents do
+    collection do
+      get :favorites
+    end
+  end
   post 'sign_in', to: 'sessions#create'
   post 'sign_up', to: 'registrations#create'
   resources :sessions, only: [:index, :show, :destroy]
