@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,9 +29,7 @@ import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
 import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.authentication.register.RegisterViewModel
-import com.sonder.peeker.presentation.document_create.DocumentCreateViewModel
 import com.sonder.peeker.presentation.ui.components.RoundedButton
-import com.sonder.peeker.presentation.ui.components.SocialMediaButton
 import com.sonder.peeker.presentation.ui.components.TransparentTextField
 import com.sonder.peeker.presentation.ui.theme.Pink
 import com.sonder.peeker.presentation.ui.theme.White

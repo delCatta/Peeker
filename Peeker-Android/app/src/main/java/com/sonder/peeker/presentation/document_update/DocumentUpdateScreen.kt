@@ -1,60 +1,45 @@
-package com.sonder.peeker.presentation.document_create
+package com.sonder.peeker.presentation.document_update
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.util.AttributeSet
-import android.util.Log
-import android.util.Size
 import android.widget.DatePicker
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.ButtonDefaults.elevation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.ChevronLeft
 import androidx.compose.material.icons.rounded.ChevronRight
-import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants.DOCUMENT_TYPES
 import com.sonder.peeker.presentation.Screen
-import com.sonder.peeker.presentation.document_create.DocumentCreateViewModel
-import com.sonder.peeker.presentation.ui.theme.Gray
-import com.sonder.peeker.presentation.ui.theme.GreetingSection
 import com.sonder.peeker.presentation.ui.theme.Pink
 import com.sonder.peeker.presentation.ui.theme.White
 import java.util.*
 
 @Composable
-fun DocumentCreateScreen(
+fun DocumentUpdateScreen(
     navController: NavController,
-    viewModel: DocumentCreateViewModel = hiltViewModel()
+    viewModel: DocumentUpdateViewModel = hiltViewModel()
 ) {
     Scaffold(
-        // TODO: Floating on top of form.
         floatingActionButton = {
             if (!viewModel.state.value.isLoading)
                 FloatingActionButton(
                     onClick = {
-                        viewModel.createDocument {
+                        viewModel.updateDocument {
                             navController.navigate(Screen.HomeScreen.route)
                         }
                     }) {
@@ -73,12 +58,13 @@ fun DocumentCreateScreen(
                 .fillMaxWidth()
                 .padding(15.dp)
         ) {
+            if (!viewModel.state.value.isLoading)
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 IconButton(
                     onClick = {
-                        navController.navigate(Screen.HomeScreen.route)
+                        navController.navigate(Screen.DocumentScreen.route +"/${viewModel.state.value.document!!.id}")
                     }
                 ) {
                     Icon(
@@ -93,9 +79,9 @@ fun DocumentCreateScreen(
                         .padding(bottom = 30.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(text = "Nuevo documento", style = MaterialTheme.typography.h2)
+                    Text(text = "Editar Documento", style = MaterialTheme.typography.h2)
                     Text(
-                        text = "Rellena los campos para poder crear un documento.",
+                        text = "Rellena los campos y edita tu documento.",
                         style = MaterialTheme.typography.body1,
                         color = White
                     )
@@ -133,18 +119,21 @@ fun DocumentCreateScreen(
                     text = "Fecha de expiración"
                 )
 
-
                 if (!viewModel.state.value.error.isNullOrBlank())
                     Text(text = viewModel.state.value.error ?: "", color = Pink)
 
-
+            }else Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CircularProgressIndicator()
             }
         }
     }
 }
 
 @Composable
-fun dropDownMenu(viewModel: DocumentCreateViewModel) {
+fun dropDownMenu(viewModel: DocumentUpdateViewModel) {
 
     var expanded by remember { mutableStateOf(false) }
     val suggestions = DOCUMENT_TYPES
@@ -196,8 +185,9 @@ fun dropDownMenu(viewModel: DocumentCreateViewModel) {
 }
 
 @Composable
-fun showDateOfIssuePicker(context: Context, viewModel: DocumentCreateViewModel, text: String) {
+fun showDateOfIssuePicker(context: Context, viewModel: DocumentUpdateViewModel, text: String) {
 
+    // TODO Diego: Arreglar los colores de esto.
     val year: Int
     val month: Int
     val day: Int
@@ -228,8 +218,8 @@ fun showDateOfIssuePicker(context: Context, viewModel: DocumentCreateViewModel, 
 }
 
 @Composable
-fun showExpirationDatePicker(context: Context, viewModel: DocumentCreateViewModel, text: String) {
-
+fun showExpirationDatePicker(context: Context, viewModel: DocumentUpdateViewModel, text: String) {
+    // TODO Diego: Arreglar los colores de esto.
     val year: Int
     val month: Int
     val day: Int

@@ -1,7 +1,7 @@
 package com.sonder.peeker.presentation
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
@@ -9,10 +9,8 @@ import androidx.compose.material.Surface
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.sonder.peeker.data.remote.PeekerApi
-import com.sonder.peeker.di.SessionManager
-import com.sonder.peeker.presentation.document_create.DocumentCreateScreen
 import com.sonder.peeker.presentation.document_list.document_screen.DocumentScreen
+import com.sonder.peeker.presentation.document_update.DocumentUpdateScreen
 import com.sonder.peeker.presentation.ui.screens.LoginScreen
 import com.sonder.peeker.presentation.ui.screens.RegistrationScreen
 import com.sonder.peeker.presentation.ui.theme.HomeScreen
@@ -48,15 +46,15 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(navController)
                         }
                         composable(
-                            route = Screen.NewDocumentScreen.route
-                        ) { DocumentCreateScreen(navController)
-
-                        }
-                        composable(
                             route = Screen.DocumentScreen.route + "/{documentId}"
                         ) {
                             DocumentScreen(navController)
 
+                        }
+                        composable(
+                            route = Screen.UpdateDocumentScreen.route+ "/{documentId}"
+                        ) {
+                            DocumentUpdateScreen(navController)
                         }
                     }
                 }

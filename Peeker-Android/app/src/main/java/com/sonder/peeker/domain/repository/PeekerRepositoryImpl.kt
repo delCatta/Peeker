@@ -4,6 +4,8 @@ import android.database.Observable
 import com.sonder.peeker.data.remote.PeekerApi
 import com.sonder.peeker.data.remote.dto.*
 import retrofit2.Response
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class PeekerRepositoryImpl @Inject constructor(
@@ -26,6 +28,18 @@ class PeekerRepositoryImpl @Inject constructor(
 
     override suspend fun createDocument(document: DocumentCreateDto): DocumentDto {
         return api.createDocument(document)
+    }
+    override suspend fun createEmptyDocument(): DocumentDto {
+        // TODO no critico : Hacer los maps en el Document.kt para que no quede la cagada.
+        val current = LocalDateTime.now()
+        val twoMonths = LocalDateTime.now().plusDays(60)
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val today = current.format(formatter)
+        val inTwoMonths = twoMonths.format(formatter)
+        return api.createEmptyDocument(mapOf(
+            "emission_date" to today,
+            "expiration_date" to inTwoMonths
+        ))
     }
 
     override suspend fun createUser(

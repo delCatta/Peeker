@@ -6,5 +6,5 @@ sealed class Screen(val route: String) {
     object RegistrationScreen: Screen("registration_screen")
     object HomeScreen: Screen("home_screen")
     object DocumentScreen: Screen("document_screen")
-    object NewDocumentScreen: Screen("new_document_screen")
+    object UpdateDocumentScreen: Screen("update_document_screen")
 }

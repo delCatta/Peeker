@@ -35,7 +35,7 @@ fun DocumentScreen(
             if (!state.isLoading) {
                 FloatingActionButton(
                     onClick = {
-                        navController.navigate(Screen.NewDocumentScreen.route)
+                         navController.navigate(Screen.UpdateDocumentScreen.route + "/${state.document?.id?:""}")
                     }) {
                     Icon(
                         imageVector = Icons.Rounded.Edit,

@@ -5,7 +5,7 @@ import com.sonder.peeker.domain.model.Document
 data class DocumentDto(
     val created_at: String,
     val description: String,
-    val document_type: String,
+    val document_type: Int,
     val emission_date: String,
     val expiration_date: String,
     val id: String,
