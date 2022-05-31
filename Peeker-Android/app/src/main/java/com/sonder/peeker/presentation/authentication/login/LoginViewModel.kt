@@ -31,7 +31,9 @@ class LoginViewModel @Inject constructor(
     val emailValue =  mutableStateOf("d@c.c")
     val passwordValue = mutableStateOf("123456")
 
-    init {}
+    init {
+
+    }
 
     fun login(navController: NavController){
         Log.d("Value email",emailValue.value)
@@ -55,9 +57,12 @@ class LoginViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
-
     }
     fun clearErrors(){
         _state.value = state.value.copy(error= null, isLoading = false)
+    }
+    fun setCredentials(email:String,password:String){
+        emailValue.value = email
+        passwordValue.value = password
     }
 }

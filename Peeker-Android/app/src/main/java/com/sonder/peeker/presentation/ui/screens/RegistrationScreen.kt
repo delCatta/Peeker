@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
 import com.sonder.peeker.presentation.Screen
+import com.sonder.peeker.presentation.authentication.login.LoginViewModel
 import com.sonder.peeker.presentation.authentication.register.RegisterViewModel
 import com.sonder.peeker.presentation.ui.components.RoundedButton
 import com.sonder.peeker.presentation.ui.components.TransparentTextField
@@ -37,7 +38,8 @@ import com.sonder.peeker.presentation.ui.theme.White
 @Composable
 fun RegistrationScreen(
     navController: NavController,
-    viewModel: RegisterViewModel = hiltViewModel()
+    viewModel: RegisterViewModel = hiltViewModel(),
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
 
     var passwordVisibility by remember { mutableStateOf(false) }
@@ -149,7 +151,9 @@ fun RegistrationScreen(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             focusManager.clearFocus()
-                            viewModel.register()
+                            viewModel.register(onSuccess = {
+                                onRegistrationSuccess(viewModel, loginViewModel, navController)
+                            })
                         }
                     ),
                     imeAction = ImeAction.Done,
@@ -185,7 +189,9 @@ fun RegistrationScreen(
                     text = "Unirse a Peeker",
                     displayProgressBar = false,
                     onClick = {
-                        viewModel.register()
+                        viewModel.register(onSuccess = {
+                            onRegistrationSuccess(viewModel, loginViewModel, navController)
+                        })
                     })
 
                 ClickableText(
@@ -214,4 +220,15 @@ fun RegistrationScreen(
 
         }
     }
+}
+
+fun onRegistrationSuccess(
+    viewModel: RegisterViewModel,
+    loginViewModel: LoginViewModel,
+    navController: NavController
+) {
+    val email = viewModel.emailValue.value
+    val password = viewModel.passwordValue.value
+    loginViewModel.setCredentials(email, password)
+    loginViewModel.login(navController)
 }

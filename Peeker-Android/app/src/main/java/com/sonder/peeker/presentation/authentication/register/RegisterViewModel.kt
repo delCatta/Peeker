@@ -5,8 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
 import com.sonder.peeker.core.Resource
+import com.sonder.peeker.di.SessionManager
+import com.sonder.peeker.domain.use_case.create_session.CreateSessionUseCase
 import com.sonder.peeker.domain.use_case.create_user.CreateUserUseCase
 import com.sonder.peeker.presentation.document_list.DocumentListState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
+    private val sessionManager: SessionManager,
     private val createUserUseCase: CreateUserUseCase
 ): ViewModel(){
 
@@ -30,7 +34,7 @@ class RegisterViewModel @Inject constructor(
 
     init {}
 
-    fun register(){
+    fun register(onSuccess: ()->( Unit )){
         Log.d("Value name",nameValue.value)
         Log.d("Value lastName",lastNameValue.value)
         Log.d("Value email",emailValue.value)
@@ -42,6 +46,7 @@ class RegisterViewModel @Inject constructor(
                 is Resource.Success -> {
                     Log.d("Result",result.data.toString())
                     _state.value = state.value.copy(isLoading = false)
+                    onSuccess()
                 }
                 is Resource.Error -> {
                     _state.value = state.value.copy(isLoading = false, error = result.message ?: UNEXPECTER_ERROR)
