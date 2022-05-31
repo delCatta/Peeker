@@ -72,11 +72,8 @@ fun DocumentPreview(
                 modifier = Modifier.fillMaxHeight(),
             ) {
                 items(viewModel.documents().size) {
-                    Log.d("DOCUMENT", viewModel.documents().toString())
-                    Log.d("DOCUMENT", it.toString())
-
-                    var document: Document? = getDocumentAtIndex(viewModel.documents(),it)
-                    if(document != null)    DocumentItem(
+                    var document: Document? = getDocumentAtIndex(viewModel.documents(), it)
+                    if (document != null) DocumentItem(
                         navController,
                         document
                     )
@@ -164,10 +161,11 @@ fun DocumentItem(
 
     }
 }
-fun getDocumentAtIndex(documents: List<Document>,index:Int) : Document?{
+
+fun getDocumentAtIndex(documents: List<Document>, index: Int): Document? {
     try {
         return documents[index]
-    }catch (ex: Exception){
+    } catch (ex: Exception) {
         Log.d("Document At Index", ex.toString())
         return null
     }
