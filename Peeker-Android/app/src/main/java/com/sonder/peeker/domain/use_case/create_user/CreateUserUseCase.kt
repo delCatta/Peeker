@@ -3,7 +3,6 @@ package com.sonder.peeker.domain.use_case.create_user
 import com.sonder.peeker.domain.repository.PeekerRepository
 
 import com.sonder.peeker.core.Resource
-import com.sonder.peeker.data.remote.dto.toDocument
 import com.sonder.peeker.data.remote.dto.toUser
 import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.domain.model.User

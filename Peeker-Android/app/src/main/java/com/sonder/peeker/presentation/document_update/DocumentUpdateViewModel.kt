@@ -154,4 +154,29 @@ class DocumentUpdateViewModel @Inject constructor(
         }
         return true
     }
+    fun deleteDocument(onSuccess: ()->( Unit ), onError: ()->( Unit )){
+        Log.d("Delete", "Running delete document. ${state.value.document?.id}")
+        val documentId = state.value.document?.id
+        updateDocumentUseCase.deleteDocument(documentId)
+            .onEach {
+                result ->
+            when (result) {
+                is Resource.Success -> {
+                    _state.value = state.value.copy(isLoading = false)
+                    onSuccess();
+                }
+                is Resource.Loading -> {
+                    _state.value = state.value.copy(isLoading = true)
+                }
+                is Resource.Error -> {
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        error = result.message ?: Constants.UNEXPECTER_ERROR
+                    )
+                    onError();
+                }
+            }
+        }.launchIn(viewModelScope)
+
+    }
 }

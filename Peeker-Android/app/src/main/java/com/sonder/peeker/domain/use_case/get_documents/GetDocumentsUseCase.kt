@@ -1,6 +1,5 @@
 package com.sonder.peeker.domain.use_case.get_documents
 
-import android.util.Log
 import com.sonder.peeker.core.Resource
 import com.sonder.peeker.data.remote.dto.toDocument
 import com.sonder.peeker.domain.model.Document

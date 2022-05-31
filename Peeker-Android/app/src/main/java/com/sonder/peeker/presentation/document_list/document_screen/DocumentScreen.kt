@@ -22,6 +22,7 @@ import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
 import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.document_list.components.SelectorChip
+import com.sonder.peeker.presentation.document_list.document_screen.components.DeleteDocumentButton
 import com.sonder.peeker.presentation.document_list.document_screen.components.FavoriteDocumentToggler
 import com.sonder.peeker.presentation.ui.theme.Gray
 import com.sonder.peeker.presentation.ui.theme.White
@@ -79,17 +80,10 @@ fun DocumentScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        IconButton(
-                            onClick = {
-                                //TODO
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.DeleteOutline,
-                                contentDescription = "Delete Icon",
-                                tint = MaterialTheme.colors.primary
-                            )
-                        }
+                        DeleteDocumentButton({
+                            // TODO: Toast que diga que se eliminó.
+                            navController.navigate(Screen.HomeScreen.route)
+                        })
                         FavoriteDocumentToggler(viewModel)
                     }
 

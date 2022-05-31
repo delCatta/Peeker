@@ -1,8 +1,6 @@
 package com.sonder.peeker.domain.use_case.create_session
 
-import android.util.Log
 import com.sonder.peeker.core.Resource
-import com.sonder.peeker.data.remote.dto.SessionDto
 import com.sonder.peeker.data.remote.dto.toSession
 import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.domain.model.Session

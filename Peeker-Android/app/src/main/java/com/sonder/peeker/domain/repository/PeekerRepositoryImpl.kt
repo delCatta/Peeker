@@ -31,7 +31,7 @@ class PeekerRepositoryImpl @Inject constructor(
         return api.updateDocumentById(documentId,data)
     }
 
-    override suspend fun deleteDocument(documentId: String): Nullable {
+    override suspend fun deleteDocument(documentId: String):Response<Unit>{
         return api.deleteDocumentById(documentId)
     }
 

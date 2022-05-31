@@ -29,8 +29,8 @@ interface PeekerApi {
     @PUT("/documents/{documentId}.json")
     suspend fun updateDocumentById(@Path("documentId") documentId: String, @Body data: Map<String,String>): DocumentDto
 
-    @PUT("/documents/{documentId}")
-    suspend fun deleteDocumentById(@Path("documentId") documentId: String): Nullable
+    @DELETE("/documents/{documentId}")
+    suspend fun deleteDocumentById(@Path("documentId") documentId: String): Response<Unit>
 
     @POST("/sign_up")
     suspend fun signUp(@Body registrationDto: RegistrationDto): UserDto
