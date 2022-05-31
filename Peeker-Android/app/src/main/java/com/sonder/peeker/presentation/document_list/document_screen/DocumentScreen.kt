@@ -7,6 +7,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -73,7 +75,24 @@ fun DocumentScreen(
                             tint = MaterialTheme.colors.primary
                         )
                     }
-                    FavoriteDocumentToggler(viewModel)
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        IconButton(
+                            onClick = {
+                                //TODO
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.DeleteOutline,
+                                contentDescription = "Delete Icon",
+                                tint = MaterialTheme.colors.primary
+                            )
+                        }
+                        FavoriteDocumentToggler(viewModel)
+                    }
+
 
                 }
                 if (state.isLoading || !state.error.isNullOrEmpty()) {
