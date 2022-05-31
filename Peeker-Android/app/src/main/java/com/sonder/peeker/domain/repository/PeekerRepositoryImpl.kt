@@ -6,6 +6,7 @@ import com.sonder.peeker.data.remote.dto.*
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.annotation.Nullable
 import javax.inject.Inject
 
 class PeekerRepositoryImpl @Inject constructor(
@@ -28,6 +29,10 @@ class PeekerRepositoryImpl @Inject constructor(
     }
     override suspend fun updateDocument(documentId:String,data:Map<String,String>): DocumentDto {
         return api.updateDocumentById(documentId,data)
+    }
+
+    override suspend fun deleteDocument(documentId: String): Nullable {
+        return api.deleteDocumentById(documentId)
     }
 
     override suspend fun createDocument(document: DocumentCreateDto): DocumentDto {

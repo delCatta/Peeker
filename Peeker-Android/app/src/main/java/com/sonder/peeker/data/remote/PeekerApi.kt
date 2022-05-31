@@ -5,6 +5,7 @@ import com.sonder.peeker.data.remote.dto.*
 import com.sonder.peeker.domain.model.Document
 import retrofit2.Response
 import retrofit2.http.*
+import javax.annotation.Nullable
 
 interface PeekerApi {
 //    Sorting Example: https://www.youtube.com/watch?v=8YPXv7xKh2w
@@ -24,8 +25,12 @@ interface PeekerApi {
 
     @GET("/documents/{documentId}.json")
     suspend fun getDocumentById(@Path("documentId") documentId: String): DocumentDto
+
     @PUT("/documents/{documentId}.json")
     suspend fun updateDocumentById(@Path("documentId") documentId: String, @Body data: Map<String,String>): DocumentDto
+
+    @PUT("/documents/{documentId}")
+    suspend fun deleteDocumentById(@Path("documentId") documentId: String): Nullable
 
     @POST("/sign_up")
     suspend fun signUp(@Body registrationDto: RegistrationDto): UserDto

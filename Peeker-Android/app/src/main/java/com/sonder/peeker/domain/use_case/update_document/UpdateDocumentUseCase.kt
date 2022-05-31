@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import javax.annotation.Nullable
 import javax.inject.Inject
 
 
@@ -25,6 +26,17 @@ class UpdateDocumentUseCase @Inject constructor(
             emit(Resource.Error<Document>(e.localizedMessage ?: "An unexpected error ocurred."))
         } catch (e: IOException) {
             emit(Resource.Error<Document>("Couldn't reach server. Check your internet connection."))
+
+        }
+    }
+    fun deleteDocument(documentId:String): Flow<Resource<Map<String,String>>> = flow {
+        try {
+            repository.deleteDocument(documentId)
+            emit(Resource.Success(emptyMap()))
+        } catch (e: HttpException) {
+            emit(Resource.Error<Map<String,String>>(e.localizedMessage ?: "An unexpected error ocurred."))
+        } catch (e: IOException) {
+            emit(Resource.Error<Map<String,String>>("Couldn't reach server. Check your internet connection."))
 
         }
     }
