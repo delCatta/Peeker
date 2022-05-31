@@ -18,11 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.sonder.peeker.R
 import com.sonder.peeker.core.Constants.DOCUMENT_TYPES
 import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.ui.theme.Pink
@@ -209,7 +211,7 @@ fun showDateOfIssuePicker(context: Context, viewModel: DocumentUpdateViewModel, 
         day
     )
 
-    Text(text = "$text: ${viewModel.state.value.documentDateOfIssue ?: ""}")
+    Text(text = "$text: ${viewModel.state.value.documentDateOfIssue?.split("T")?.get(0) ?: ""}")
     Button(onClick = {
         datePickerDialog.show()
     }) {
@@ -241,7 +243,7 @@ fun showExpirationDatePicker(context: Context, viewModel: DocumentUpdateViewMode
         day
     )
 
-    Text(text = "$text: ${viewModel.state.value.documentExpirationDate ?: ""}")
+    Text(text = "$text: ${viewModel.state.value.documentExpirationDate?.split("T")?.get(0) ?: ""}")
     Button(onClick = {
         datePickerDialog.show()
     }) {
