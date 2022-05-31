@@ -13,6 +13,7 @@ interface PeekerRepository {
     suspend fun getCurrentUser(): UserDto
     suspend fun getDocuments(): List<DocumentDto>
     suspend fun getDocument(documentId: String): DocumentDto
+    suspend fun getFavoriteDocuments(): List<DocumentDto>
     suspend fun updateDocument(documentId:String, data: Map<String,String>): DocumentDto
     suspend fun createDocument(document: DocumentCreateDto): DocumentDto
     suspend fun createEmptyDocument(): DocumentDto

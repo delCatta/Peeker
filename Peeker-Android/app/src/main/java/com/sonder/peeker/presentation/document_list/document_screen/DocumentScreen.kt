@@ -141,7 +141,7 @@ fun DocumentList(
                 )
                 Text(
                     // TODO Diego: Agregar el tipo del documento
-                    text = "",
+                    text = document.getDocumentType(),
                     style = MaterialTheme.typography.body1,
                     color = White
                 )
@@ -156,7 +156,7 @@ fun DocumentList(
                     color = White
                 )
                 Text(
-                    text = document?.emission_date.split("T")[0] ?: "",
+                    text = document?.emission_date?.split("T")?.get(0) ?: "",
                     style = MaterialTheme.typography.body1,
                     color = White
                 )
@@ -171,7 +171,7 @@ fun DocumentList(
                     color = White
                 )
                 Text(
-                    text = document?.expiration_date.split("T")[0] ?: "",
+                    text = document?.expiration_date?.split("T")?.get(0) ?: "",
                     style = MaterialTheme.typography.body1,
                     color = White
                 )
@@ -201,7 +201,7 @@ fun DocumentList(
                     color = White
                 )
                 Text(
-                    text = document?.updated_at.split("T")[0] ?: "",
+                    text = document?.updated_at?.split("T")?.get(0) ?: "",
                     style = MaterialTheme.typography.body1,
                     color = White
                 )

@@ -19,6 +19,10 @@ class PeekerRepositoryImpl @Inject constructor(
         return api.getDocuments()
     }
 
+    override suspend fun getFavoriteDocuments(): List<DocumentDto> {
+        return api.getFavoriteDocuments()
+    }
+
     override suspend fun getDocument(documentId: String): DocumentDto {
         return api.getDocumentById(documentId)
     }

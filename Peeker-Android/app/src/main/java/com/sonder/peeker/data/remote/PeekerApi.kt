@@ -13,6 +13,9 @@ interface PeekerApi {
     @GET("/documents.json")
     suspend fun getDocuments(): List<DocumentDto>
 
+    @GET("/documents/favorites.json")
+    suspend fun getFavoriteDocuments(): List<DocumentDto>
+
     @POST("/documents.json")
     suspend fun createDocument(@Body document: DocumentCreateDto): DocumentDto
 

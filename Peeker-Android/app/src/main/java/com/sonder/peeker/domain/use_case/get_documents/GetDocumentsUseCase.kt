@@ -26,4 +26,16 @@ class GetDocumentsUseCase @Inject constructor(
 
         }
     }
+    fun fromFavorites(): Flow<Resource<List<Document>>> = flow {
+        try {
+            emit(Resource.Loading<List<Document>>())
+            val documents = repository.getFavoriteDocuments()
+            emit(Resource.Success<List<Document>>(documents.map { it.toDocument() }))
+        } catch (e: HttpException) {
+            emit(Resource.Error<List<Document>>(e.localizedMessage?:"An unexpected error ocurred."))
+        } catch (e: IOException) {
+            emit(Resource.Error<List<Document>>("Couldn't reach server. Check your internet connection."))
+
+        }
+    }
 }

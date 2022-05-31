@@ -21,6 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DocumentListViewModel @Inject constructor(
+    private val sessionManager: SessionManager,
     private val getDocumentsUseCase: GetDocumentsUseCase
 ) : ViewModel() {
 
@@ -51,9 +52,24 @@ class DocumentListViewModel @Inject constructor(
 
      fun getFavoriteDocuments() {
          // TODO Diego: Implementar la el useCase con la request. (Habla con bruno para saber la URL)
-        _state.value = DocumentListState(
-            favoritesSelected = true,
-            error="No implementado aún.")
+         getDocumentsUseCase.fromFavorites().onEach { result ->
+             when (result) {
+                 is Resource.Success -> {
+                     favoriteDocuments = result.data ?: emptyList()
+                     _state.value = DocumentListState(isLoading = false, favoritesSelected = true)
+
+                 }
+                 is Resource.Error -> {
+                     _state.value = DocumentListState(
+                         allSelected = true,
+                         error = result.message ?: UNEXPECTER_ERROR
+                     )
+                 }
+                 is Resource.Loading -> {
+                     _state.value = DocumentListState(isLoading = true, favoritesSelected = true)
+                 }
+             }
+         }.launchIn(viewModelScope)
     }
     fun getExpiredDocuments() {
         // TODO Diego: Implementar la el useCase con la request. (Habla con bruno para saber la URL)
@@ -89,13 +105,13 @@ class DocumentListViewModel @Inject constructor(
             error="No implementado aún.")
     }
 
-    fun documents(): List<Document> {
+    fun documents(): List<Document>? {
         return when {
             _state.value.favoritesSelected -> favoriteDocuments
             _state.value.expiredSelected -> expiredDocuments
             _state.value.allSelected -> allDocuments
             _state.value.selectedTagIndex != null -> tagDocuments
-            else -> emptyList()
+            else -> null
         }
     }
 
@@ -104,7 +120,7 @@ class DocumentListViewModel @Inject constructor(
         return when {
             _state.value.favoritesSelected -> "Favorites"
             _state.value.expiredSelected -> "Expired"
-            _state.value.allSelected -> "All Documents (${documents().size})"
+            _state.value.allSelected -> "All Documents (${documents()?.size})"
             _state.value.selectedTagIndex != null && state.value.selectedTagIndex != null -> tags[state.value.selectedTagIndex!!]
             else -> "Documents"
         }

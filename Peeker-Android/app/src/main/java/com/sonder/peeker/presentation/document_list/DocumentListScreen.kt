@@ -49,19 +49,28 @@ fun DocumentPreview(
             style = MaterialTheme.typography.h1,
             modifier = Modifier.padding(15.dp)
         )
-        if (viewModel.state.value.error.isNullOrEmpty())
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(2),
-                contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp, bottom = 100.dp),
-                modifier = Modifier.fillMaxHeight(),
-            ) {
-                items(viewModel.documents().size) {
-                    DocumentItem(
-                        navController,
-                        viewModel.documents()[it]
-                    )
+        if (viewModel.state.value.error.isNullOrEmpty()) {
+            if (viewModel.documents().isNullOrEmpty())
+                Text(
+                    "No hay documentos",
+                    style = MaterialTheme.typography.body1,
+                    color = Pink,
+                    modifier = Modifier.padding(15.dp)
+                )
+            else
+                LazyVerticalGrid(
+                    cells = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp, bottom = 100.dp),
+                    modifier = Modifier.fillMaxHeight(),
+                ) {
+                    items(viewModel.documents()!!.size) {
+                        DocumentItem(
+                            navController,
+                            viewModel.documents()!![it]
+                        )
+                    }
                 }
-            } else Text(
+        } else Text(
             viewModel.state.value.error,
             style = MaterialTheme.typography.body1,
             color = Pink,
@@ -97,28 +106,33 @@ fun DocumentItem(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = document.name?:"Sin título",
+                        text = document.name ?: "Sin título",
                         style = MaterialTheme.typography.h6,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = document.description?:"",
+                        text = document.description ?: "",
                         style = MaterialTheme.typography.body2,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         run {
-                            val day = document.expiration_date.split("T")[0].split("-")[2]
-                            "Expira el ${if (day.length == 2 && day[0] != '0') day else day[1]}"
+                            val day =
+                                document.expiration_date?.split("T")?.get(0)?.split("-")?.get(2)
+                            if (day?.isNotEmpty() == true) "Expira el ${if (day.length == 2 && day[0] != '0') day else day[1]}" else ""
                         } +
                                 run {
-                                    val month = document.expiration_date.split("T")[0].split("-")[1]
-                                    " del ${if (month.length == 2 && month[0] != '0') month else month[1]}"
+                                    val month =
+                                        document.expiration_date?.split("T")?.get(0)?.split("-")
+                                            ?.get(1)
+                                    if (month?.isNotEmpty() == true) " del ${if (month.length == 2 && month[0] != '0') month else month[1]}" else ""
                                 }
                                 +
-                                ", ${document.expiration_date.split("T")[0].split("-")[0]}",
+                                ", ${
+                                    document.expiration_date?.split("T")?.get(0)?.split("-")?.get(0)
+                                }",
                         style = MaterialTheme.typography.body2,
                     )
                 }
