@@ -1,9 +1,8 @@
-FROM quay.io/evl.ms/fullstaq-ruby:3.1.2-jemalloc-bullseye-slim
+FROM ruby:3.1.2
 
 WORKDIR /usr/src/app
 
-RUN #!/bin/bash \
-    apt-get update -q \
+RUN apt-get update -q \
     && apt-get install --assume-yes -q --no-install-recommends build-essential libpq-dev libvips \
     && apt-get autoremove --assume-yes \
     && rm -Rf /var/cache/apt \
