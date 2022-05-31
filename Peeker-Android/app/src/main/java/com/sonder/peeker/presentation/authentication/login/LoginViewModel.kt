@@ -28,8 +28,8 @@ class LoginViewModel @Inject constructor(
 
 
 
-    val emailValue =  mutableStateOf("d@c.c")
-    val passwordValue = mutableStateOf("123456")
+    val emailValue =  mutableStateOf("")
+    val passwordValue = mutableStateOf("")
 
     init {
 

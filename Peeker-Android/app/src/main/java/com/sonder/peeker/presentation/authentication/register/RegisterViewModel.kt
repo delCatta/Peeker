@@ -26,11 +26,11 @@ class RegisterViewModel @Inject constructor(
     private val _state = mutableStateOf<RegisterState>(RegisterState())
     val state: State<RegisterState> = _state
 
-    val nameValue =  mutableStateOf("Diego")
-    val lastNameValue =  mutableStateOf("Cattarinich")
-    val emailValue =  mutableStateOf("diego@gmail.com")
-    val passwordValue = mutableStateOf("123456")
-    val confirmPasswordValue = mutableStateOf("123456")
+    val nameValue =  mutableStateOf("")
+    val lastNameValue =  mutableStateOf("")
+    val emailValue =  mutableStateOf("")
+    val passwordValue = mutableStateOf("")
+    val confirmPasswordValue = mutableStateOf("")
 
     init {}
 
