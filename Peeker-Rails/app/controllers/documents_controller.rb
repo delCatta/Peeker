@@ -11,6 +11,10 @@ class DocumentsController < ApplicationController
     @documents = Current.user.documents.favorites
   end
 
+  def about_to_expire
+    @documents = Current.user.documents.about_to_expire
+  end
+
   # GET /documents/1
   # GET /documents/1.json
   def show
