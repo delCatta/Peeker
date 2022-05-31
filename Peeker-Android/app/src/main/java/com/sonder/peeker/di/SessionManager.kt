@@ -2,9 +2,12 @@ package com.sonder.peeker.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import com.sonder.peeker.R
+import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.domain.model.Session
 import com.sonder.peeker.domain.model.User
 import com.sonder.peeker.presentation.authentication.AuthState
@@ -14,6 +17,12 @@ class SessionManager (context: Context) {
 
     private val _state = mutableStateOf<User?>(null )
     val state: State<User?> = _state
+
+    var favoriteDocuments: List<Document> = listOf<Document>()
+    var expiredDocuments: List<Document> = listOf<Document>()
+    var allDocuments: List<Document> = listOf<Document>()
+    var tagDocuments: List<Document> = listOf<Document>()
+    var tags: List<String> = emptyList()
 
     fun setUser(user: User){
         _state.value = user

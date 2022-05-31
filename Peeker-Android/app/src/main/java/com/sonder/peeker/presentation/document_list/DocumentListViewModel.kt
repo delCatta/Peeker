@@ -31,23 +31,12 @@ class DocumentListViewModel @Inject constructor(
     private val _tagState = mutableStateOf<DocumentTagState>(DocumentTagState())
     val tagState: State<DocumentTagState> = _tagState
 
-    var favoriteDocuments: List<Document> = emptyList()
-    var expiredDocuments: List<Document> = emptyList()
-    var allDocuments: List<Document> = emptyList()
-    var tagDocuments: List<Document> = emptyList()
-    var tags: List<String> = emptyList()
-
     init {
         // TODO: Get User Tags from DB
-//        Log.d("Session",sessionManager.fetchAuthToken().toString())
+        // Log.d("Session",sessionManager.fetchAuthToken().toString())
+        sessionManager.tags = listOf("Tag 1", "Tag 2", "Tag 3", "Tag 4", "Tag 5")
         getFavoriteDocuments()
-        Handler(Looper.getMainLooper()).postDelayed(
-            {
-                tags = listOf("Tag 1", "Tag 2", "Tag 3", "Tag 4", "Tag 5")
-                _tagState.value = DocumentTagState(isLoadingTags = false)
-            },
-            5000 // value in milliseconds
-        )
+        _tagState.value = DocumentTagState(isLoadingTags = false)
     }
 
      fun getFavoriteDocuments() {
@@ -55,7 +44,7 @@ class DocumentListViewModel @Inject constructor(
          getDocumentsUseCase.fromFavorites().onEach { result ->
              when (result) {
                  is Resource.Success -> {
-                     favoriteDocuments = result.data ?: emptyList()
+                     sessionManager.favoriteDocuments = result.data ?: emptyList()
                      _state.value = DocumentListState(isLoading = false, favoritesSelected = true)
 
                  }
@@ -81,7 +70,7 @@ class DocumentListViewModel @Inject constructor(
         getDocumentsUseCase().onEach { result ->
             when (result) {
                 is Resource.Success -> {
-                    allDocuments = result.data ?: emptyList()
+                    sessionManager.allDocuments = result.data ?: emptyList()
                     _state.value = DocumentListState(isLoading = false, allSelected = true)
 
                 }
@@ -105,13 +94,14 @@ class DocumentListViewModel @Inject constructor(
             error="No implementado aún.")
     }
 
-    fun documents(): List<Document>? {
+    fun documents(): List<Document> {
+        if(_state.value.isLoading) return emptyList<Document>()
         return when {
-            _state.value.favoritesSelected -> favoriteDocuments
-            _state.value.expiredSelected -> expiredDocuments
-            _state.value.allSelected -> allDocuments
-            _state.value.selectedTagIndex != null -> tagDocuments
-            else -> null
+            _state.value.favoritesSelected -> sessionManager.favoriteDocuments
+            _state.value.expiredSelected -> sessionManager.expiredDocuments
+            _state.value.allSelected -> sessionManager.allDocuments
+            _state.value.selectedTagIndex != null -> sessionManager.tagDocuments
+            else -> emptyList<Document>()
         }
     }
 
@@ -121,9 +111,12 @@ class DocumentListViewModel @Inject constructor(
             _state.value.favoritesSelected -> "Favorites"
             _state.value.expiredSelected -> "Expired"
             _state.value.allSelected -> "All Documents (${documents()?.size})"
-            _state.value.selectedTagIndex != null && state.value.selectedTagIndex != null -> tags[state.value.selectedTagIndex!!]
+            _state.value.selectedTagIndex != null && state.value.selectedTagIndex != null -> sessionManager.tags[state.value.selectedTagIndex!!]
             else -> "Documents"
         }
+    }
+    fun getTags():List<String>{
+        return sessionManager.tags
     }
 
 }

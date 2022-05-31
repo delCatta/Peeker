@@ -1,5 +1,6 @@
 package com.sonder.peeker.presentation.document_list
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -49,33 +50,39 @@ fun DocumentPreview(
             style = MaterialTheme.typography.h1,
             modifier = Modifier.padding(15.dp)
         )
-        if (viewModel.state.value.error.isNullOrEmpty()) {
-            if (viewModel.documents().isNullOrEmpty())
-                Text(
-                    "No hay documentos",
-                    style = MaterialTheme.typography.body1,
-                    color = Pink,
-                    modifier = Modifier.padding(15.dp)
-                )
-            else
-                LazyVerticalGrid(
-                    cells = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp, bottom = 100.dp),
-                    modifier = Modifier.fillMaxHeight(),
-                ) {
-                    items(viewModel.documents()!!.size) {
-                        DocumentItem(
-                            navController,
-                            viewModel.documents()!![it]
-                        )
-                    }
+        if (!viewModel.state.value.error.isNullOrEmpty())
+            Text(
+                viewModel.state.value.error,
+                style = MaterialTheme.typography.body1,
+                color = Pink,
+                modifier = Modifier.padding(15.dp)
+            )
+        else if (viewModel.documents().isNullOrEmpty()) {
+            Text(
+                "No se encontraron archivos",
+                style = MaterialTheme.typography.body1,
+                color = Pink,
+                modifier = Modifier.padding(horizontal = 15.dp, vertical = 64.dp)
+            )
+
+        } else {
+            LazyVerticalGrid(
+                cells = GridCells.Fixed(2),
+                contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp, bottom = 100.dp),
+                modifier = Modifier.fillMaxHeight(),
+            ) {
+                items(viewModel.documents().size) {
+                    Log.d("DOCUMENT", viewModel.documents().toString())
+                    Log.d("DOCUMENT", it.toString())
+
+                    var document: Document? = getDocumentAtIndex(viewModel.documents(),it)
+                    if(document != null)    DocumentItem(
+                        navController,
+                        document
+                    )
                 }
-        } else Text(
-            viewModel.state.value.error,
-            style = MaterialTheme.typography.body1,
-            color = Pink,
-            modifier = Modifier.padding(15.dp)
-        )
+            }
+        }
     }
 }
 
@@ -155,5 +162,13 @@ fun DocumentItem(
 
         }
 
+    }
+}
+fun getDocumentAtIndex(documents: List<Document>,index:Int) : Document?{
+    try {
+        return documents[index]
+    }catch (ex: Exception){
+        Log.d("Document At Index", ex.toString())
+        return null
     }
 }

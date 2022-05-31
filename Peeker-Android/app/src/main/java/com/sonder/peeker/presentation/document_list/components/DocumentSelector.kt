@@ -65,10 +65,10 @@ fun DocumentSelector(
             LazyRow(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                items(viewModel.tags.size) {
+                items(viewModel.getTags().size) {
                     SelectorChip(
                         isSelected = state.selectedTagIndex == it,
-                        text = viewModel.tags[it],
+                        text = viewModel.getTags()[it],
                         onPressed = { viewModel.getDocumentsByTag(it) }) {}
                 }
             } else Box(modifier = Modifier.padding(15.dp).width(30.dp).height(30.dp)){CircularProgressIndicator()}
