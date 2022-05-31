@@ -2,6 +2,7 @@ package com.sonder.peeker.presentation.document_list.document_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -18,6 +19,7 @@ import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
 import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.presentation.Screen
+import com.sonder.peeker.presentation.document_list.components.SelectorChip
 import com.sonder.peeker.presentation.document_list.document_screen.components.FavoriteDocumentToggler
 import com.sonder.peeker.presentation.ui.theme.Gray
 import com.sonder.peeker.presentation.ui.theme.White
@@ -35,7 +37,7 @@ fun DocumentScreen(
             if (!state.isLoading) {
                 FloatingActionButton(
                     onClick = {
-                         navController.navigate(Screen.UpdateDocumentScreen.route + "/${state.document?.id?:""}")
+                        navController.navigate(Screen.UpdateDocumentScreen.route + "/${state.document?.id ?: ""}")
                     }) {
                     Icon(
                         imageVector = Icons.Rounded.Edit,
@@ -112,7 +114,6 @@ fun DocumentList(
 ) {
     Box(
         modifier = Modifier
-            .aspectRatio(0.8f)
             .clip(RoundedCornerShape(15.dp))
             .background(Gray)
             .fillMaxHeight()
@@ -127,7 +128,7 @@ fun DocumentList(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Text(
-                text = document?.name ?: "Documento no encontrado",
+                text = document?.name ?: "Documento sin nombre",
                 style = MaterialTheme.typography.h2
             )
             Row(
@@ -215,7 +216,24 @@ fun DocumentList(
                 style = MaterialTheme.typography.body1,
                 color = White
             )
-
+            Text(
+                text = "Tags",
+                style = MaterialTheme.typography.h3
+            )
+            if (!viewModel.getDocumentTags().isNullOrEmpty())
+                LazyRow(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    items(viewModel.getDocumentTags().size) {
+                        SelectorChip(
+                            isSelected = true, //viewModel.isDocumentTagSelected(it),
+                            text = viewModel.getDocumentTags()[it].name,
+                            onPressed = {
+                                //TODO
+                            }
+                        ) {}
+                    }
+                } else Text(text = "Este documento no tiene tags.")
         }
     }
 }

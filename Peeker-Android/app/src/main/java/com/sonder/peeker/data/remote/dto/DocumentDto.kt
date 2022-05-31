@@ -13,7 +13,8 @@ data class DocumentDto(
     val updated_at: String,
     val url: String,
     val user_id: String,
-    val favorite: Boolean
+    val favorite: Boolean,
+    val tags: List<TagsDto>
 )
 
 fun DocumentDto.toDocument(): Document {
@@ -27,6 +28,7 @@ fun DocumentDto.toDocument(): Document {
         updated_at = updated_at,
         url = url,
         id = id,
-        favorite = favorite
+        favorite = favorite,
+        tags = tags
     )
 }
