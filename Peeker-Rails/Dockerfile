@@ -22,7 +22,4 @@ COPY . /usr/src/app
 
 EXPOSE 3000
 
-HEALTHCHECK --interval=10s --timeout=2s --start-period=15s \
-    CMD ["curl", "-i", "localhost:3000/healthcheck"]
-
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]
