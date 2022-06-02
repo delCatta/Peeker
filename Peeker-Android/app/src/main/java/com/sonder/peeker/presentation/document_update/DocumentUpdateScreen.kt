@@ -189,7 +189,6 @@ fun dropDownMenu(viewModel: DocumentUpdateViewModel) {
 @Composable
 fun showDateOfIssuePicker(context: Context, viewModel: DocumentUpdateViewModel, text: String) {
 
-    // TODO Diego: Arreglar los colores de esto.
     val year: Int
     val month: Int
     val day: Int
@@ -221,7 +220,6 @@ fun showDateOfIssuePicker(context: Context, viewModel: DocumentUpdateViewModel, 
 
 @Composable
 fun showExpirationDatePicker(context: Context, viewModel: DocumentUpdateViewModel, text: String) {
-    // TODO Diego: Arreglar los colores de esto.
     val year: Int
     val month: Int
     val day: Int

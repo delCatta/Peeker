@@ -50,6 +50,7 @@ fun DocumentPreview(
             style = MaterialTheme.typography.h1,
             modifier = Modifier.padding(15.dp)
         )
+
         if (!viewModel.state.value.error.isNullOrEmpty())
             Text(
                 viewModel.state.value.error,
@@ -90,6 +91,7 @@ fun DocumentItem(
 ) {
     BoxWithConstraints(
         modifier = Modifier
+            .padding(horizontal = 5.dp, vertical = 5.dp)
             .aspectRatio(1f)
             .clip(RoundedCornerShape(15.dp))
             .background(Gray)
