@@ -3,8 +3,11 @@ package com.sonder.peeker.presentation.document_list.components
 import android.graphics.drawable.Icon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Colors
@@ -35,43 +38,53 @@ fun DocumentSelector(
     val state = viewModel.state.value
     val tagState = viewModel.tagState.value
     // TODO: Have first items to scroll with Tags.
-    Row(
+
+    LazyRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        SelectorChip(
-            isSelected = state.favoritesSelected,
-            onPressed = { viewModel.getFavoriteDocuments() }) {
-            Icon(
-                if (state.favoritesSelected) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
-                contentDescription = "Favorites",
-                tint = if (state.favoritesSelected) Gray else White
-            )
+        item {
+            SelectorChip(
+                isSelected = state.favoritesSelected,
+                onPressed = { viewModel.getFavoriteDocuments() }) {
+                Icon(
+                    if (state.favoritesSelected) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                    contentDescription = "Favorites",
+                    tint = if (state.favoritesSelected) Gray else White
+                )
+            }
         }
-        SelectorChip(
-            isSelected = state.expiredSelected,
-            onPressed = { viewModel.getExpiredDocuments() }) {
-            Icon(
-                if (state.expiredSelected) Icons.Rounded.Error else Icons.Outlined.ErrorOutline,
-                contentDescription = "Expired",
-                tint = if (state.expiredSelected) Gray else White
-            )
+        item {
+            SelectorChip(
+                isSelected = state.expiredSelected,
+                onPressed = { viewModel.getExpiredDocuments() }) {
+                Icon(
+                    if (state.expiredSelected) Icons.Rounded.Error else Icons.Outlined.ErrorOutline,
+                    contentDescription = "Expired",
+                    tint = if (state.expiredSelected) Gray else White
+                )
+            }
         }
-        SelectorChip(
-            isSelected = state.allSelected,
-            text = "Documents",
-            onPressed = { viewModel.getAllDocuments() }) {}
+        item {
+            SelectorChip(
+                isSelected = state.allSelected,
+                text = "Documents",
+                onPressed = { viewModel.getAllDocuments() }) {}
+        }
 
         if (!tagState.isLoadingTags)
-            LazyRow(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                items(viewModel.getTags().size) {
-                    SelectorChip(
-                        isSelected = state.selectedTagIndex == it,
-                        text = viewModel.getTags()[it],
-                        onPressed = { viewModel.getDocumentsByTag(it) }) {}
-                }
-            } else Box(modifier = Modifier.padding(15.dp).width(30.dp).height(30.dp)){CircularProgressIndicator()}
+            items(viewModel.getTags().size) {
+                SelectorChip(
+                    isSelected = state.selectedTagIndex == it,
+                    text = viewModel.getTags()[it],
+                    onPressed = { viewModel.getDocumentsByTag(it) }) {}
+            } else item {
+            Box(
+                modifier = Modifier
+                    .padding(15.dp)
+                    .width(30.dp)
+                    .height(30.dp)
+            ) { CircularProgressIndicator() }
+        }
     }
 }
 
