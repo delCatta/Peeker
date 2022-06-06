@@ -9,6 +9,7 @@ data class Document(
     val document_type: Int?,
     val emission_date: String?,
     val expiration_date: String?,
+    val expired: Boolean,
     val name: String?,
     val updated_at: String?,
     val url: String?,

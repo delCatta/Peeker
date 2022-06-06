@@ -14,6 +14,9 @@ interface PeekerApi {
     @GET("/documents.json")
     suspend fun getDocuments(): List<DocumentDto>
 
+    @GET("/documents/about_to_expire.json")
+    suspend fun getExpiredDocuments(): List<DocumentDto>
+
     @GET("/documents/favorites.json")
     suspend fun getFavoriteDocuments(): List<DocumentDto>
 

@@ -203,7 +203,7 @@ fun showDateOfIssuePicker(context: Context, viewModel: DocumentUpdateViewModel, 
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            viewModel.setDocumentDateOfIssue("$dayOfMonth-$month-$year")
+            viewModel.setDocumentDateOfIssue("$dayOfMonth-${month + 1}-$year")
         },
         year,
         month,
@@ -234,7 +234,7 @@ fun showExpirationDatePicker(context: Context, viewModel: DocumentUpdateViewMode
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            viewModel.setDocumentExpirationDate("$dayOfMonth-$month-$year")
+            viewModel.setDocumentExpirationDate("$dayOfMonth-${month + 1}-$year")
         },
         year,
         month,

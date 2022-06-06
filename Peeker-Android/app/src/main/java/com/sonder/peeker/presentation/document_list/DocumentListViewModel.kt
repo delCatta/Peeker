@@ -40,7 +40,6 @@ class DocumentListViewModel @Inject constructor(
     }
 
      fun getFavoriteDocuments() {
-         // TODO Diego: Implementar la el useCase con la request. (Habla con bruno para saber la URL)
          getDocumentsUseCase.fromFavorites().onEach { result ->
              when (result) {
                  is Resource.Success -> {
@@ -61,10 +60,24 @@ class DocumentListViewModel @Inject constructor(
          }.launchIn(viewModelScope)
     }
     fun getExpiredDocuments() {
-        // TODO Diego: Implementar la el useCase con la request. (Habla con bruno para saber la URL)
-        _state.value = DocumentListState(
-            expiredSelected = true,
-            error="No implementado aún.")
+        getDocumentsUseCase.fromExpired().onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    sessionManager.expiredDocuments = result.data ?: emptyList()
+                    _state.value = DocumentListState(isLoading = false, expiredSelected = true)
+
+                }
+                is Resource.Error -> {
+                    _state.value = DocumentListState(
+                        allSelected = true,
+                        error = result.message ?: UNEXPECTER_ERROR
+                    )
+                }
+                is Resource.Loading -> {
+                    _state.value = DocumentListState(isLoading = true, expiredSelected = true)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
     fun getAllDocuments() {
         getDocumentsUseCase().onEach { result ->
