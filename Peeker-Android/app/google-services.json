@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "316679568738",
+    "project_id": "peeker-55f06",
+    "storage_bucket": "peeker-55f06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316679568738:android:51f149ad237452e760403b",
+        "android_client_info": {
+          "package_name": "com.sonder.peeker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316679568738-ahou6agongsp27q9huda4cvgg1gmlqsr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzXDJ7pNsFAyty9HvwYsQtxsBEKpa3WoA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316679568738-ahou6agongsp27q9huda4cvgg1gmlqsr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

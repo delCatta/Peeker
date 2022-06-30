@@ -2,15 +2,13 @@ package com.sonder.peeker.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import com.onesignal.OneSignal
 import com.sonder.peeker.R
 import com.sonder.peeker.domain.model.Document
-import com.sonder.peeker.domain.model.Session
 import com.sonder.peeker.domain.model.User
-import com.sonder.peeker.presentation.authentication.AuthState
+
 
 class SessionManager (context: Context) {
     private var prefs: SharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
@@ -26,6 +24,8 @@ class SessionManager (context: Context) {
 
     fun setUser(user: User){
         _state.value = user
+        OneSignal.setExternalUserId(user.id)
+        OneSignal.setEmail(user.email)
     }
 
     companion object {
