@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class DocumentTest < ActiveSupport::TestCase
+class NotificationTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

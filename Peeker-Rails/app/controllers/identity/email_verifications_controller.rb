@@ -1,24 +1,29 @@
-class Identity::EmailVerificationsController < ApplicationController
-  skip_before_action :authenticate, only: :edit
+# frozen_string_literal: true
 
-  before_action :set_user, only: :edit
+module Identity
+  class EmailVerificationsController < ApplicationController
+    skip_before_action :authenticate, only: :edit
 
-  def edit
-    @user.update! verified: true
-  end
+    before_action :set_user, only: :edit
 
-  def create
-    UserMailer.with(user: Current.user).email_verification.deliver_later
-  end
+    def edit
+      @user.update! verified: true
+    end
 
-  private
+    def create
+      UserMailer.with(user: Current.user).email_verification.deliver_later
+    end
+
+    private
+
     def set_user
       verified_user = User.find_by(email: params[:email])
 
       if verified_user && verified_user.verification_code.value == params[:token]
         @user = verified_user
       else
-        render json: { error: "That email verification code is invalid" }, status: :bad_request
+        render json: { error: 'That email verification code is invalid' }, status: :bad_request
       end
+    end
   end
 end

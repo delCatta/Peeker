@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RegistrationsController < ApplicationController
   skip_before_action :authenticate
 
@@ -12,7 +14,8 @@ class RegistrationsController < ApplicationController
   end
 
   private
-    def user_params
-      params.permit(:name, :last_name, :email, :password, :password_confirmation)
-    end
+
+  def user_params
+    params.permit(:name, :last_name, :email, :password, :password_confirmation)
+  end
 end

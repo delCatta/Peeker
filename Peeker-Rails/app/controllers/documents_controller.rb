@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class DocumentsController < ApplicationController
-  before_action :set_document, only: %i[ show update destroy ]
+  before_action :set_document, only: %i[show update destroy]
 
   # GET /documents
   # GET /documents.json
@@ -17,8 +19,7 @@ class DocumentsController < ApplicationController
 
   # GET /documents/1
   # GET /documents/1.json
-  def show
-  end
+  def show; end
 
   # POST /documents
   # POST /documents.json
@@ -49,13 +50,15 @@ class DocumentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_document
-      @document = Current.user.documents.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def document_params
-      params.require(:document).permit(:name, :description, :document_type, :favorite, :expiration_date, :emission_date, :file, :tag_list, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_document
+    @document = Current.user.documents.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def document_params
+    params.require(:document).permit(:name, :description, :document_type, :favorite, :expiration_date,
+                                     :emission_date, :file, :tag_list, :user_id)
+  end
 end

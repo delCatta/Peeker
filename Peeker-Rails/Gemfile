@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -52,3 +54,5 @@ gem 'documentation-zero'
 gem 'pwned'
 
 gem 'acts-as-taggable-on'
+
+gem 'onesignal'

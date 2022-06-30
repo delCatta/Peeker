@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
+  resources :notifications
   defaults format: :json do
     get 'users/me'
     resources :documents do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Session < ApplicationRecord
   belongs_to :user
 
@@ -9,7 +11,7 @@ class Session < ApplicationRecord
   end
 
   after_create_commit do
-    self.sudo.mark
+    sudo.mark
   end
 
   after_create_commit do

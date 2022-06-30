@@ -1,7 +1,9 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
-  test "should get me" do
+  test 'should get me' do
     get users_me_url
     assert_response :success
   end

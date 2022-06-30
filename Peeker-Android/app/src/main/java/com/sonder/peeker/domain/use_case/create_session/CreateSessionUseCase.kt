@@ -1,5 +1,6 @@
 package com.sonder.peeker.domain.use_case.create_session
 
+import android.util.Log
 import com.sonder.peeker.core.Resource
 import com.sonder.peeker.data.remote.dto.toSession
 import com.sonder.peeker.di.SessionManager
@@ -27,6 +28,9 @@ class CreateSessionUseCase @Inject constructor(
             emit(Resource.Error<Session>(e.localizedMessage ?: "An unexpected error ocurred."))
         } catch (e: IOException) {
             emit(Resource.Error<Session>("Couldn't reach server. Check your internet connection."))
+        } catch (e: NullPointerException){
+            Log.d("CRITICAL","CRITICAL SESSION ERROR ${e.localizedMessage}")
+            emit(Resource.Error<Session>("Invalid Session"))
         }
     }
 }
