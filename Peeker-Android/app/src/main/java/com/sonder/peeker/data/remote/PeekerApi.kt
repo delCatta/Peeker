@@ -8,9 +8,10 @@ import retrofit2.http.*
 import javax.annotation.Nullable
 
 interface PeekerApi {
-//    Sorting Example: https://www.youtube.com/watch?v=8YPXv7xKh2w
-//    Follow https://www.youtube.com/watch?v=EF33KmyprEQ
+    //    Sorting Example: https://www.youtube.com/watch?v=8YPXv7xKh2w
+    //    Follow https://www.youtube.com/watch?v=EF33KmyprEQ
 
+    //    Documents
     @GET("/documents.json")
     suspend fun getDocuments(): List<DocumentDto>
 
@@ -24,17 +25,21 @@ interface PeekerApi {
     suspend fun createDocument(@Body document: DocumentCreateDto): DocumentDto
 
     @POST("/documents.json")
-    suspend fun createEmptyDocument(@Body data: Map<String,String>): DocumentDto
+    suspend fun createEmptyDocument(@Body data: Map<String, String>): DocumentDto
 
     @GET("/documents/{documentId}.json")
     suspend fun getDocumentById(@Path("documentId") documentId: String): DocumentDto
 
     @PUT("/documents/{documentId}.json")
-    suspend fun updateDocumentById(@Path("documentId") documentId: String, @Body data: Map<String,String>): DocumentDto
+    suspend fun updateDocumentById(
+        @Path("documentId") documentId: String,
+        @Body data: Map<String, String>
+    ): DocumentDto
 
     @DELETE("/documents/{documentId}")
     suspend fun deleteDocumentById(@Path("documentId") documentId: String): Response<Unit>
 
+    //    Authentication
     @POST("/sign_up")
     suspend fun signUp(@Body registrationDto: RegistrationDto): UserDto
 
@@ -43,4 +48,12 @@ interface PeekerApi {
 
     @GET("/users/me.json")
     suspend fun getUser(): UserDto
+
+    //    Notifications
+    @GET("/notifications.json")
+    suspend fun getNotifications(): List<NotificationDto>
+
+    @GET("/notifications/{notificationId}.json")
+    suspend fun getNotificationById(@Path("notificationId") documentId: String): NotificationDto
+
 }
