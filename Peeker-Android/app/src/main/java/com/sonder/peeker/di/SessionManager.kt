@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.onesignal.OneSignal
 import com.sonder.peeker.R
 import com.sonder.peeker.domain.model.Document
+import com.sonder.peeker.domain.model.Notification
 import com.sonder.peeker.domain.model.User
 
 
@@ -21,6 +22,8 @@ class SessionManager (context: Context) {
     var allDocuments: List<Document> = listOf<Document>()
     var tagDocuments: List<Document> = listOf<Document>()
     var tags: List<String> = emptyList()
+
+    var notifications: List<Notification> = listOf<Notification>()
 
     fun setUser(user: User){
         _state.value = user

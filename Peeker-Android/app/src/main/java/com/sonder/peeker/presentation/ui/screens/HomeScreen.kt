@@ -62,7 +62,7 @@ fun HomeScreen(
     } else
         ModalBottomSheetLayout(
             sheetContent = {
-                BottomSheetContent(navController,scope, modalBottomSheetState, createViewModel)
+                BottomSheetContent(navController, scope, modalBottomSheetState, createViewModel)
             },
             sheetState = modalBottomSheetState,
             sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
@@ -93,7 +93,7 @@ fun HomeScreen(
                         GreetingSection(name = viewModel.getUserName(), logout = {
                             viewModel.logOut()
                             navController.navigate(Screen.LoginScreen.route)
-                        })
+                        }, navController)
                         DocumentListScreen(navController)
                     }
                 }
@@ -103,7 +103,11 @@ fun HomeScreen(
 }
 
 @Composable
-fun GreetingSection(name: String = "Diego Cattarinich Clavel", logout: () -> (Unit)) {
+fun GreetingSection(
+    name: String = "A Peeker",
+    logout: () -> (Unit),
+    navController: NavController
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -123,7 +127,7 @@ fun GreetingSection(name: String = "Diego Cattarinich Clavel", logout: () -> (Un
         ) {
             IconButton(
                 onClick = {
-                    // TODO: Navigate to Notifications
+                    navController.navigate(Screen.NotificationsScreen.route)
                 },
             ) {
                 Icon(
@@ -131,6 +135,7 @@ fun GreetingSection(name: String = "Diego Cattarinich Clavel", logout: () -> (Un
                     contentDescription = "Notificaciones",
                     tint = Pink
                 )
+                // TODO: New Notifications Amount Icons
             }
             IconButton(
                 onClick = {
@@ -162,11 +167,13 @@ fun BottomSheetContent(
         if (documentState.isLoading || !documentState.error.isNullOrEmpty())
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxWidth().height(64.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp)
             ) {
-                if(!documentState.error.isNullOrEmpty()){
+                if (!documentState.error.isNullOrEmpty()) {
                     Text(documentState.error, color = Pink)
-                }else{
+                } else {
                     CircularProgressIndicator()
                 }
             } else {
@@ -180,7 +187,7 @@ fun BottomSheetContent(
                 icon = Icons.Rounded.Create,
                 title = "Crear en blanco.",
                 onItemClick = {
-                    viewModel.createEmptyDocument(navController, onSuccess= {
+                    viewModel.createEmptyDocument(navController, onSuccess = {
                         scope.launch {
                             state.hide()
                         }
