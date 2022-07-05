@@ -127,12 +127,12 @@ class DocumentListViewModel @Inject constructor(
     }
 
     fun getDocumentsByTag(tagIndex: Int) {
-        // TODO Diego: Implementar la el useCase con la request. (Habla con bruno para saber la URL)
 
         getDocumentsUseCase.fromTag(sessionManager.tags[tagIndex].id).onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     sessionManager.tagDocuments = result.data ?: emptyList()
+                    Log.d("Documents",result.data.toString())
                     _state.value = DocumentListState(isLoading = false, selectedTagIndex = tagIndex)
 
                 }
