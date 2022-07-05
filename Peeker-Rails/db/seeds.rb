@@ -20,7 +20,9 @@ User.create(name: 'Bruno', last_name: 'Prieto', email: 'b@p.p', password: '12345
 User.all.each do |user|
   next if user.last_name == 'Quezada'
 
-  Document.create(
+  tag = user.tags.create(name: 'Importante')
+
+  document1 = Document.create(
     name: "Pasaporte de #{user.name} #{user.last_name}",
     description: 'Este es mi pasaporte Chileno.',
     document_type: 0,
@@ -28,7 +30,9 @@ User.all.each do |user|
     emission_date: DateTime.now - rand(1100).days,
     user_id: user.id
   )
-  Document.create(
+  document1.toggle_tag(tag)
+
+  document2 = Document.create(
     name: "Cédula de #{user.name} #{user.last_name}",
     description: 'Esta es mi cedula de identidad.',
     document_type: 1,
@@ -36,4 +40,5 @@ User.all.each do |user|
     emission_date: DateTime.now - rand(1100).days,
     user_id: user.id
   )
+  document2.toggle_tag(tag)
 end

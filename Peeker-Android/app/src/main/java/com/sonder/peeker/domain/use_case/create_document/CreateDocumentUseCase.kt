@@ -1,6 +1,8 @@
 package com.sonder.peeker.domain.use_case.create_document
 
+import android.net.Uri
 import android.util.Log
+import androidx.core.net.toFile
 import com.sonder.peeker.core.Resource
 import com.sonder.peeker.data.remote.dto.DocumentCreateDto
 import com.sonder.peeker.data.remote.dto.DocumentDto
@@ -12,6 +14,7 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.*
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import javax.inject.Inject
 
 class CreateDocumentUseCase @Inject constructor(
@@ -42,35 +45,29 @@ class CreateDocumentUseCase @Inject constructor(
 
         }
     }
+    
+    fun fromDocumentFile(fileUri: Uri): Flow<Resource<Document>> =
 
-    fun fromDocumentFile(file: File): Flow<Resource<Document>> = flow {
-        try {
-            emit(Resource.Loading<Document>())
-//            val document = repository.createDocumentWithFile(file)
-//            emit(Resource.Success(document.toDocument()))
-            repository.createDocumentWithFile(file)
-//                .enqueue(
-//                object : Callback<DocumentDto> {
-//                    override fun onFailure(call: Call<DocumentDto>, t: Throwable) {
-//                        emit(Resource.Error<Document>(t.localizedMessage))
-//                    }
-//
-//                    override fun onResponse(
-//                        call: Call<DocumentDto>,
-//                        response: Response<DocumentDto>
-//                    ) {
-//                        Log.d("Response", response.toString())
-//
-//                    }
-//
-//                }
-//            )
-        } catch (e: HttpException) {
-            emit(Resource.Error<Document>(e.localizedMessage ?: "An unexpected error ocurred."))
-        } catch (e: IOException) {
-            Log.d("Error", e.localizedMessage)
-            emit(Resource.Error<Document>("Couldn't reach server. Check your internet connection."))
+        flow {
+            try {
+                Log.d("Uri",fileUri.toString())
+                val path = fileUri.path?.replace("/document/raw:","");
+                emit(Resource.Loading<Document>())
+                val document = repository.createDocumentFromFile(File(path))
+                emit(Resource.Success(document.toDocument()))
+
+
+            } catch (e: HttpException) {
+                emit(
+                    Resource.Error<Document>(
+                        e.localizedMessage ?: "An unexpected error ocurred."
+                    )
+                )
+            } catch (e: IOException) {
+                Log.d("Error", e.localizedMessage)
+                emit(Resource.Error<Document>("Couldn't reach server. Check your internet connection."))
+
+            }
 
         }
-    }
 }

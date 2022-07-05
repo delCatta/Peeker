@@ -67,6 +67,9 @@ interface PeekerApi {
     @DELETE("/tags/{tagId}")
     suspend fun deleteTagById(@Path("tagId") tagId: String): Response<Unit>
 
+    @POST("/documents.json")
+    suspend fun createDocumentFromFile(@Body data: MultipartBody): DocumentDto
+
     //    Authentication
     @POST("/sign_up")
     suspend fun signUp(@Body registrationDto: RegistrationDto): UserDto

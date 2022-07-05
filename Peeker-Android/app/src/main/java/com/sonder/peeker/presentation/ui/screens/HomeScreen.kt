@@ -167,11 +167,21 @@ fun BottomSheetContent(
     viewModel: DocumentCreateViewModel
 ) {
     val documentState = viewModel.state.value
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Log.d("Permission","Granted")
+        } else {
+            Log.d("Permission", "Not Granted")
+        }
+    }
     val pickPictureLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { fileUri ->
         if (fileUri != null) {
-            viewModel.uploadFile(fileUri,navController)
+            Log.d("FileUri", fileUri.path.toString())
+            viewModel.uploadFile(fileUri, navController)
         }
     }
     Column {
