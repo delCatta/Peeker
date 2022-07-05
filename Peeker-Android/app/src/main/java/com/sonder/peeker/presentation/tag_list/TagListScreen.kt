@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,7 +45,7 @@ fun TagListScreen(
                         navController.navigate(Screen.TagCreateScreen.route)
                 }) {
                 Icon(
-                    imageVector = Icons.Rounded.ChevronRight,
+                    imageVector = Icons.Rounded.Add,
                     contentDescription = "Crear Tag"
                 )
             }},

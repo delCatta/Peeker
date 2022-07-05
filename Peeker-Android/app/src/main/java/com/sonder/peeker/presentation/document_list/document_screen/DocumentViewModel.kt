@@ -99,7 +99,7 @@ class DocumentViewModel @Inject constructor(
     fun getTags(): List<Tag> {
         return sessionManager.tags
     }
-    fun tagInDcoument(tagId:String): Boolean{
+    fun tagInDocument(tagId:String): Boolean{
         return _state.value.document?.tags?.map{ it.id }?.contains(tagId)?:false
     }
 

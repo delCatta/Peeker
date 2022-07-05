@@ -244,7 +244,7 @@ fun DocumentList(
                     items(viewModel.getTags().size) {
                         val tag = viewModel.getTags()[it]
                         SelectorChip(
-                            isSelected = viewModel.tagInDcoument(tag.id),
+                            isSelected = viewModel.tagInDocument(tag.id),
                             text = tag.name,
                             onPressed = {
                                 viewModel.toggleTagToDocument(
@@ -255,7 +255,7 @@ fun DocumentList(
                         ) {}
                     }
                 } else Text(text = "Este documento no tiene tags.")
-
+            if (!viewModel.getTags().isNullOrEmpty()) Text("Selecciona los tags para este documento.")
             if (!viewModel.state.value.document?.url.isNullOrEmpty())
                 Button(
                     onClick = {
