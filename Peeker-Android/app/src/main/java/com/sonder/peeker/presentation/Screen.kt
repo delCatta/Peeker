@@ -8,5 +8,7 @@ sealed class Screen(val route: String) {
     object DocumentScreen: Screen("document_screen")
     object UpdateDocumentScreen: Screen("update_document_screen")
     object NotificationsScreen: Screen("notifications_screen")
+    object TagsScreen: Screen("tags_screen")
+    object TagCreateScreen: Screen("tag_create_screen")
     object NotificationSettings: Screen("notification_settings")
 }

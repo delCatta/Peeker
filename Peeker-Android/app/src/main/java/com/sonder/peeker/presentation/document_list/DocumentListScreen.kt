@@ -6,12 +6,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,13 +23,19 @@ import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.document_list.components.DocumentSelector
 import com.sonder.peeker.presentation.ui.theme.Gray
 import com.sonder.peeker.presentation.ui.theme.Pink
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.*
+
+val today: String = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now())
 
 @Composable
 fun DocumentListScreen(
     navController: NavController,
     viewModel: DocumentListViewModel = hiltViewModel()
 ) {
-    DocumentSelector()
+    DocumentSelector(navController)
     if (!viewModel.state.value.isLoading)
         DocumentPreview(navController, viewModel)
     else Box(
@@ -125,36 +133,54 @@ fun DocumentItem(
                     )
                     Text(
                         run {
-                            val day =
-                                document.expiration_date?.split("T")?.get(0)?.split("-")?.get(2)
-                            if (day?.isNotEmpty() == true) "Expira el ${if (day.length == 2 && day[0] != '0') day else day[1]}" else ""
-                        } +
-                                run {
-                                    val month =
-                                        document.expiration_date?.split("T")?.get(0)?.split("-")
-                                            ?.get(1)
-                                    if (month?.isNotEmpty() == true) " del ${if (month.length == 2 && month[0] != '0') month else month[1]}" else ""
-                                }
-                                +
-                                ", ${
-                                    document.expiration_date?.split("T")?.get(0)?.split("-")?.get(0)
-                                }",
+                            val expiredDay =
+                                document.expiration_date?.split("T")?.get(0)
+                            val day = expiredDay?.split("-")?.get(2)
+                            val month = expiredDay?.split("-")?.get(1)
+                            val year = expiredDay?.split("-")?.get(0)
+
+
+                            if (expiredDay?.isNotEmpty() == true) if (today > expiredDay.toString())  "Expiró el ${if (day?.length == 2 && day[0] != '0') day else day?.get(1)} de ${if (month?.length == 2 && month[0] != '0') month else month?.get(1)} del ${year}"
+                            else "Expira el ${if (day?.length == 2 && day[0] != '0') day else day?.get(1)} de ${if (month?.length == 2 && month[0] != '0') month else month?.get(1)} del ${year}" else ""
+                        },
                         style = MaterialTheme.typography.body2,
                     )
                 }
                 Row(
-                    horizontalArrangement = Arrangement.End,
+                    horizontalArrangement = Arrangement.spacedBy(70.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f, false)
                 ) {
+                    Button(onClick = {
+
+                    }, modifier = Modifier.size(10.dp),
+                        colors = ButtonDefaults.buttonColors( backgroundColor = run {
+                            val expiredDay =
+                                document.expiration_date?.split("T")?.get(0)
+                            val year = expiredDay?.split("-")?.get(0)
+                            val month = expiredDay?.split("-")?.get(1)
+                            val day = expiredDay?.split("-")?.get(2)
+                            if (expiredDay?.isNotEmpty() == true) if (today > expiredDay.toString()) Color.Red else if (-ChronoUnit.DAYS.between(day?.let { month?.let { it1 -> year?.let { it2 ->
+                                    LocalDate.of(
+                                        it2.toInt(), it1.toInt(), it.toInt())
+                                } } }, LocalDate.of(
+                                    today.split("-")[0].toInt(),
+                                    today.split("-")[1].toInt(), today.split("-")[2].toInt())) <= 30) Color.Yellow else Color.Green else Color.DarkGray
+                        }), shape = CircleShape
+                    ){
+                        Text("")
+                    }
+
                     Button(
                         onClick = {
                             navController.navigate(Screen.DocumentScreen.route + "/${document.id}")
                         }) {
                         Text("Ver")
                     }
+
+
 
                 }
             }

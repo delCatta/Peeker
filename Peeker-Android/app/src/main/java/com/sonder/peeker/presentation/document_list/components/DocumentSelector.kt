@@ -15,9 +15,11 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.document_list.DocumentListViewModel
 import com.sonder.peeker.presentation.ui.theme.Gray
 import com.sonder.peeker.presentation.ui.theme.Pink
@@ -33,6 +37,7 @@ import com.sonder.peeker.presentation.ui.theme.White
 
 @Composable
 fun DocumentSelector(
+    navController: NavController,
     viewModel: DocumentListViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
@@ -84,6 +89,18 @@ fun DocumentSelector(
                     .width(30.dp)
                     .height(30.dp)
             ) { CircularProgressIndicator() }
+        }
+        item {
+            SelectorChip(
+                onPressed = { navController.navigate(Screen.TagsScreen.route) },
+                isSelected = false
+            ) {
+                Icon(
+                    Icons.Outlined.Settings,
+                    contentDescription = "Tag List",
+                    tint = White
+                )
+            }
         }
     }
 }
