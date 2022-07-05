@@ -2,13 +2,31 @@
 
 class Document < ApplicationRecord
   belongs_to :user
+  has_and_belongs_to_many :tags
   scope :favorites, -> { where(favorite: true) }
-  scope :about_to_expire, -> { where('expiration_date <= ?', 10.days.from_now) }
+  scope :about_to_expire, -> { where('expiration_date <= ?', user.days_about_to_expire.days.from_now) }
   has_one_attached :file
-  acts_as_taggable_on :tags
 
-  after_update do
-    Notification.create(heading: 'Documento Guardado', content: "#{name.gsub("\n", '').titleize} ha sido almacenado exitosamente.",
-                        data: self, user:)
+  after_update :send_expire_notification, if: :about_to_expire?
+
+  def toggle_tag(tag)
+    if tag.in? tags
+      tags.delete(tag)
+    else
+      tags.push(tag)
+    end
+  end
+
+  def about_to_expire?
+    return false if expiration_date.blank?
+
+    expiration_date <= user.days_about_to_expire.days.from_now
+  end
+
+  def send_expire_notification
+    return unless user.notifications_enabled
+
+    Notification.create(heading: 'Documento por Expiorar',
+                        content: "#{name.gsub("\n", '').titleize} está por expirar.", data: self, user:)
   end
 end

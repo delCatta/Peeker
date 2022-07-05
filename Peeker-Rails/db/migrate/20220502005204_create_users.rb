@@ -7,8 +7,9 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :last_name
       t.string :email,           null: false
       t.string :password_digest, null: false
-
       t.boolean :verified, null: false, default: false
+      t.boolean :notifications_enabled, null: false, default: true
+      t.integer :days_about_to_expire, null: false, default: 30
 
       t.timestamps
     end
