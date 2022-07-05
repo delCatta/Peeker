@@ -64,6 +64,12 @@ interface PeekerApi {
         @Body data: Map<String, String>
     ): TagDto
 
+    @PUT("/documents/{documentId}/tags/{tagId}")
+    suspend fun setTagToDocument(
+        @Path("documentId") documentId: String,
+        @Path("tagId") tagId: String
+    ): Response<Unit>
+
     @DELETE("/tags/{tagId}")
     suspend fun deleteTagById(@Path("tagId") tagId: String): Response<Unit>
 
@@ -79,6 +85,9 @@ interface PeekerApi {
 
     @GET("/users/me.json")
     suspend fun getUser(): UserDto
+
+    @PUT("/users/me.json")
+    suspend fun updateUser(@Body data: Map<String, String>): UserDto
 
     //    Notifications
     @GET("/notifications.json")

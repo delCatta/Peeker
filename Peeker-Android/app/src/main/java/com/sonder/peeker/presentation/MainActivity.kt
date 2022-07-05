@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.sonder.peeker.presentation.document_list.document_screen.DocumentScreen
 import com.sonder.peeker.presentation.document_update.DocumentUpdateScreen
 import com.sonder.peeker.presentation.notification_list.NotificationListScreen
+import com.sonder.peeker.presentation.notification_list.NotificationSettingsScreen
 import com.sonder.peeker.presentation.ui.screens.LoginScreen
 import com.sonder.peeker.presentation.ui.screens.RegistrationScreen
 import com.sonder.peeker.presentation.ui.theme.HomeScreen
@@ -61,6 +62,11 @@ class MainActivity : ComponentActivity() {
                             route = Screen.NotificationsScreen.route
                         ) {
                             NotificationListScreen(navController)
+                        }
+                        composable(
+                            route = Screen.NotificationSettings.route
+                        ) {
+                            NotificationSettingsScreen(navController)
                         }
                     }
                 }
