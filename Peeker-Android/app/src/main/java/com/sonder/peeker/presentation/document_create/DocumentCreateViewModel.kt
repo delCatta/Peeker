@@ -1,5 +1,4 @@
 package com.sonder.peeker.presentation.document_create
-
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.State
@@ -9,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants
 import com.sonder.peeker.core.Resource
+import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.domain.use_case.create_document.CreateDocumentUseCase
 import com.sonder.peeker.presentation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
