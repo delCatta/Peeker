@@ -1,5 +1,6 @@
 package com.sonder.peeker.presentation.notification_list
 
+
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.material.icons.outlined.MarkEmailRead
 import androidx.compose.material.icons.outlined.NotificationsActive
 import androidx.compose.material.icons.outlined.NotificationsNone
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,21 +31,32 @@ import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.domain.model.Notification
 import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.authentication.AuthViewModel
+import com.sonder.peeker.presentation.ui.theme.Graphite
 import com.sonder.peeker.presentation.ui.theme.Gray
 import com.sonder.peeker.presentation.ui.theme.Pink
 import com.sonder.peeker.presentation.ui.theme.White
 
 @Composable
-fun NotificationListScreen(
+fun NotificationSettingsScreen(
     navController: NavController,
-    viewModel: NotificationListViewModel = hiltViewModel()
+    viewModel: NotificationSettingViewModel = hiltViewModel()
 ) {
     Scaffold(
+        floatingActionButton = {
+            if (!viewModel.state.value.isLoading && viewModel.hasChanged())
+                FloatingActionButton(onClick = { viewModel.updateUser(navController) }) {
+                    Icon(
+                        imageVector = Icons.Rounded.Save,
+                        contentDescription = "Actualizar Ajustes"
+                    )
+                }
+
+        },
         modifier = Modifier
             .fillMaxWidth()
     ) {
         Column() {
-            NotificationTitle(navController)
+            NotificationSettingsTitle(navController)
             if (!viewModel.state.value.isLoading)
                 NotificationPreview(navController, viewModel)
             else Box(
@@ -57,9 +70,9 @@ fun NotificationListScreen(
 }
 
 @Composable
-fun NotificationTitle(
+fun NotificationSettingsTitle(
     navController: NavController,
-    viewModel: NotificationListViewModel = hiltViewModel(),
+    viewModel: NotificationSettingViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
 ) {
     Column(
@@ -75,23 +88,12 @@ fun NotificationTitle(
         ) {
             IconButton(
                 onClick = {
-                    navController.navigate(Screen.HomeScreen.route)
+                    navController.navigate(Screen.NotificationsScreen.route)
                 }
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back Icon",
-                    tint = MaterialTheme.colors.primary
-                )
-            }
-            IconButton(
-                onClick = {
-                    navController.navigate(Screen.NotificationSettings.route)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = "Settings",
                     tint = MaterialTheme.colors.primary
                 )
             }
@@ -107,7 +109,7 @@ fun NotificationTitle(
                 style = MaterialTheme.typography.body1,
                 color = Pink
             )
-            Text(text = "Notificaciones", style = MaterialTheme.typography.h2)
+            Text(text = "Ajustes de Notificación", style = MaterialTheme.typography.h2)
         }
     }
 }
@@ -116,7 +118,7 @@ fun NotificationTitle(
 @Composable
 fun NotificationPreview(
     navController: NavController,
-    viewModel: NotificationListViewModel
+    viewModel: NotificationSettingViewModel
 ) {
     Column(
         modifier = Modifier
@@ -131,83 +133,65 @@ fun NotificationPreview(
                 color = Pink,
                 modifier = Modifier.padding(15.dp)
             )
-        else if (viewModel.notifications().isNullOrEmpty()) {
-            Text(
-                "No tienes notificaciones",
-                style = MaterialTheme.typography.body1,
-                color = Pink,
-                modifier = Modifier.padding(horizontal = 15.dp, vertical = 64.dp)
-            )
-
-        } else {
+        else {
             Box(
-                modifier = Modifier.padding(horizontal = 15.dp)
+                modifier = Modifier.padding(horizontal = 15.dp, vertical = 30.dp)
             ) {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(32.dp)
                 )
                 {
-
-                    items(viewModel.notifications().size) {
-                        var notification: Notification? =
-                            getNotificationAtIndex(viewModel.notifications(), it)
-                        if (notification != null) NotificationItem(
-                            navController,
-                            notification
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        if (viewModel.getNotificationEnabled()) Text("Notificaciones Habilitadas") else Text(
+                            "Notificaciones Deshabilitadas"
                         )
+                        Switch(checked = viewModel.getNotificationEnabled(),
+                            onCheckedChange = { viewModel.toggleNotificationEnabled() })
                     }
+                    if (viewModel.isNotifying())
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+
+                            Text("Notificar ${viewModel.getDaysToExpire()} días antes")
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Button(onClick = {
+                                    viewModel.setDaysToExpire(viewModel.getDaysToExpire() - 1)
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Remove,
+                                        contentDescription = "Remove One",
+                                        tint = Graphite
+                                    )
+                                }
+                                Text(
+                                    "${viewModel.getDaysToExpire()}",
+                                    style = MaterialTheme.typography.h2,
+                                )
+
+                                Button(onClick = {
+                                    viewModel.setDaysToExpire(viewModel.getDaysToExpire() + 1)
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Add,
+                                        contentDescription = "Add One",
+                                        tint = Graphite
+                                    )
+                                }
+
+                            }
+                        }
+
                 }
             }
         }
-    }
-}
-
-@Composable
-fun NotificationItem(
-    navController: NavController,
-    notification: Notification,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(15.dp))
-            .background(Gray),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(2.dp)
-            ) {
-                Text(
-                    notification.heading,
-                    style = MaterialTheme.typography.h4,
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                    color = White,
-                )
-                if (!notification.subtitle.isNullOrEmpty()) Text(
-                    notification.subtitle,
-                    style = MaterialTheme.typography.body2,
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    color = Pink.copy(alpha = 0.8f)
-                )
-            }
-            Text(
-                notification.content,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                color = White,
-            )
-        }
-    }
-}
-
-fun getNotificationAtIndex(notifications: List<Notification>, index: Int): Notification? {
-    try {
-        return notifications[index]
-    } catch (ex: Exception) {
-        Log.d("Notification At Index", ex.toString())
-        return null
     }
 }

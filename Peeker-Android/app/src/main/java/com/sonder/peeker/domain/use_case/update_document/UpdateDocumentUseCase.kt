@@ -35,11 +35,41 @@ class UpdateDocumentUseCase @Inject constructor(
         try {
             if (documentId.isNullOrEmpty()) {
                 emit(Resource.Error<Response<Unit>>("No se ha encontrado el documento."))
-            }else{
+            } else {
                 emit(Resource.Success<Response<Unit>>(repository.deleteDocument(documentId!!)))
             }
         } catch (e: HttpException) {
-            emit(Resource.Error<Response<Unit>>(e.localizedMessage ?: "An unexpected error ocurred."))
+            emit(
+                Resource.Error<Response<Unit>>(
+                    e.localizedMessage ?: "An unexpected error ocurred."
+                )
+            )
+        } catch (e: IOException) {
+            emit(Resource.Error<Response<Unit>>("Couldn't reach server. Check your internet connection."))
+
+        }
+    }
+
+    fun setTagToDocument(documentId: String?, tagId: String): Flow<Resource<Response<Unit>>> = flow {
+        try {
+            if (documentId.isNullOrEmpty()) {
+                emit(Resource.Error<Response<Unit>>("No se ha encontrado el documento."))
+            } else {
+                emit(
+                    Resource.Success<Response<Unit>>(
+                        repository.setTagToDocument(
+                            documentId,
+                            tagId
+                        )
+                    )
+                )
+            }
+        } catch (e: HttpException) {
+            emit(
+                Resource.Error<Response<Unit>>(
+                    e.localizedMessage ?: "An unexpected error ocurred."
+                )
+            )
         } catch (e: IOException) {
             emit(Resource.Error<Response<Unit>>("Couldn't reach server. Check your internet connection."))
 

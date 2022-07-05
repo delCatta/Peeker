@@ -8,12 +8,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants
 import com.sonder.peeker.core.Constants.PARAM_DOCUMENT_ID
 import com.sonder.peeker.core.Resource
 import com.sonder.peeker.data.remote.dto.DocumentDto
 import com.sonder.peeker.data.remote.dto.TagDto
+import com.sonder.peeker.data.remote.dto.toTag
+import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.domain.model.Document
+import com.sonder.peeker.domain.model.Tag
 import com.sonder.peeker.domain.use_case.get_document.GetDocumentUseCase
 import com.sonder.peeker.domain.use_case.update_document.UpdateDocumentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +29,7 @@ import javax.inject.Inject
 class DocumentViewModel @Inject constructor(
     private val getDocumentUseCase: GetDocumentUseCase,
     private val updateDocumentUseCase: UpdateDocumentUseCase,
+    private val sessionManager: SessionManager,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -91,8 +96,43 @@ class DocumentViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getDocumentTags(): List<TagDto> {
-        return state.value.document?.tags?: emptyList()
+    fun getDocumentTags(): List<Tag> {
+        return state.value.document?.tags?.map { it.toTag() } ?: emptyList()
+    }
+
+    fun getDocumentNotUsedTags(): List<Tag> {
+        val notUsedTags = mutableListOf<Tag>()
+        var usedTags = getDocumentTags().map { it.id }
+        sessionManager.tags.forEach {
+            if (!usedTags.contains(it.id)) notUsedTags.add(it)
+        }
+        return notUsedTags
+    }
+
+    fun toggleTagToDocument(navController: NavController, tagId: String) {
+        val document = state.value.document
+        if (document != null) {
+            updateDocumentUseCase.setTagToDocument(
+                document.id,
+                tagId
+            ).onEach { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        getDocument(document.id)
+                    }
+                    is Resource.Error -> {
+                        _state.value = state.value.copy(
+                            isLoading = false,
+                            error = result.message ?: Constants.UNEXPECTER_ERROR
+                        )
+                    }
+                    is Resource.Loading -> {
+                        clearError()
+                        _state.value = state.value.copy(isLoading = true)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
     }
 }
 
