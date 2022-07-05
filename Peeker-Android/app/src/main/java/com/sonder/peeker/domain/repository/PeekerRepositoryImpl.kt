@@ -133,16 +133,4 @@ class PeekerRepositoryImpl @Inject constructor(
                 .build()
         )
     }
-
-    override suspend fun createDocumentWithFile(file: File): Call<DocumentDto> {
-        return api.createDocumentFromFile(
-            MultipartBody.Part.createFormData(
-                "pdf",
-                file.name,
-                file.asRequestBody("application/pdf".toMediaType())
-            )
-        )
-    }
-
-
 }
