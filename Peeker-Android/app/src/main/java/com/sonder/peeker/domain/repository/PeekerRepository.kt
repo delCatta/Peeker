@@ -6,12 +6,14 @@ import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.domain.model.Document
 import retrofit2.Call
 import retrofit2.Response
+import retrofit2.http.Body
 import java.io.File
 import javax.annotation.Nullable
 
-interface   PeekerRepository {
+interface PeekerRepository {
     // Authentication
     suspend fun getCurrentUser(): UserDto
+    suspend fun udpateCurrentUser(data: Map<String, String>): UserDto
     suspend fun createUser(
         name: String,
         last_name: String,
@@ -38,6 +40,7 @@ interface   PeekerRepository {
     suspend fun createTag(tag: TagCreateDto): TagDto
     suspend fun updateTag(tagId: String, data: Map<String, String>): TagDto
     suspend fun deleteTag(tagId: String): Response<Unit>
+    suspend fun setTagToDocument(documentId: String, tagId: String): Response<Unit>
 
     suspend fun createDocumentFromFile(file: File): DocumentDto
 

@@ -12,7 +12,7 @@ data class DocumentDto(
     val id: String,
     val name: String,
     val updated_at: String,
-    val file_url: String,
+    val file_url: String?,
     val user_id: String,
     val favorite: Boolean,
     val tags: List<TagDto>

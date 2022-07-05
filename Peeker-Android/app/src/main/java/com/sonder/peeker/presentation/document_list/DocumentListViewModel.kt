@@ -166,7 +166,7 @@ class DocumentListViewModel @Inject constructor(
             _state.value.favoritesSelected -> "Favorites"
             _state.value.expiredSelected -> "Expired"
             _state.value.allSelected -> "All Documents (${documents()?.size})"
-            _state.value.selectedTagIndex != null && state.value.selectedTagIndex != null -> sessionManager.tags[state.value.selectedTagIndex!!].toString()
+            _state.value.selectedTagIndex != null && state.value.selectedTagIndex != null -> sessionManager.tags[state.value.selectedTagIndex!!].name
             else -> "Documents"
         }
     }

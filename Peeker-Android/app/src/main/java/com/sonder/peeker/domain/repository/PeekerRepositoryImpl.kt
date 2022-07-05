@@ -30,6 +30,10 @@ class PeekerRepositoryImpl @Inject constructor(
     override suspend fun getCurrentUser(): UserDto {
         return api.getUser()
     }
+    override suspend fun udpateCurrentUser(data: Map<String, String>): UserDto{
+        return api.updateUser(data)
+
+    }
 
     override suspend fun createUser(
         name: String,
@@ -64,6 +68,10 @@ class PeekerRepositoryImpl @Inject constructor(
 
     override suspend fun deleteTag(tagId: String): Response<Unit> {
         return api.deleteTagById(tagId)
+    }
+
+    override suspend fun setTagToDocument(documentId: String, tagId: String): Response<Unit> {
+        return api.setTagToDocument(documentId,tagId)
     }
 
     //    Notifications

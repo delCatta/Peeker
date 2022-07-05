@@ -15,7 +15,7 @@ class TagsController < ApplicationController
   # POST /tags
   # POST /tags.json
   def create
-    @tag = Tag.new(tag_params)
+    @tag = Current.user.tags.new(tag_params)
 
     if @tag.save
       render :show, status: :created, location: @tag

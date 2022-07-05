@@ -94,7 +94,6 @@ fun DocumentUpdateScreen(
                     label = { Text(text = "Nombre del documento") },
                     //label = { Text(text = viewModel.state.value.documentType?: "") },
                     placeholder = { Text(text = "Mi pasaporte") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                 )
@@ -103,7 +102,6 @@ fun DocumentUpdateScreen(
                     onValueChange = { newValue -> viewModel.setDocumentDescription(newValue) },
                     label = { Text(text = "Descripción del documento") },
                     placeholder = { Text(text = "Mi pasaporte") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                 )

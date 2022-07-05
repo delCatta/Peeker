@@ -28,6 +28,19 @@ class CreateUserUseCase @Inject constructor(
 
         }
     }
+    fun updateCurrentUser(notifications_enabled: Boolean, days_about_to_expire: Int): Flow<Resource<User>> = flow {
+        try {
+            emit(Resource.Loading<User>())
+            val userDto = repository.udpateCurrentUser(mutableMapOf("notifications_enabled" to notifications_enabled.toString(),"days_about_to_expire" to days_about_to_expire.toString() ))
+            emit(Resource.Success(userDto.toUser()))
+        } catch (e: HttpException) {
+            emit(Resource.Error<User>(e.localizedMessage?:"An unexpected error ocurred."))
+        } catch (e: IOException) {
+            emit(Resource.Error<User>("Couldn't reach server. Check your internet connection."))
+
+        }
+    }
+
 }
 
 
