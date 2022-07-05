@@ -12,7 +12,7 @@ import com.sonder.peeker.core.Constants
 import com.sonder.peeker.core.Constants.PARAM_DOCUMENT_ID
 import com.sonder.peeker.core.Resource
 import com.sonder.peeker.data.remote.dto.DocumentDto
-import com.sonder.peeker.data.remote.dto.TagsDto
+import com.sonder.peeker.data.remote.dto.TagDto
 import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.domain.use_case.get_document.GetDocumentUseCase
 import com.sonder.peeker.domain.use_case.update_document.UpdateDocumentUseCase
@@ -91,7 +91,7 @@ class DocumentViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getDocumentTags(): List<TagsDto> {
+    fun getDocumentTags(): List<TagDto> {
         return state.value.document?.tags?: emptyList()
     }
 }

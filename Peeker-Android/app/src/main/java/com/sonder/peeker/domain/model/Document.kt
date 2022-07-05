@@ -1,7 +1,7 @@
 package com.sonder.peeker.domain.model
 
 import com.sonder.peeker.core.Constants.DOCUMENT_TYPES
-import com.sonder.peeker.data.remote.dto.TagsDto
+import com.sonder.peeker.data.remote.dto.TagDto
 
 data class Document(
     val created_at: String,
@@ -15,7 +15,7 @@ data class Document(
     val url: String?,
     val id: String,
     val favorite: Boolean,
-    val tags: List<TagsDto>
+    val tags: List<TagDto>
 ){
     fun getDocumentType():String{
         try {

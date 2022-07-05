@@ -10,7 +10,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetDocumentsUseCase @Inject constructor(
+class   GetDocumentsUseCase @Inject constructor(
     private val repository: PeekerRepository
 ) {
     operator fun invoke(): Flow<Resource<List<Document>>> = flow {
@@ -41,6 +41,19 @@ class GetDocumentsUseCase @Inject constructor(
         try {
             emit(Resource.Loading<List<Document>>())
             val documents = repository.getExpiredDocuments()
+            emit(Resource.Success<List<Document>>(documents.map { it.toDocument() }))
+        } catch (e: HttpException) {
+            emit(Resource.Error<List<Document>>(e.localizedMessage?:"An unexpected error ocurred."))
+        } catch (e: IOException) {
+            emit(Resource.Error<List<Document>>("Couldn't reach server. Check your internet connection."))
+
+        }
+    }
+
+    fun fromTag(tagId: String): Flow<Resource<List<Document>>> = flow {
+        try {
+            emit(Resource.Loading<List<Document>>())
+            val documents = repository.getDocumentsByTag(tagId)
             emit(Resource.Success<List<Document>>(documents.map { it.toDocument() }))
         } catch (e: HttpException) {
             emit(Resource.Error<List<Document>>(e.localizedMessage?:"An unexpected error ocurred."))

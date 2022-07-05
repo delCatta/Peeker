@@ -11,8 +11,10 @@ import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
 import com.sonder.peeker.core.Resource
 import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.domain.model.Document
+import com.sonder.peeker.domain.model.Tag
 import com.sonder.peeker.domain.use_case.get_document.GetDocumentUseCase
 import com.sonder.peeker.domain.use_case.get_documents.GetDocumentsUseCase
+import com.sonder.peeker.domain.use_case.get_tags.GetTagsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.launchIn
@@ -22,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DocumentListViewModel @Inject constructor(
     private val sessionManager: SessionManager,
-    private val getDocumentsUseCase: GetDocumentsUseCase
+    private val getDocumentsUseCase: GetDocumentsUseCase,
+    private val getTagsUseCase: GetTagsUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf<DocumentListState>(DocumentListState())
@@ -34,31 +37,53 @@ class DocumentListViewModel @Inject constructor(
     init {
         // TODO: Get User Tags from DB
         // Log.d("Session",sessionManager.fetchAuthToken().toString())
-        sessionManager.tags = listOf("Tag 1", "Tag 2", "Tag 3", "Tag 4", "Tag 5")
+
+        loadTags()
         getFavoriteDocuments()
-        _tagState.value = DocumentTagState(isLoadingTags = false)
+
     }
 
-     fun getFavoriteDocuments() {
-         getDocumentsUseCase.fromFavorites().onEach { result ->
-             when (result) {
-                 is Resource.Success -> {
-                     sessionManager.favoriteDocuments = result.data ?: emptyList()
-                     _state.value = DocumentListState(isLoading = false, favoritesSelected = true)
+    fun loadTags() {
+        getTagsUseCase().onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    sessionManager.tags = result.data ?: emptyList()
+                    _tagState.value = DocumentTagState(isLoadingTags = false)
 
-                 }
-                 is Resource.Error -> {
-                     _state.value = DocumentListState(
-                         allSelected = true,
-                         error = result.message ?: UNEXPECTER_ERROR
-                     )
-                 }
-                 is Resource.Loading -> {
-                     _state.value = DocumentListState(isLoading = true, favoritesSelected = true)
-                 }
-             }
-         }.launchIn(viewModelScope)
+                }
+                is Resource.Error -> {
+                    _tagState.value = DocumentTagState(
+                        isLoadingTags = false
+                    )
+                }
+                is Resource.Loading -> {
+                    _tagState.value = DocumentTagState(isLoadingTags = true)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
+
+    fun getFavoriteDocuments() {
+        getDocumentsUseCase.fromFavorites().onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    sessionManager.favoriteDocuments = result.data ?: emptyList()
+                    _state.value = DocumentListState(isLoading = false, favoritesSelected = true)
+
+                }
+                is Resource.Error -> {
+                    _state.value = DocumentListState(
+                        allSelected = true,
+                        error = result.message ?: UNEXPECTER_ERROR
+                    )
+                }
+                is Resource.Loading -> {
+                    _state.value = DocumentListState(isLoading = true, favoritesSelected = true)
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
     fun getExpiredDocuments() {
         getDocumentsUseCase.fromExpired().onEach { result ->
             when (result) {
@@ -79,6 +104,7 @@ class DocumentListViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
     fun getAllDocuments() {
         getDocumentsUseCase().onEach { result ->
             when (result) {
@@ -102,13 +128,29 @@ class DocumentListViewModel @Inject constructor(
 
     fun getDocumentsByTag(tagIndex: Int) {
         // TODO Diego: Implementar la el useCase con la request. (Habla con bruno para saber la URL)
-        _state.value = DocumentListState(
-            selectedTagIndex = tagIndex,
-            error="No implementado aún.")
+
+        getDocumentsUseCase.fromTag(sessionManager.tags[tagIndex].id).onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    sessionManager.tagDocuments = result.data ?: emptyList()
+                    _state.value = DocumentListState(isLoading = false, selectedTagIndex = tagIndex)
+
+                }
+                is Resource.Error -> {
+                    _state.value = DocumentListState(
+                        selectedTagIndex = tagIndex,
+                        error = result.message ?: UNEXPECTER_ERROR
+                    )
+                }
+                is Resource.Loading -> {
+                    _state.value = DocumentListState(isLoading = true, selectedTagIndex = tagIndex)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun documents(): List<Document> {
-        if(_state.value.isLoading) return emptyList<Document>()
+        if (_state.value.isLoading) return emptyList<Document>()
         return when {
             _state.value.favoritesSelected -> sessionManager.favoriteDocuments
             _state.value.expiredSelected -> sessionManager.expiredDocuments
@@ -124,11 +166,12 @@ class DocumentListViewModel @Inject constructor(
             _state.value.favoritesSelected -> "Favorites"
             _state.value.expiredSelected -> "Expired"
             _state.value.allSelected -> "All Documents (${documents()?.size})"
-            _state.value.selectedTagIndex != null && state.value.selectedTagIndex != null -> sessionManager.tags[state.value.selectedTagIndex!!]
+            _state.value.selectedTagIndex != null && state.value.selectedTagIndex != null -> sessionManager.tags[state.value.selectedTagIndex!!].toString()
             else -> "Documents"
         }
     }
-    fun getTags():List<String>{
+
+    fun getTags(): List<Tag> {
         return sessionManager.tags
     }
 

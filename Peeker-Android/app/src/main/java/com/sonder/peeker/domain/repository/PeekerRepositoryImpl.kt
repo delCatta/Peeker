@@ -1,6 +1,10 @@
 package com.sonder.peeker.domain.repository
 
 import android.util.Log
+import com.sonder.peeker.domain.model.Document
+import com.sonder.peeker.domain.model.User
+import retrofit2.Callback
+import retrofit2.Retrofit
 import com.sonder.peeker.core.Constants.API_URL
 import com.sonder.peeker.data.remote.PeekerApi
 import com.sonder.peeker.data.remote.dto.*
@@ -12,7 +16,6 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Response
-
 import java.io.File
 import java.io.IOException
 import java.time.LocalDateTime
@@ -43,6 +46,26 @@ class PeekerRepositoryImpl @Inject constructor(
 
     }
 
+    //    Tags
+    override suspend fun getTags(): List<TagDto> {
+        return api.getTags()
+    }
+
+    override suspend fun createTag(tag: TagCreateDto): TagDto {
+        return api.createTag(tag)
+    }
+
+    override suspend fun updateTag(
+        tagId: String,
+        data: Map<String, String>
+    ): TagDto {
+        return api.updateTagById(tagId, data)
+    }
+
+    override suspend fun deleteTag(tagId: String): Response<Unit> {
+        return api.deleteTagById(tagId)
+    }
+
     //    Notifications
     override suspend fun getNotifications(): List<NotificationDto> {
         return api.getNotifications()
@@ -59,6 +82,10 @@ class PeekerRepositoryImpl @Inject constructor(
 
     override suspend fun getExpiredDocuments(): List<DocumentDto> {
         return api.getExpiredDocuments()
+    }
+
+    override suspend fun getDocumentsByTag(tagId: String): List<DocumentDto> {
+        return api.getDocumentsByTag(tagId)
     }
 
     override suspend fun getFavoriteDocuments(): List<DocumentDto> {
@@ -104,6 +131,16 @@ class PeekerRepositoryImpl @Inject constructor(
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("document[file]", file.name, file.asRequestBody())
                 .build()
+        )
+    }
+
+    override suspend fun createDocumentWithFile(file: File): Call<DocumentDto> {
+        return api.createDocumentFromFile(
+            MultipartBody.Part.createFormData(
+                "pdf",
+                file.name,
+                file.asRequestBody("application/pdf".toMediaType())
+            )
         )
     }
 

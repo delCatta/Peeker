@@ -24,6 +24,9 @@ interface PeekerApi {
     @GET("/documents/favorites.json")
     suspend fun getFavoriteDocuments(): List<DocumentDto>
 
+    @GET("/tags/{tagId}/documents")
+    suspend fun getDocumentsByTag(@Path("tagId") tagId: String): List<DocumentDto>
+
     @POST("/documents.json")
     suspend fun createDocument(@Body document: DocumentCreateDto): DocumentDto
 
@@ -41,6 +44,28 @@ interface PeekerApi {
 
     @DELETE("/documents/{documentId}")
     suspend fun deleteDocumentById(@Path("documentId") documentId: String): Response<Unit>
+
+    @Multipart
+    @POST("/documents.json")
+    fun createDocumentFromFile(
+        @Part file: MultipartBody.Part
+    ): Call<DocumentDto>
+
+    //    Tags
+    @GET("/tags")
+    suspend fun getTags(): List<TagDto>
+
+    @POST("/tags.json")
+    suspend fun createTag(@Body tag: TagCreateDto): TagDto
+
+    @PUT("/tags/{tagId}.json")
+    suspend fun updateTagById(
+        @Path("tagId") tagId: String,
+        @Body data: Map<String, String>
+    ): TagDto
+
+    @DELETE("/tags/{tagId}")
+    suspend fun deleteTagById(@Path("tagId") tagId: String): Response<Unit>
 
     @POST("/documents.json")
     suspend fun createDocumentFromFile(@Body data: MultipartBody): DocumentDto

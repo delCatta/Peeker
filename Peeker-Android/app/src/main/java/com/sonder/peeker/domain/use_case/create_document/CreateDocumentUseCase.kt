@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.core.net.toFile
 import com.sonder.peeker.core.Resource
 import com.sonder.peeker.data.remote.dto.DocumentCreateDto
+import com.sonder.peeker.data.remote.dto.DocumentDto
 import com.sonder.peeker.data.remote.dto.toDocument
 import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.domain.repository.PeekerRepository
@@ -44,7 +45,7 @@ class CreateDocumentUseCase @Inject constructor(
 
         }
     }
-
+    
     fun fromDocumentFile(fileUri: Uri): Flow<Resource<Document>> =
 
         flow {
@@ -69,6 +70,4 @@ class CreateDocumentUseCase @Inject constructor(
             }
 
         }
-
-
 }

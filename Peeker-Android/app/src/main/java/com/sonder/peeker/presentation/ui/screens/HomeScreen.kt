@@ -203,7 +203,6 @@ fun BottomSheetContent(
                 title = "Crear a partir de un Archivo.",
                 onItemClick = {
                     pickPictureLauncher.launch("*/*")
-
                 })
             BottomSheetListItem(
                 icon = Icons.Rounded.Create,

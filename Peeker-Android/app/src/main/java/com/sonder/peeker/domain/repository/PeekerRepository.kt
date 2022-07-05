@@ -9,7 +9,7 @@ import retrofit2.Response
 import java.io.File
 import javax.annotation.Nullable
 
-interface PeekerRepository {
+interface   PeekerRepository {
     // Authentication
     suspend fun getCurrentUser(): UserDto
     suspend fun createUser(
@@ -31,6 +31,14 @@ interface PeekerRepository {
     suspend fun deleteDocument(documentId: String): Response<Unit>
     suspend fun createDocument(document: DocumentCreateDto): DocumentDto
     suspend fun createEmptyDocument(): DocumentDto
+    suspend fun getDocumentsByTag(tagId: String): List<DocumentDto>
+
+    //    Tags
+    suspend fun getTags(): List<TagDto>
+    suspend fun createTag(tag: TagCreateDto): TagDto
+    suspend fun updateTag(tagId: String, data: Map<String, String>): TagDto
+    suspend fun deleteTag(tagId: String): Response<Unit>
+
     suspend fun createDocumentFromFile(file: File): DocumentDto
 
     // Notifications
