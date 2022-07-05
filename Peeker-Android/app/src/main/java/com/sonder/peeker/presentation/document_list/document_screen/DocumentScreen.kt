@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,6 +25,7 @@ import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.document_list.components.SelectorChip
 import com.sonder.peeker.presentation.document_list.document_screen.components.DeleteDocumentButton
 import com.sonder.peeker.presentation.document_list.document_screen.components.FavoriteDocumentToggler
+import com.sonder.peeker.presentation.ui.theme.Graphite
 import com.sonder.peeker.presentation.ui.theme.Gray
 import com.sonder.peeker.presentation.ui.theme.White
 
@@ -125,6 +127,7 @@ fun DocumentList(
     viewModel: DocumentViewModel
 
 ) {
+    val uriHandler = LocalUriHandler.current
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(15.dp))
@@ -247,6 +250,19 @@ fun DocumentList(
                         ) {}
                     }
                 } else Text(text = "Este documento no tiene tags.")
+
+            if (!viewModel.state.value.document?.url.isNullOrEmpty())
+                Button(
+                    onClick = {
+                        uriHandler.openUri(viewModel.state.value.document?.url!!)
+                    }) {
+                    Text(
+                        text = "Ver Documento",
+                        style = MaterialTheme.typography.body1,
+                        color = Graphite,
+                    )
+                }
+
         }
     }
 }
