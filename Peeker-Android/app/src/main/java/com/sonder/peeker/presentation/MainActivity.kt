@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
 
                         }
                         composable(
-                            route = Screen.UpdateDocumentScreen.route+ "/{documentId}"
+                            route = Screen.UpdateDocumentScreen.route + "/{documentId}"
                         ) {
                             DocumentUpdateScreen(navController)
                         }
@@ -74,6 +74,8 @@ class MainActivity : ComponentActivity() {
                             route = Screen.TagCreateScreen.route
                         ) {
                             TagCreateScreen(navController)
+                        }
+                        composable(
                             route = Screen.NotificationSettings.route
                         ) {
                             NotificationSettingsScreen(navController)

@@ -236,32 +236,20 @@ fun DocumentList(
                 text = "Tags",
                 style = MaterialTheme.typography.h3
             )
-            if (!viewModel.getDocumentTags().isNullOrEmpty() || !viewModel.getDocumentNotUsedTags().isNullOrEmpty())
+            if (!viewModel.getTags().isNullOrEmpty()
+            )
                 LazyRow(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if (!viewModel.getDocumentTags()
-                            .isNullOrEmpty()
-                    ) items(viewModel.getDocumentTags().size) {
+                    items(viewModel.getTags().size) {
+                        val tag = viewModel.getTags()[it]
                         SelectorChip(
-                            isSelected = true,
-                            text = viewModel.getDocumentTags()[it].name,
+                            isSelected = viewModel.tagInDcoument(tag.id),
+                            text = tag.name,
                             onPressed = {
                                 viewModel.toggleTagToDocument(
                                     navController,
-                                    viewModel.getDocumentTags()[it].name
-                                )
-                            }
-                        ) {}
-                    }
-                    if (!viewModel.getDocumentNotUsedTags().isNullOrEmpty()) items(viewModel.getDocumentNotUsedTags().size) {
-                        SelectorChip(
-                            isSelected = false,
-                            text = viewModel.getDocumentTags()[it].name,
-                            onPressed = {
-                                viewModel.toggleTagToDocument(
-                                    navController,
-                                    viewModel.getDocumentTags()[it].name
+                                    tag.id
                                 )
                             }
                         ) {}

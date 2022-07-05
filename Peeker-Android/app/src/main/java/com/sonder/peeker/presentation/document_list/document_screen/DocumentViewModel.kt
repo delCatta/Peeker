@@ -96,17 +96,11 @@ class DocumentViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getDocumentTags(): List<Tag> {
-        return state.value.document?.tags?.map { it.toTag() } ?: emptyList()
+    fun getTags(): List<Tag> {
+        return sessionManager.tags
     }
-
-    fun getDocumentNotUsedTags(): List<Tag> {
-        val notUsedTags = mutableListOf<Tag>()
-        var usedTags = getDocumentTags().map { it.id }
-        sessionManager.tags.forEach {
-            if (!usedTags.contains(it.id)) notUsedTags.add(it)
-        }
-        return notUsedTags
+    fun tagInDcoument(tagId:String): Boolean{
+        return _state.value.document?.tags?.map{ it.id }?.contains(tagId)?:false
     }
 
     fun toggleTagToDocument(navController: NavController, tagId: String) {
