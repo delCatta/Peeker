@@ -99,11 +99,10 @@ class PeekerRepositoryImpl @Inject constructor(
         )
     }
     override suspend fun createDocumentFromFile(file:File): DocumentDto {
-
         return api.createDocumentFromFile(
             MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("file", file.name, file.asRequestBody())
+                .addFormDataPart("document[file]", file.name, file.asRequestBody())
                 .build()
         )
     }

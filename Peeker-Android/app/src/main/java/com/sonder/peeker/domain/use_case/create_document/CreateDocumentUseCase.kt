@@ -1,27 +1,19 @@
 package com.sonder.peeker.domain.use_case.create_document
 
 import android.net.Uri
-import android.os.Environment
 import android.util.Log
 import androidx.core.net.toFile
-import com.sonder.peeker.core.Constants
 import com.sonder.peeker.core.Resource
 import com.sonder.peeker.data.remote.dto.DocumentCreateDto
-import com.sonder.peeker.data.remote.dto.DocumentDto
 import com.sonder.peeker.data.remote.dto.toDocument
-import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.domain.repository.PeekerRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.*
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import javax.inject.Inject
 
 class CreateDocumentUseCase @Inject constructor(
@@ -57,8 +49,12 @@ class CreateDocumentUseCase @Inject constructor(
 
         flow {
             try {
+                Log.d("Uri",fileUri.toString())
+                val path = fileUri.path?.replace("/document/raw:","");
                 emit(Resource.Loading<Document>())
-                val document = repository.createDocumentFromFile(fileUri.toFile())
+                val document = repository.createDocumentFromFile(
+                    File(path)
+                )
                 emit(Resource.Success(document.toDocument()))
 
 

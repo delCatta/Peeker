@@ -42,7 +42,7 @@ interface PeekerApi {
     @DELETE("/documents/{documentId}")
     suspend fun deleteDocumentById(@Path("documentId") documentId: String): Response<Unit>
 
-    @POST("/documents.josn")
+    @POST("/documents.json")
     suspend fun createDocumentFromFile(@Body data: MultipartBody): DocumentDto
 
     //    Authentication
