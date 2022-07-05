@@ -2,7 +2,11 @@ package com.sonder.peeker.presentation.ui.theme
 
 import android.content.Intent
 import android.provider.DocumentsContract
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -163,6 +167,13 @@ fun BottomSheetContent(
     viewModel: DocumentCreateViewModel
 ) {
     val documentState = viewModel.state.value
+    val pickPictureLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { fileUri ->
+        if (fileUri != null) {
+            viewModel.uploadFile(fileUri,navController)
+        }
+    }
     Column {
         if (documentState.isLoading || !documentState.error.isNullOrEmpty())
             Box(
@@ -181,7 +192,7 @@ fun BottomSheetContent(
                 icon = Icons.Rounded.AttachFile,
                 title = "Crear a partir de un Archivo.",
                 onItemClick = {
-                    openFile()
+                    pickPictureLauncher.launch("*/*")
                 })
             BottomSheetListItem(
                 icon = Icons.Rounded.Create,
@@ -218,12 +229,4 @@ fun BottomSheetListItem(icon: ImageVector, title: String, onItemClick: (String) 
         Spacer(modifier = Modifier.width(20.dp))
         Text(text = title)
     }
-}
-
-fun openFile() {
-//    val intent = Intent()
-//        .setType("*/*")
-//        .setAction(Intent.ACTION_GET_CONTENT)
-//
-//    startActivityForResult(Intent.createChooser(intent, "Select a file"), 777)
 }

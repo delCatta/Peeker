@@ -1,23 +1,21 @@
 package com.sonder.peeker.presentation.document_create
 
+import android.R.attr.path
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants
 import com.sonder.peeker.core.Resource
-import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.domain.use_case.create_document.CreateDocumentUseCase
-import com.sonder.peeker.domain.use_case.get_document.GetDocumentUseCase
-import com.sonder.peeker.domain.use_case.update_document.UpdateDocumentUseCase
 import com.sonder.peeker.presentation.Screen
-import com.sonder.peeker.presentation.document_update.DocumentUpdateState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.io.File
 import javax.inject.Inject
 
 
@@ -28,14 +26,14 @@ class DocumentCreateViewModel @Inject constructor(
     private val _state = mutableStateOf<DocumentCreateState>(DocumentCreateState())
     val state: State<DocumentCreateState> = _state
 
-    fun createEmptyDocument(navController: NavController, onSuccess: ()->( Unit )) {
+    fun createEmptyDocument(navController: NavController, onSuccess: () -> (Unit)) {
         clearErrors()
         createDocumentUseCase.fromEmptyDocument().onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     Log.d("Success", result.data.toString())
                     onSuccess()
-                    navController.navigate(Screen.UpdateDocumentScreen.route+"/${result.data!!.id}")
+                    navController.navigate(Screen.UpdateDocumentScreen.route + "/${result.data!!.id}")
                     _state.value = state.value.copy(isLoading = false)
 
                 }
@@ -53,8 +51,32 @@ class DocumentCreateViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun clearErrors(){
+    fun clearErrors() {
         _state.value = state.value.copy(error = "")
+    }
+
+    fun uploadFile(fileUri: Uri,navController: NavController) {
+        clearErrors()
+        createDocumentUseCase.fromDocumentFile(File(fileUri.path)).onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    Log.d("Success", result.data.toString())
+                    navController.navigate(Screen.UpdateDocumentScreen.route + "/${result.data!!.id}")
+                    _state.value = state.value.copy(isLoading = false)
+
+                }
+                is Resource.Loading -> {
+                    _state.value = state.value.copy(isLoading = true)
+                }
+                is Resource.Error -> {
+                    Log.d("Error", result.message.toString())
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        error = result.message ?: Constants.UNEXPECTER_ERROR
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 }
 

@@ -1,8 +1,11 @@
 package com.sonder.peeker.data.remote
 
 import android.database.Observable
+import com.google.gson.JsonElement
 import com.sonder.peeker.data.remote.dto.*
 import com.sonder.peeker.domain.model.Document
+import okhttp3.MultipartBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 import javax.annotation.Nullable
@@ -38,6 +41,13 @@ interface PeekerApi {
 
     @DELETE("/documents/{documentId}")
     suspend fun deleteDocumentById(@Path("documentId") documentId: String): Response<Unit>
+
+    @Multipart
+    @POST("/documents.json")
+    fun createDocumentFromFile(
+        @Part file: MultipartBody.Part
+    ): Call<DocumentDto>
+
 
     //    Authentication
     @POST("/sign_up")
