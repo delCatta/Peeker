@@ -52,9 +52,7 @@ class CreateDocumentUseCase @Inject constructor(
                 Log.d("Uri",fileUri.toString())
                 val path = fileUri.path?.replace("/document/raw:","");
                 emit(Resource.Loading<Document>())
-                val document = repository.createDocumentFromFile(
-                    File(path)
-                )
+                val document = repository.createDocumentFromFile(File(path))
                 emit(Resource.Success(document.toDocument()))
 
 

@@ -167,12 +167,21 @@ fun BottomSheetContent(
     viewModel: DocumentCreateViewModel
 ) {
     val documentState = viewModel.state.value
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Log.d("Permission","Granted")
+        } else {
+            Log.d("Permission", "Not Granted")
+        }
+    }
     val pickPictureLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { fileUri ->
         if (fileUri != null) {
-            Log.d("FileUri",fileUri.path.toString())
-            viewModel.uploadFile(fileUri,navController)
+            Log.d("FileUri", fileUri.path.toString())
+            viewModel.uploadFile(fileUri, navController)
         }
     }
     Column {
@@ -194,6 +203,7 @@ fun BottomSheetContent(
                 title = "Crear a partir de un Archivo.",
                 onItemClick = {
                     pickPictureLauncher.launch("*/*")
+
                 })
             BottomSheetListItem(
                 icon = Icons.Rounded.Create,

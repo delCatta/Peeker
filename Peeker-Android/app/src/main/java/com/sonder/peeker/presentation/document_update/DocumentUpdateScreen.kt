@@ -87,6 +87,11 @@ fun DocumentUpdateScreen(
                         style = MaterialTheme.typography.body1,
                         color = White
                     )
+                    Text(
+                        text = viewModel.state.value.document?.url?:"",
+                        style = MaterialTheme.typography.body1,
+                        color = White
+                    )
                 }
                 TextField(
                     value = viewModel.state.value.documentName ?: "",

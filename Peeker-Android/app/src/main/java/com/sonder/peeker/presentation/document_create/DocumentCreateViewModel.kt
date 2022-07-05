@@ -62,7 +62,8 @@ class DocumentCreateViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     Log.d("Success", result.data.toString())
-                    // navController.navigate(Screen.UpdateDocumentScreen.route + "/${result.data!!.id}")
+                     navController.navigate(Screen.UpdateDocumentScreen.route + "/${result.data!!.id}")
+                    Log.d("URL",result.data!!.url.toString())
                     _state.value = state.value.copy(isLoading = false)
 
                 }
