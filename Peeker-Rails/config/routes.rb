@@ -3,8 +3,11 @@
 Rails.application.routes.draw do
   defaults format: :json do
     get 'users/me'
+    put 'users/me', to: 'users#update'
+    resources :tags
     resources :notifications
     resources :documents do
+      resources :tags, only: :update, controller: 'documents/tags'
       collection do
         get :favorites
         get :about_to_expire

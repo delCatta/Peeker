@@ -48,11 +48,7 @@ group :development do
   # gem "spring"
 end
 
-gem 'authentication-zero'
-gem 'documentation-zero'
 # Use Pwned to check if a password has been found in any of the huge data breaches [https://github.com/philnash/pwned]
 gem 'pwned'
-
-gem 'acts-as-taggable-on'
 
 gem 'onesignal'
