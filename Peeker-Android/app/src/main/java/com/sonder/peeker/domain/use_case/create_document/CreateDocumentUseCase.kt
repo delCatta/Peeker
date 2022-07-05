@@ -48,25 +48,23 @@ class CreateDocumentUseCase @Inject constructor(
             emit(Resource.Loading<Document>())
 //            val document = repository.createDocumentWithFile(file)
 //            emit(Resource.Success(document.toDocument()))
-            repository.createDocumentWithFile(file).enqueue(
-                object : Callback<DocumentDto> {
-                    override fun onFailure(call: Call<DocumentDto>, t: Throwable) {
-                        Log.d("Failed", t.localizedMessage)
-
-                    }
-
-                    override fun onResponse(
-                        call: Call<DocumentDto>,
-                        response: Response<DocumentDto>
-                    ) {
-                        Log.d("Response", response.toString())
-
-                    }
-
-                }
-            )
-
-            emit(Resource.Error<Document>("An unexpected error ocurred."))
+            repository.createDocumentWithFile(file)
+//                .enqueue(
+//                object : Callback<DocumentDto> {
+//                    override fun onFailure(call: Call<DocumentDto>, t: Throwable) {
+//                        emit(Resource.Error<Document>(t.localizedMessage))
+//                    }
+//
+//                    override fun onResponse(
+//                        call: Call<DocumentDto>,
+//                        response: Response<DocumentDto>
+//                    ) {
+//                        Log.d("Response", response.toString())
+//
+//                    }
+//
+//                }
+//            )
         } catch (e: HttpException) {
             emit(Resource.Error<Document>(e.localizedMessage ?: "An unexpected error ocurred."))
         } catch (e: IOException) {
