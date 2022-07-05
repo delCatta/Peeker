@@ -15,7 +15,7 @@ data class DocumentDto(
     val url: String,
     val user_id: String,
     val favorite: Boolean,
-    val tags: List<TagsDto>
+    val tags: List<TagDto>
 )
 
 fun DocumentDto.toDocument(): Document {

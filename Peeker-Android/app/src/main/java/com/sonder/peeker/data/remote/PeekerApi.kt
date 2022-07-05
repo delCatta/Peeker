@@ -48,6 +48,21 @@ interface PeekerApi {
         @Part file: MultipartBody.Part
     ): Call<DocumentDto>
 
+    //    Tags
+    @GET("/tags")
+    suspend fun getTags(): List<TagDto>
+
+    @POST("/tags.json")
+    suspend fun createTag(@Body tag: TagCreateDto): TagDto
+
+    @PUT("/tags/{tagId}.json")
+    suspend fun updateTagById(
+        @Path("tagId") tagId: String,
+        @Body data: Map<String, String>
+    ): TagDto
+
+    @DELETE("/tags/{tagId}")
+    suspend fun deleteTagById(@Path("tagId") tagId: String): Response<Unit>
 
     //    Authentication
     @POST("/sign_up")

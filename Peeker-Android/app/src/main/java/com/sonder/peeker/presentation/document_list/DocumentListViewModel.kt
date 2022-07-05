@@ -11,8 +11,10 @@ import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
 import com.sonder.peeker.core.Resource
 import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.domain.model.Document
+import com.sonder.peeker.domain.model.Tag
 import com.sonder.peeker.domain.use_case.get_document.GetDocumentUseCase
 import com.sonder.peeker.domain.use_case.get_documents.GetDocumentsUseCase
+import com.sonder.peeker.domain.use_case.get_tags.GetTagsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.launchIn
@@ -22,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DocumentListViewModel @Inject constructor(
     private val sessionManager: SessionManager,
-    private val getDocumentsUseCase: GetDocumentsUseCase
+    private val getDocumentsUseCase: GetDocumentsUseCase,
+    private val getTagsUseCase: GetTagsUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf<DocumentListState>(DocumentListState())
@@ -34,9 +37,30 @@ class DocumentListViewModel @Inject constructor(
     init {
         // TODO: Get User Tags from DB
         // Log.d("Session",sessionManager.fetchAuthToken().toString())
-        sessionManager.tags = listOf("Tag 1", "Tag 2", "Tag 3", "Tag 4", "Tag 5")
+
+        loadTags()
         getFavoriteDocuments()
-        _tagState.value = DocumentTagState(isLoadingTags = false)
+
+    }
+
+    fun loadTags() {
+        getTagsUseCase().onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    sessionManager.tags = result.data ?: emptyList()
+                    _tagState.value = DocumentTagState(isLoadingTags = false)
+
+                }
+                is Resource.Error -> {
+                    _tagState.value = DocumentTagState(
+                        isLoadingTags = false
+                    )
+                }
+                is Resource.Loading -> {
+                    _tagState.value = DocumentTagState( isLoadingTags = true)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
      fun getFavoriteDocuments() {
@@ -124,11 +148,11 @@ class DocumentListViewModel @Inject constructor(
             _state.value.favoritesSelected -> "Favorites"
             _state.value.expiredSelected -> "Expired"
             _state.value.allSelected -> "All Documents (${documents()?.size})"
-            _state.value.selectedTagIndex != null && state.value.selectedTagIndex != null -> sessionManager.tags[state.value.selectedTagIndex!!]
+            _state.value.selectedTagIndex != null && state.value.selectedTagIndex != null -> sessionManager.tags[state.value.selectedTagIndex!!].toString()
             else -> "Documents"
         }
     }
-    fun getTags():List<String>{
+    fun getTags():List<Tag>{
         return sessionManager.tags
     }
 

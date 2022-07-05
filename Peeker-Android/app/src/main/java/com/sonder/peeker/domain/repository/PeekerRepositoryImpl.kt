@@ -41,6 +41,27 @@ class PeekerRepositoryImpl @Inject constructor(
 
     }
 
+    //    Tags
+    override suspend fun getTags(): List<TagDto> {
+        return api.getTags()
+    }
+
+    override suspend fun createTag(tag: TagCreateDto): TagDto {
+        return api.createTag(tag)
+    }
+
+    override suspend fun updateTag(
+        tagId: String,
+        data: Map<String, String>
+    ): TagDto {
+        return api.updateTagById(tagId, data)
+    }
+
+    override suspend fun deleteTag(tagId: String): Response<Unit> {
+        return api.deleteTagById(tagId)
+    }
+
+
     //    Notifications
     override suspend fun getNotifications(): List<NotificationDto> {
         return api.getNotifications()

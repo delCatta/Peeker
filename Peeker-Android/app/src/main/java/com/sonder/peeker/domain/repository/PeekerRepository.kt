@@ -32,6 +32,12 @@ interface PeekerRepository {
     suspend fun createEmptyDocument(): DocumentDto
     suspend fun createDocumentWithFile(file: File): Call<DocumentDto>
 
+    //    Tags
+    suspend fun getTags(): List<TagDto>
+    suspend fun createTag(tag: TagCreateDto): TagDto
+    suspend fun updateTag(tagId: String, data: Map<String, String>): TagDto
+    suspend fun deleteTag(tagId: String): Response<Unit>
+
     // Notifications
     suspend fun getNotifications(): List<NotificationDto>
     suspend fun getNotification(notificationId: String): NotificationDto

@@ -10,7 +10,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetDocumentsUseCase @Inject constructor(
+class   GetDocumentsUseCase @Inject constructor(
     private val repository: PeekerRepository
 ) {
     operator fun invoke(): Flow<Resource<List<Document>>> = flow {
