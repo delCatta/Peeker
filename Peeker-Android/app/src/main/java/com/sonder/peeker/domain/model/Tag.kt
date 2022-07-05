@@ -8,4 +8,3 @@ data class Tag(
     val user_id: String,
     val url: String
 )
-
