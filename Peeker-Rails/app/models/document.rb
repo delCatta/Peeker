@@ -7,7 +7,8 @@ class Document < ApplicationRecord
   scope :about_to_expire, -> { where('expiration_date <= ?', user.days_about_to_expire.days.from_now) }
   has_one_attached :file
 
-  after_update :send_expire_notification, if: :about_to_expire?
+  after_update :send_about_to_expire_notification, if: :about_to_expire?
+  after_update :send_expire_notification, if: :expired?
 
   def toggle_tag(tag)
     if tag.in? tags
@@ -22,11 +23,24 @@ class Document < ApplicationRecord
 
     expiration_date <= user.days_about_to_expire.days.from_now
   end
+  
+  def expired?
+    return false if expiration_date.blank?
 
+    expiration_date <= Date.current
+  end
+
+  def send_about_to_expire_notification
+    return unless user.notifications_enabled
+
+    Notification.create(heading: 'Documento por Expirar',
+                        content: "#{name.gsub("\n", '').titleize} está por expirar.", data: self, user:)
+  end
+  
   def send_expire_notification
     return unless user.notifications_enabled
 
-    Notification.create(heading: 'Documento por Expiorar',
-                        content: "#{name.gsub("\n", '').titleize} está por expirar.", data: self, user:)
+    Notification.create(heading: 'Documento Expirado',
+                        content: "#{name.gsub("\n", '').titleize} expiró.", data: self, user:)
   end
 end
