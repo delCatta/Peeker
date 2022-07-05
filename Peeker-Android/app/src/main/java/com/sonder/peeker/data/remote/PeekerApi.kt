@@ -42,12 +42,8 @@ interface PeekerApi {
     @DELETE("/documents/{documentId}")
     suspend fun deleteDocumentById(@Path("documentId") documentId: String): Response<Unit>
 
-    @Multipart
-    @POST("/documents.json")
-    fun createDocumentFromFile(
-        @Part file: MultipartBody.Part
-    ): Call<DocumentDto>
-
+    @POST("/documents.josn")
+    suspend fun createDocumentFromFile(@Body data: MultipartBody): DocumentDto
 
     //    Authentication
     @POST("/sign_up")

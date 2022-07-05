@@ -1,6 +1,5 @@
 package com.sonder.peeker.presentation.document_create
 
-import android.R.attr.path
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.State
@@ -10,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants
 import com.sonder.peeker.core.Resource
+import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.domain.use_case.create_document.CreateDocumentUseCase
 import com.sonder.peeker.presentation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DocumentCreateViewModel @Inject constructor(
+    private val sessionManager: SessionManager,
     private val createDocumentUseCase: CreateDocumentUseCase,
 ) : ViewModel() {
     private val _state = mutableStateOf<DocumentCreateState>(DocumentCreateState())
@@ -55,13 +56,13 @@ class DocumentCreateViewModel @Inject constructor(
         _state.value = state.value.copy(error = "")
     }
 
-    fun uploadFile(fileUri: Uri,navController: NavController) {
+    fun uploadFile(fileUri: Uri, navController: NavController) {
         clearErrors()
-        createDocumentUseCase.fromDocumentFile(File(fileUri.path)).onEach { result ->
+        createDocumentUseCase.fromDocumentFile(fileUri).onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     Log.d("Success", result.data.toString())
-                    navController.navigate(Screen.UpdateDocumentScreen.route + "/${result.data!!.id}")
+                    // navController.navigate(Screen.UpdateDocumentScreen.route + "/${result.data!!.id}")
                     _state.value = state.value.copy(isLoading = false)
 
                 }

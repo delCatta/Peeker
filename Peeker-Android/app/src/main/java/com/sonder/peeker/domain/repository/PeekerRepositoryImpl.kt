@@ -1,18 +1,20 @@
 package com.sonder.peeker.domain.repository
 
 import android.util.Log
+import com.sonder.peeker.core.Constants.API_URL
 import com.sonder.peeker.data.remote.PeekerApi
 import com.sonder.peeker.data.remote.dto.*
-import com.sonder.peeker.domain.model.Document
-import com.sonder.peeker.domain.model.User
+import com.sonder.peeker.di.SessionManager
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
+
 import java.io.File
+import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -96,14 +98,13 @@ class PeekerRepositoryImpl @Inject constructor(
             )
         )
     }
+    override suspend fun createDocumentFromFile(file:File): DocumentDto {
 
-    override suspend fun createDocumentWithFile(file: File): Call<DocumentDto> {
         return api.createDocumentFromFile(
-            MultipartBody.Part.createFormData(
-                "pdf",
-                file.name,
-                file.asRequestBody("application/pdf".toMediaType())
-            )
+            MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", file.name, file.asRequestBody())
+                .build()
         )
     }
 

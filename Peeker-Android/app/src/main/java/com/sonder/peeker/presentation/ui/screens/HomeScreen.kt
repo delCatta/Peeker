@@ -171,6 +171,7 @@ fun BottomSheetContent(
         ActivityResultContracts.GetContent()
     ) { fileUri ->
         if (fileUri != null) {
+            Log.d("FileUri",fileUri.path.toString())
             viewModel.uploadFile(fileUri,navController)
         }
     }
