@@ -75,7 +75,7 @@ fun DocumentSelector(
             items(viewModel.getTags().size) {
                 SelectorChip(
                     isSelected = state.selectedTagIndex == it,
-                    text = viewModel.getTags()[it],
+                    text = viewModel.getTags()[it].name,
                     onPressed = { viewModel.getDocumentsByTag(it) }) {}
             } else item {
             Box(

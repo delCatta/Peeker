@@ -57,32 +57,33 @@ class DocumentListViewModel @Inject constructor(
                     )
                 }
                 is Resource.Loading -> {
-                    _tagState.value = DocumentTagState( isLoadingTags = true)
+                    _tagState.value = DocumentTagState(isLoadingTags = true)
                 }
             }
         }.launchIn(viewModelScope)
     }
 
-     fun getFavoriteDocuments() {
-         getDocumentsUseCase.fromFavorites().onEach { result ->
-             when (result) {
-                 is Resource.Success -> {
-                     sessionManager.favoriteDocuments = result.data ?: emptyList()
-                     _state.value = DocumentListState(isLoading = false, favoritesSelected = true)
+    fun getFavoriteDocuments() {
+        getDocumentsUseCase.fromFavorites().onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    sessionManager.favoriteDocuments = result.data ?: emptyList()
+                    _state.value = DocumentListState(isLoading = false, favoritesSelected = true)
 
-                 }
-                 is Resource.Error -> {
-                     _state.value = DocumentListState(
-                         allSelected = true,
-                         error = result.message ?: UNEXPECTER_ERROR
-                     )
-                 }
-                 is Resource.Loading -> {
-                     _state.value = DocumentListState(isLoading = true, favoritesSelected = true)
-                 }
-             }
-         }.launchIn(viewModelScope)
+                }
+                is Resource.Error -> {
+                    _state.value = DocumentListState(
+                        allSelected = true,
+                        error = result.message ?: UNEXPECTER_ERROR
+                    )
+                }
+                is Resource.Loading -> {
+                    _state.value = DocumentListState(isLoading = true, favoritesSelected = true)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
+
     fun getExpiredDocuments() {
         getDocumentsUseCase.fromExpired().onEach { result ->
             when (result) {
@@ -103,6 +104,7 @@ class DocumentListViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
     fun getAllDocuments() {
         getDocumentsUseCase().onEach { result ->
             when (result) {
@@ -126,13 +128,29 @@ class DocumentListViewModel @Inject constructor(
 
     fun getDocumentsByTag(tagIndex: Int) {
         // TODO Diego: Implementar la el useCase con la request. (Habla con bruno para saber la URL)
-        _state.value = DocumentListState(
-            selectedTagIndex = tagIndex,
-            error="No implementado aún.")
+
+        getDocumentsUseCase.fromTag(sessionManager.tags[tagIndex].id).onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    sessionManager.tagDocuments = result.data ?: emptyList()
+                    _state.value = DocumentListState(isLoading = false, selectedTagIndex = tagIndex)
+
+                }
+                is Resource.Error -> {
+                    _state.value = DocumentListState(
+                        selectedTagIndex = tagIndex,
+                        error = result.message ?: UNEXPECTER_ERROR
+                    )
+                }
+                is Resource.Loading -> {
+                    _state.value = DocumentListState(isLoading = true, selectedTagIndex = tagIndex)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun documents(): List<Document> {
-        if(_state.value.isLoading) return emptyList<Document>()
+        if (_state.value.isLoading) return emptyList<Document>()
         return when {
             _state.value.favoritesSelected -> sessionManager.favoriteDocuments
             _state.value.expiredSelected -> sessionManager.expiredDocuments
@@ -152,7 +170,8 @@ class DocumentListViewModel @Inject constructor(
             else -> "Documents"
         }
     }
-    fun getTags():List<Tag>{
+
+    fun getTags(): List<Tag> {
         return sessionManager.tags
     }
 

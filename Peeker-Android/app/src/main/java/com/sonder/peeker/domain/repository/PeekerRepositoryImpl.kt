@@ -61,7 +61,6 @@ class PeekerRepositoryImpl @Inject constructor(
         return api.deleteTagById(tagId)
     }
 
-
     //    Notifications
     override suspend fun getNotifications(): List<NotificationDto> {
         return api.getNotifications()
@@ -78,6 +77,10 @@ class PeekerRepositoryImpl @Inject constructor(
 
     override suspend fun getExpiredDocuments(): List<DocumentDto> {
         return api.getExpiredDocuments()
+    }
+
+    override suspend fun getDocumentsByTag(tagId: String): List<DocumentDto> {
+        return api.getDocumentsByTag(tagId)
     }
 
     override suspend fun getFavoriteDocuments(): List<DocumentDto> {

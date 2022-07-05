@@ -24,6 +24,9 @@ interface PeekerApi {
     @GET("/documents/favorites.json")
     suspend fun getFavoriteDocuments(): List<DocumentDto>
 
+    @GET("/tags/{tagId}/documents")
+    suspend fun getDocumentsByTag(@Path("tagId") tagId: String): List<DocumentDto>
+
     @POST("/documents.json")
     suspend fun createDocument(@Body document: DocumentCreateDto): DocumentDto
 
