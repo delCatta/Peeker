@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   defaults format: :json do
     get 'users/me'
     put 'users/me', to: 'users#update'
-    resources :tags
+    resources :tags do
+      resources :documents, only: :index, controller: 'tags/documents'
+    end
     resources :notifications
     resources :documents do
       resources :tags, only: :update, controller: 'documents/tags'
