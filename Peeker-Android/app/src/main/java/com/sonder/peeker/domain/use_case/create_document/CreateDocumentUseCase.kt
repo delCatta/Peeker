@@ -1,11 +1,16 @@
 package com.sonder.peeker.domain.use_case.create_document
 
+import android.content.ContentUris
+import android.content.Context
+import android.database.Cursor
 import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.util.Log
-import androidx.core.net.toFile
 import com.sonder.peeker.core.Resource
 import com.sonder.peeker.data.remote.dto.DocumentCreateDto
-import com.sonder.peeker.data.remote.dto.DocumentDto
 import com.sonder.peeker.data.remote.dto.toDocument
 import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.domain.repository.PeekerRepository
@@ -14,8 +19,8 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.*
 import java.io.File
 import java.io.IOException
-import java.io.InputStream
 import javax.inject.Inject
+
 
 class CreateDocumentUseCase @Inject constructor(
     private val repository: PeekerRepository
@@ -45,15 +50,13 @@ class CreateDocumentUseCase @Inject constructor(
 
         }
     }
-    
-    fun fromDocumentFile(fileUri: Uri): Flow<Resource<Document>> =
+
+    fun fromDocumentFile(file: File): Flow<Resource<Document>> =
 
         flow {
             try {
-                Log.d("Uri",fileUri.toString())
-                val path = fileUri.path?.replace("/document/raw:","");
                 emit(Resource.Loading<Document>())
-                val document = repository.createDocumentFromFile(File(path))
+                val document = repository.createDocumentFromFile(file)
                 emit(Resource.Success(document.toDocument()))
 
 
@@ -70,4 +73,6 @@ class CreateDocumentUseCase @Inject constructor(
             }
 
         }
+
+
 }

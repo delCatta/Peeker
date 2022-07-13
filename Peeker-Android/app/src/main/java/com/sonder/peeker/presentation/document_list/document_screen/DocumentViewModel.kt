@@ -99,8 +99,9 @@ class DocumentViewModel @Inject constructor(
     fun getTags(): List<Tag> {
         return sessionManager.tags
     }
-    fun tagInDocument(tagId:String): Boolean{
-        return _state.value.document?.tags?.map{ it.id }?.contains(tagId)?:false
+
+    fun tagInDocument(tagId: String): Boolean {
+        return _state.value.document?.tags?.map { it.id }?.contains(tagId) ?: false
     }
 
     fun toggleTagToDocument(navController: NavController, tagId: String) {
@@ -127,6 +128,10 @@ class DocumentViewModel @Inject constructor(
                 }
             }.launchIn(viewModelScope)
         }
+    }
+
+    fun daysToExpire(): Int {
+        return sessionManager.getUser()?.days_about_to_expire ?: 30
     }
 }
 

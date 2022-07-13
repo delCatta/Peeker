@@ -18,9 +18,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.sonder.peeker.di.SessionManager
 import com.sonder.peeker.domain.model.Document
 import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.document_list.components.DocumentSelector
+import com.sonder.peeker.presentation.document_list.document_screen.DocumentViewModel
 import com.sonder.peeker.presentation.ui.theme.Gray
 import com.sonder.peeker.presentation.ui.theme.Pink
 import java.time.LocalDate
@@ -96,6 +98,7 @@ fun DocumentPreview(
 fun DocumentItem(
     navController: NavController,
     document: Document,
+    documentViewModel: DocumentViewModel = hiltViewModel()
 ) {
     BoxWithConstraints(
         modifier = Modifier
@@ -167,7 +170,7 @@ fun DocumentItem(
                                         it2.toInt(), it1.toInt(), it.toInt())
                                 } } }, LocalDate.of(
                                     today.split("-")[0].toInt(),
-                                    today.split("-")[1].toInt(), today.split("-")[2].toInt())) <= 30) Color.Yellow else Color.Green else Color.DarkGray
+                                    today.split("-")[1].toInt(), today.split("-")[2].toInt())) <= documentViewModel.daysToExpire()) Color.Yellow else Color.Green else Color.DarkGray
                         }), shape = CircleShape
                     ){
                         Text("")

@@ -55,9 +55,9 @@ class DocumentCreateViewModel @Inject constructor(
         _state.value = state.value.copy(error = "")
     }
 
-    fun uploadFile(fileUri: Uri, navController: NavController) {
+    fun uploadFile(file: File, navController: NavController) {
         clearErrors()
-        createDocumentUseCase.fromDocumentFile(fileUri).onEach { result ->
+        createDocumentUseCase.fromDocumentFile(file).onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     Log.d("Success", result.data.toString())

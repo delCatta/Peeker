@@ -2,6 +2,7 @@ package com.sonder.peeker.presentation.ui.theme
 
 import android.content.Intent
 import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.R
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat.startActivityForResult
@@ -29,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sonder.peeker.core.Constants.UNEXPECTER_ERROR
 import com.sonder.peeker.di.SessionManager
+import com.sonder.peeker.domain.utils.FileUtils
 import com.sonder.peeker.presentation.Screen
 import com.sonder.peeker.presentation.authentication.AuthViewModel
 import com.sonder.peeker.presentation.authentication.login.LoginViewModel
@@ -36,6 +39,7 @@ import com.sonder.peeker.presentation.document_create.DocumentCreateViewModel
 import com.sonder.peeker.presentation.document_list.DocumentListScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.io.File
 import java.security.AccessController.getContext
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -77,6 +81,7 @@ fun HomeScreen(
                 floatingActionButton = {
                     FloatingActionButton(
                         onClick = {
+                            createViewModel.clearErrors()
                             scope.launch {
                                 modalBottomSheetState.show()
                             }
@@ -167,21 +172,13 @@ fun BottomSheetContent(
     viewModel: DocumentCreateViewModel
 ) {
     val documentState = viewModel.state.value
-    val requestPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            Log.d("Permission","Granted")
-        } else {
-            Log.d("Permission", "Not Granted")
-        }
-    }
+    val context = LocalContext.current
     val pickPictureLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { fileUri ->
         if (fileUri != null) {
             Log.d("FileUri", fileUri.path.toString())
-            viewModel.uploadFile(fileUri, navController)
+            viewModel.uploadFile(FileUtils.fileFromContentUri(context, fileUri), navController)
         }
     }
     Column {
